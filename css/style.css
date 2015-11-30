@@ -1,0 +1,85 @@
+html,
+body {
+    margin: 0;
+    overflow: hidden;
+    height: 100%;
+}
+
+/* Scale canvas with resize attribute to full size */
+canvas[resize] {
+    width: 100%;
+    height: 100%;
+}
+
+#menu {
+    margin: auto;
+    margin-top: 200px;
+    width: 70%;
+    padding: 10px;
+    border:14px solid #000000;
+    border-radius: 15px;
+    background: AntiqueWhite;
+    max-width: 500px;
+}
+input {
+    font-family: 'Bree Serif', serif;
+    margin: 0 0 10px 0 ;
+    width: 60%;
+    border:3px solid #2D0088;
+    padding: 10px;
+    border-radius: 10px;
+    list-style: inline-block;
+    max-width: 300px;
+    outline-color: #2D0088;
+}
+input:hover {
+    background-color: AntiqueWhite;
+}
+select {
+    font-family: 'Bree Serif', serif;
+    margin: 0 0 10px 0;
+    width: 60%;
+    height: 43px;
+    border: 3px solid #2D0088;
+    /*padding: 10px ;*/
+    border-radius: 10px;
+    list-style: inline-block;
+    max-width: 300px;
+    outline-color: #2D0088;
+}
+select:hover {
+    background-color: AntiqueWhite;
+}
+p {
+    font-family: 'Bree Serif', serif;
+    color: white;
+    font-size: 200%;
+    margin: 0 auto;
+    width: 60%;
+    padding: 10px;
+    text-align: center;
+}
+#proceed {
+    font-family: 'Bree Serif', serif;
+    font-weight: 900;
+    width: 90%;
+    padding: 10px;
+    border:3px solid #2D0088;
+    border-radius: 25px;
+    background: white;
+    margin: 0;
+    display: inline;
+    text-align: center;
+    max-width: 220px;
+    outline-color: #2D0088;
+    margin-top: 40px;
+}
+#proceed:hover {
+   background: #FFC20B;
+}
+#wrapper {
+    margin: 0;
+    list-style: none;
+    display: inline;
+    text-align: center;
+}
