@@ -174,27 +174,29 @@ function setup() {//           setup map here, also draw it
     for (var i = 0; i < size; i += 1) {
         var row = [];
         for (var ii = 0; ii < size; ii += 1) {
-            var path = new Path.RegularPolygon(new Point(x, y), 6, 50);
-            path.strokeColor = '#A1A1A1';
-            path.strokeWidth = 6;
+            
+            var type = randomTileType();
+
+            var raster = new Raster({
+                    position: new Point(x,y),
+                    source: colorPicker(type)
+                })
 
             var hexObject = {
                 x: x,
                 y: y,
                 radius: 50,
-                path: path,
-                type: randomTileType()
+                type: type,
+                path: raster
             };
 
-            hexObject.path.fillColor = colorPicker(hexObject.type);
-
             row.push(hexObject);
-            x += 90;
+            x += 110;
         }
         boardMain.push(row);
-        y += 78;
+        y += 95;
         if (boardShape === "Rhombus") {
-            x = (200-5*(i+1)) + (i+1) * 50;
+            x = (200-5*(i+1)) + (i+1) * 60;
         } else if (boardShape === "Rectangle") {
             x = 200 + (((i % 2) - 1) * -45);
         }
@@ -220,13 +222,13 @@ function setup() {//           setup map here, also draw it
 
 function colorPicker(type) {
     if (type === 'forest') {
-        return '#009933';
+        return 'images/grass.png';
     }
     else if (type === 'sand') {
-        return '#b36b00';
+        return 'images/desert.png';
     }
     else if (type === 'rock') {
-        return '#878787';
+        return 'images/rock.png';
     }
 }
 function lightColorPicker(type) {
@@ -321,7 +323,7 @@ function onFrame(event) {
             for (var ii = 0; ii < size; ii += 1) {
                 //   move events here
 
-                boardMain[i][ii].path.fillColor = colorPicker(boardMain[i][ii].type);
+                //boardMain[i][ii].path.fillColor = colorPicker(boardMain[i][ii].type);!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
                 
 
@@ -329,7 +331,7 @@ function onFrame(event) {
 
                     //console.log("not even");
 
-                    boardMain[i][ii].path.fillColor = lightColorPicker(boardMain[i][ii].type);
+                    //boardMain[i][ii].path.fillColor = lightColorPicker(boardMain[i][ii].type);!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 } 
             }
         }
@@ -338,7 +340,7 @@ function onFrame(event) {
             for (var ii = 0; ii < size; ii += 1) {
                 //   move events here
 
-                boardMain[i][ii].path.fillColor = colorPicker(boardMain[i][ii].type);
+                //boardMain[i][ii].path.fillColor = colorPicker(boardMain[i][ii].type);!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
                 var deltaX = ii - players[currentPlayer].coord.x;
                 var deltaY = i - players[currentPlayer].coord.y;
@@ -347,7 +349,7 @@ function onFrame(event) {
 
                     //console.log("not even");
 
-                    boardMain[i][ii].path.fillColor = lightColorPicker(boardMain[i][ii].type);
+                    //boardMain[i][ii].path.fillColor = lightColorPicker(boardMain[i][ii].type);!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 } 
             }
         }
@@ -375,9 +377,9 @@ function onMouseMove(event) {
 
                         //console.log("not even");
 
-                        boardMain[i][ii].path.strokeColor = '#6a59ed';
+                        //boardMain[i][ii].path.strokeColor = '#6a59ed';!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     } else {
-                        boardMain[i][ii].path.strokeColor = '#BE0000';
+                        //boardMain[i][ii].path.strokeColor = '#BE0000';!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     }
                 }
                 if (turnCounter === 2 && players[currentPlayer].character.type === "Fragger") {
@@ -391,7 +393,7 @@ function onMouseMove(event) {
                     players[currentPlayer].character.aimerLine.dashArray = [20, 20];
                 }
             } else {
-                boardMain[i][ii].path.strokeColor = '#A1A1A1';
+                //boardMain[i][ii].path.strokeColor = '#A1A1A1';!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             }
             
         }
@@ -399,6 +401,7 @@ function onMouseMove(event) {
 }
 
 function onMouseDrag(event) {
+    //if statement about if it is too far dragged or not
     for (var i = 0; i < size; i += 1) {
         for (var ii = 0; ii < size; ii += 1) {
 
@@ -465,12 +468,12 @@ function onMouseUp(event) {
 
                         moveCounter -= Math.abs(deltaX);
 
-                        boardMain[i][ii].path.strokeColor = '#A1A1A1';
+                        //boardMain[i][ii].path.strokeColor = '#A1A1A1';!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     } 
                 }
             }
             if (turnCounter === 1) {
-                   boardMain[i][ii].path.fillColor = colorPicker(boardMain[i][ii].type); 
+                   //boardMain[i][ii].path.fillColor = colorPicker(boardMain[i][ii].type); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             }
         }
     }
