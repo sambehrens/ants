@@ -37,16 +37,15 @@
             </li>
         </ul>
     </div>
-    <canvas id="myCanvas" resize>
-        <button id="aCard">
-            <p>Add card</p>
-        </button>
-        <div id="bBar" onclick="expandBar(bBar)">
-            <div class="deck"></div>
-            <ul id="cards">
-            </ul>
-        </div>
-    </canvas>
+    <canvas id="myCanvas" resize></canvas>
+    <button id="aCard">
+        <p>Add card</p>
+    </button>
+    <div id="bBar">
+        <div class="deck"></div>
+        <ul id="cards">
+        </ul>
+    </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="js/paper-full.js"></script>
     <script type="text/paperscript" canvas="myCanvas">
@@ -71,27 +70,25 @@ var bBarWidth = 0;
 $("#cards").hide();
 $('#bBar').hide();
 
-function expandBar() {
+$('#bBar').click(function () {
     "use strict";
     if (expanded === false) {
-        $("#bBar").css("background", "red");
+        $("#bBar").css("background", "black");
         $("#bBar").css("width", "100%");
         $("#cards").delay(680).show(680);
         
         if (cardsN >= 4) {
             $("#bBar").css("overflowX", "scroll");
         }
-        
-        expanded = true;
     } else {
         $("#cards").delay(600).show(600).finish();
         $("#bBar").css("background", "aquamarine");
         $("#bBar").css("width", "20vw");
         $("#cards").hide(0);
         $("#bBar").css("overflowX", "hidden");
-        expanded = false;
     }
-}
+    expanded = !expanded;
+});
 
 //var scrollW = document.getElementsByClassName("");
 $("#aCard").click(function () {

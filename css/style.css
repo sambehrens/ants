@@ -94,6 +94,14 @@ p {
     background: aquamarine;
     transition: width 1s;
 /*    overflow-x: scroll;*/
+    height: 200px;
+}
+
+#aCard {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100px;
 }
 
 #cards {
