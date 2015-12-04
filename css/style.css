@@ -83,3 +83,103 @@ p {
     display: inline;
     text-align: center;
 }
+
+#bBar {
+    border-radius: 8px;
+    font-size: 2.2vw;
+    bottom: 0px;
+    right: 0px;
+    position: fixed;
+    width: 20vw;
+    background: aquamarine;
+    transition: width 1s;
+/*    overflow-x: scroll;*/
+}
+
+#cards {
+    list-style: none;
+    display: inline;
+    margin: 0 0 4% 0;
+    float: center;
+    width: 60%;
+    
+}
+
+#cards li {
+    height: 17vw;
+    width: 23vw;
+    border-style: solid;
+    border-width: 1vw;
+    border-color: blueviolet;
+    text-align: right;
+/*    background: pink;*/
+    
+    
+    list-style: none;
+    display: inline-block;
+    min-height: 50px;
+    background-repeat: no-repeat;
+    background-size: 34px;
+    padding: 1vw 1vw 1vw 0vw;
+    margin: 0px 2vw 0px 0px;
+/*    background-image: url('../imagesOfPower/samTheSham.jpg');*/
+}
+
+
+/**************************************
+ICONS AND IMAGES
+**************************************/
+
+.deck {
+    min-height: 50px;
+    background-repeat: no-repeat;
+    background-size: 20vw;
+    background-image: url('../imagesOfPower/samTheSham.jpg');
+}
+
+
+/**************************************
+CARDS
+**************************************/
+
+.card1 {
+    color: yellow;
+    background: blue;
+    background-image: url('../imagesOfPower/samTheSham.jpg');
+}
+
+.card2 {
+    color: white;
+    background: green;
+    background-image: url('../imagesOfPower/samTheSham.jpg');
+}
+
+.card3 {
+    background: yellow;
+    color: red;
+    background-image: url('../imagesOfPower/samTheSham.jpg');
+}
+
+.card4 {
+    background: black;
+    color: white;
+    background-image: url('../imagesOfPower/samTheSham.jpg');
+}
+
+.card4 {
+    background: white;
+    color: black;
+    background-image: url('../imagesOfPower/samTheSham.jpg');
+}
+
+.card5 {
+    background: orange;
+    color: darkgreen;
+    background-image: url('../imagesOfPower/samTheSham.jpg');
+}
+
+.card6 {
+    background: pink;
+    color: blue;
+    background-image: url('../imagesOfPower/samTheSham.jpg');
+}

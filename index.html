@@ -4,6 +4,7 @@
 	<link rel="stylesheet" href="css/style.css">
     <link href='https://fonts.googleapis.com/css?family=Orbitron:400,900' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
 </head>
 <body background="images/background.png">
     <div id="menu">
@@ -37,7 +38,14 @@
         </ul>
     </div>
     <canvas id="myCanvas" resize>
-        <div></div> <!-- menu here? -->
+        <button id="aCard">
+            <p>Add card</p>
+        </button>
+        <div id="bBar" onclick="expandBar(bBar)">
+            <div class="deck"></div>
+            <ul id="cards">
+            </ul>
+        </div>
     </canvas>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="js/paper-full.js"></script>
@@ -52,8 +60,58 @@ to do:
 5. figure out what the theme is
 */
 
+var expanded = false; // Is the bottom bar expanded?
+var cardsN = 0; // number of cards
+var cards = ["card"]; // array of cards
+var cardHolder = "dog";
+var attack = 5;
+var defense = 10;
+var bBarWidth = 0;
 
+$("#cards").hide();
+$('#bBar').hide();
 
+function expandBar() {
+    "use strict";
+    if (expanded === false) {
+        $("#bBar").css("background", "red");
+        $("#bBar").css("width", "100%");
+        $("#cards").delay(680).show(680);
+        
+        if (cardsN >= 4) {
+            $("#bBar").css("overflowX", "scroll");
+        }
+        
+        expanded = true;
+    } else {
+        $("#cards").delay(600).show(600).finish();
+        $("#bBar").css("background", "aquamarine");
+        $("#bBar").css("width", "20vw");
+        $("#cards").hide(0);
+        $("#bBar").css("overflowX", "hidden");
+        expanded = false;
+    }
+}
+
+//var scrollW = document.getElementsByClassName("");
+$("#aCard").click(function () {
+    "use strict";
+    if (cardsN < 12) {
+        cardsN += 1;
+        
+        //add a card li to the cards div
+        $("#cards").append('<li class="card' + cardsN + '">New Card <p>Attack: ' + attack + '</p> <p>Defense: ' + defense + '</p> </li>');
+        cards[cardsN] = document.getElementById("cards").lastChild;
+        
+        //extend bar width
+        bBarWidth += (28);
+        document.getElementById("cards").style.width = bBarWidth + "vw";
+        
+        if (cardsN >= 4) {
+            $("#bBar").css("overflowX", "scroll");
+        }
+    }
+});
     
 $("#myCanvas").hide();
 
@@ -150,6 +208,7 @@ $("#proceed").click(function() {
         size = $("#enterMapSize").val();
         size = parseInt(size,10);
         boardShape = $("#shape").val();
+        $('#bBar').show('slow');
         setup();
     }
 
