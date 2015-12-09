@@ -50,15 +50,7 @@ select {
 select:hover {
     background-color: AntiqueWhite;
 }
-p {
-    font-family: 'Bree Serif', serif;
-    color: white;
-    font-size: 200%;
-    margin: 0 auto;
-    width: 60%;
-    padding: 10px;
-    text-align: center;
-}
+
 #proceed {
     font-family: 'Bree Serif', serif;
     font-weight: 900;
@@ -91,16 +83,17 @@ p {
     right: 0px;
     position: fixed;
     width: 20vw;
-    background: aquamarine;
+    background: AntiqueWhite;
     transition: width 1s;
 /*    overflow-x: scroll;*/
-    height: 200px;
+    height: 25%;
+    border-color: black;
 }
 
 #aCard {
     position: fixed;
-    bottom: 0;
-    left: 0;
+    bottom: 25%;
+    right: 0;
     width: 100px;
 }
 
@@ -118,7 +111,7 @@ p {
     width: 23vw;
     border-style: solid;
     border-width: 1vw;
-    border-color: blueviolet;
+    border-color: AntiqueWhite;
     text-align: right;
 /*    background: pink;*/
     
@@ -142,7 +135,7 @@ ICONS AND IMAGES
     min-height: 50px;
     background-repeat: no-repeat;
     background-size: 20vw;
-    background-image: url('../imagesOfPower/samTheSham.jpg');
+    /*background-image: url('../images/samTheSham.jpg');*/
 }
 
 
@@ -150,44 +143,44 @@ ICONS AND IMAGES
 CARDS
 **************************************/
 
-.card1 {
+.card {
     color: yellow;
     background: blue;
-    background-image: url('../imagesOfPower/samTheSham.jpg');
+    background-image: url('../images/samTheSham.jpg');
 }
 
 .card2 {
     color: white;
     background: green;
-    background-image: url('../imagesOfPower/samTheSham.jpg');
+    background-image: url('../images/samTheSham.jpg');
 }
 
 .card3 {
     background: yellow;
     color: red;
-    background-image: url('../imagesOfPower/samTheSham.jpg');
+    background-image: url('../images/samTheSham.jpg');
 }
 
 .card4 {
     background: black;
     color: white;
-    background-image: url('../imagesOfPower/samTheSham.jpg');
+    background-image: url('../images/samTheSham.jpg');
 }
 
 .card4 {
     background: white;
     color: black;
-    background-image: url('../imagesOfPower/samTheSham.jpg');
+    background-image: url('../images/samTheSham.jpg');
 }
 
 .card5 {
     background: orange;
     color: darkgreen;
-    background-image: url('../imagesOfPower/samTheSham.jpg');
+    background-image: url('../images/samTheSham.jpg');
 }
 
 .card6 {
     background: pink;
     color: blue;
-    background-image: url('../imagesOfPower/samTheSham.jpg');
+    background-image: url('../images/samTheSham.jpg');
 }
