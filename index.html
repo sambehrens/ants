@@ -4,6 +4,7 @@
 	<link rel="stylesheet" href="css/style.css">
     <link href='https://fonts.googleapis.com/css?family=Orbitron:400,900' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
 </head>
 <body background="images/background.png">
     <div id="menu">
@@ -36,9 +37,15 @@
             </li>
         </ul>
     </div>
-    <canvas id="myCanvas" resize>
-        <div></div> <!-- menu here? -->
-    </canvas>
+    <canvas id="myCanvas" resize></canvas>
+    <button id="aCard">
+        <p>Add card</p>
+    </button>
+    <div id="bBar">
+        <div class="deck"></div>
+        <ul id="cards">
+        </ul>
+    </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="js/paper-full.js"></script>
     <script type="text/paperscript" canvas="myCanvas">
@@ -52,49 +59,137 @@ to do:
 5. figure out what the theme is
 */
 
+var expanded = false; // Is the bottom bar expanded?
+var cardsN = 0; // number of cards
+var cardHolder = "dog";
+var bBarWidth = 0;
+
+$("#cards").hide();
+$('#bBar').hide();
+$("#aCard").hide();
+
+function  expandBBar() {
+    for (var i = 0; i < players[currentPlayer].cards.length; i += 1) {
+        $("#cards").append('<li class="card">This is Card <p>Attack: ' + players[currentPlayer].character.cards[i].attack + '</p> <p>Defense: ' + players[currentPlayer].character.cards[i].defend + '</p> </li>');
+    }
 
 
+    $("#bBar").css("background", "black");
+    $("#bBar").css("width", "100%");
+    $("#cards").delay(680).show(680);
+    
+    if (cardsN >= 4) {
+        $("#bBar").css("overflowX", "scroll");
+    }
+}
+
+function hideBBar() {
+    $("#cards").delay(600).show(600).finish();
+    $("#bBar").css("background", "AntiqueWhite");
+    $("#bBar").css("width", "20vw");
+    $("#cards").hide(0);
+    $("#bBar").css("overflowX", "hidden");
+    $(".card").remove();
+}
+
+$('#bBar').click(function () {
+    "use strict";
+    if (expanded === false) {
+
+        expandBBar();
+
+    } else {
+
+        hideBBar();
+
+    }
+    expanded = !expanded;
+});
+
+//var scrollW = document.getElementsByClassName("");
+$("#aCard").click(function () {
+    "use strict";
+    if (cardsN < 12 && actionCounter > 0 && turnCounter === 2) {
+        cardsN += 1;
+
+
+        
+        //add a card li to the cards div
+        $("#cards").append('<li class="card">This is Card <p>Attack: ' + players[currentPlayer].character.cards[0].attack + '</p> <p>Defense: ' + players[currentPlayer].character.cards[0].defend + '</p> </li>');
+
+        
+        //extend bar width
+        bBarWidth += (28);
+        $("#cards").css("width", bBarWidth + "vw");
+        
+        if (cardsN >= 4) {
+            $("#bBar").css("overflowX", "scroll");
+        }
+
+        players[currentPlayer].cards.push(players[currentPlayer].character.cards[0]);
+
+        actionCounter -= 1;
+    }
+});
     
 $("#myCanvas").hide();
 
-var size, biome, playerType, numPlayers = 2, gameSetup = 1, players = [], move = false, currentPlayer = 0, turnCounter = 0, moveCounter = 0, boardShape;
+var size, biome, playerType, numPlayers = 2, gameSetup = 1, players = [], move = false, currentPlayer = 0, turnCounter = 0, moveCounter = 0, actionCounter = 0, boardShape;
 var playerTypes = [// array of player types: add new player here
     {
-        type: 'Scout',
+        type: 'Greed',
         color: '#cc00cc',
-        dice: 4,
-        health: 10,
+        dice: 12,
+        health: 20,
+        numActions: 3,
         cards: [// array of cards: put new cards here
             {
                 attack: 5,
                 defend: 3,
                 rarity: 1
+            },
+            {
+                attack: 6,
+                defend: 0,
+                rarity: 2
             }
         ]
     },
     {
-        type: 'Heavy',
+        type: 'Wrath',
         color: '#ff0000',
-        dice: 2,
-        health: 50,
+        dice: 4,
+        health: 16,
+        numActions: 2,
         cards: [// array of cards: put new cards here
             {
                 attack: 3,
                 defend: 5,
                 rarity: 1
+            },
+            {
+                attack: 6,
+                defend: 0,
+                rarity: 2
             }
         ]
     },
     {
-        type: 'Fragger',
+        type: 'Pride',
         color: '#e5e600',
-        dice: 3,
-        health: 30,
+        dice: 8,
+        health: 22,
+        numActions: 2,
         cards: [// array of cards: put new cards here
             {
                 attack: 3,
                 defend: 5,
                 rarity: 1
+            },
+            {
+                attack: 6,
+                defend: 0,
+                rarity: 2
             }
         ],
         aimerLine: new Path()
@@ -150,6 +245,8 @@ $("#proceed").click(function() {
         size = $("#enterMapSize").val();
         size = parseInt(size,10);
         boardShape = $("#shape").val();
+        $('#bBar').show('slow');
+        $("#aCard").show('slow');
         setup();
     }
 
@@ -216,6 +313,7 @@ function setup() {//           setup map here, also draw it
             players[i].character.aimerLine = new Path(new Point(0,0), new Point(0,0), new Point(0,0))
         }
     }
+    actionCounter = players[currentPlayer].character.numActions;
 }
 
 function colorPicker(type) {
@@ -480,16 +578,23 @@ function onMouseUp(event) {
         turnCounter++;
 
         if (turnCounter === 3) {
+
+            hideBBar();
+
             turnCounter = 0;
             currentPlayer++;
+
+            if (currentPlayer === players.length) {
+                currentPlayer = 0;
+            }
+
+            actionCounter = players[currentPlayer].character.numActions;
         } else if (turnCounter === 1) {
             moveCounter = Math.floor((Math.random() * players[currentPlayer].character.dice) + 1);
         }
 
 
-        if (currentPlayer === players.length) {
-            currentPlayer = 0;
-        }
+        
 
         if (turnCounter === 0) {
             btnText.content = 'roll';
