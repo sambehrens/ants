@@ -1,0 +1,634 @@
+<html>
+<head>
+	<title>SparWarsEpicDrools</title>
+	<link rel="stylesheet" href="css/style.css">
+    <link href='https://fonts.googleapis.com/css?family=Orbitron:400,900' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
+</head>
+<body background="images/background.png">
+    <div id="menu">
+        <ul id="wrapper">
+            <li>
+                <input id="enterName" type="text" value="" title="Come on, be creative" placeHolder="Nick" maxlength="15" spellcheck="false">
+            </li>
+            <li>
+                <input id="enterMapSize" type="text" value="" placeHolder="Map Size" maxlength="2">
+            </li>
+            <li>
+                <select id="player"></select>
+            </li>
+            <li>
+                <select id="shape">
+                    <option>Rhombus</option>
+                    <option>Rectangle</option>
+                    <option>Hexagon</option>
+                </select>
+            </li>
+            <li>
+                <select id="biome">
+                    <option>Forest</option>
+                    <option>Desert</option>
+                    <option>Mountain</option>
+                </select>
+            </li>
+            <li>
+                <button id="proceed">Next</button>
+            </li>
+        </ul>
+    </div>
+    <canvas id="myCanvas" resize></canvas>
+    <button id="aCard">
+        <p>Add card</p>
+    </button>
+    <div id="bBar">
+        <div class="deck"></div>
+        <ul id="cards">
+        </ul>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type="text/javascript" src="js/paper-full.js"></script>
+    <script type="text/paperscript" canvas="myCanvas">
+
+/*
+to do:
+1. map shapes
+2. scale map to # of players
+3. figure out what the hell to do with attacks
+4. figure out how to remove frag aimer when not in use
+5. figure out what the theme is
+*/
+
+var expanded = false; // Is the bottom bar expanded?
+var cardsN = 0; // number of cards
+var cardHolder = "dog";
+var bBarWidth = 0;
+
+$("#cards").hide();
+$('#bBar').hide();
+$("#aCard").hide();
+
+function  expandBBar() {
+    for (var i = 0; i < players[currentPlayer].cards.length; i += 1) {
+        $("#cards").append('<li class="card">This is Card <p>Attack: ' + players[currentPlayer].character.cards[i].attack + '</p> <p>Defense: ' + players[currentPlayer].character.cards[i].defend + '</p> </li>');
+    }
+
+
+    $("#bBar").css("background", "black");
+    $("#bBar").css("width", "100%");
+    $("#cards").delay(680).show(680);
+    
+    if (cardsN >= 4) {
+        $("#bBar").css("overflowX", "scroll");
+    }
+}
+
+function hideBBar() {
+    $("#cards").delay(600).show(600).finish();
+    $("#bBar").css("background", "AntiqueWhite");
+    $("#bBar").css("width", "20vw");
+    $("#cards").hide(0);
+    $("#bBar").css("overflowX", "hidden");
+    $(".card").remove();
+}
+
+$('#bBar').click(function () {
+    "use strict";
+    if (expanded === false) {
+
+        expandBBar();
+
+    } else {
+
+        hideBBar();
+
+    }
+    expanded = !expanded;
+});
+
+//var scrollW = document.getElementsByClassName("");
+$("#aCard").click(function () {
+    "use strict";
+    if (cardsN < 12 && actionCounter > 0 && turnCounter === 2) {
+        cardsN += 1;
+
+
+        
+        //add a card li to the cards div
+        $("#cards").append('<li class="card">This is Card <p>Attack: ' + players[currentPlayer].character.cards[0].attack + '</p> <p>Defense: ' + players[currentPlayer].character.cards[0].defend + '</p> </li>');
+
+        
+        //extend bar width
+        bBarWidth += (28);
+        $("#cards").css("width", bBarWidth + "vw");
+        
+        if (cardsN >= 4) {
+            $("#bBar").css("overflowX", "scroll");
+        }
+
+        players[currentPlayer].cards.push(players[currentPlayer].character.cards[0]);
+
+        actionCounter -= 1;
+    }
+});
+    
+$("#myCanvas").hide();
+
+var size, biome, playerType, numPlayers = 2, gameSetup = 1, players = [], move = false, currentPlayer = 0, turnCounter = 0, moveCounter = 0, actionCounter = 0, boardShape;
+var playerTypes = [// array of player types: add new player here
+    {
+        type: 'Greed',
+        color: '#cc00cc',
+        dice: 12,
+        health: 20,
+        numActions: 3,
+        cards: [// array of cards: put new cards here
+            {
+                attack: 5,
+                defend: 3,
+                rarity: 1
+            },
+            {
+                attack: 6,
+                defend: 0,
+                rarity: 2
+            }
+        ]
+    },
+    {
+        type: 'Wrath',
+        color: '#ff0000',
+        dice: 4,
+        health: 16,
+        numActions: 2,
+        cards: [// array of cards: put new cards here
+            {
+                attack: 3,
+                defend: 5,
+                rarity: 1
+            },
+            {
+                attack: 6,
+                defend: 0,
+                rarity: 2
+            }
+        ]
+    },
+    {
+        type: 'Pride',
+        color: '#e5e600',
+        dice: 8,
+        health: 22,
+        numActions: 2,
+        cards: [// array of cards: put new cards here
+            {
+                attack: 3,
+                defend: 5,
+                rarity: 1
+            },
+            {
+                attack: 6,
+                defend: 0,
+                rarity: 2
+            }
+        ],
+        aimerLine: new Path()
+    }
+];
+
+
+
+if (numPlayers + 1 === gameSetup) {
+        $("#proceed").html('Start Game');
+}
+
+$("#player").hide();
+$("#enterName").hide();
+
+$("#proceed").click(function() {
+    playerType = $("#player").val();
+    biome = $("#biome").val();
+
+    if (gameSetup === 1) {
+        $("#enterMapSize").hide();
+        $("#biome").hide();
+        $("#shape").hide();
+
+        $("#player").show();
+        $("#enterName").show();
+    }
+
+    if (gameSetup > 1) {
+        player = {
+            nick: $("#enterName").val(),
+            character: playerTypes[$("#player option:selected").index()],
+            coord: {
+                x: 5,
+                y: (1 + gameSetup)
+            },
+            path: new Path.RegularPolygon(new Point(0,0),0,0),
+            cards: [],//    put cards that the player can use in this array
+            nameLabel: new PointText()
+        };
+        if (player.nick === '') {
+            player.nick = 'Player ' + (gameSetup-1);
+        }
+
+        players.push(player);
+    }
+
+
+    if (numPlayers + 1 === gameSetup) {
+        $("body").css('background-image', 'none');
+        $("#menu").hide("slow");
+        $("#myCanvas").show("slow");
+        size = $("#enterMapSize").val();
+        size = parseInt(size,10);
+        boardShape = $("#shape").val();
+        $('#bBar').show('slow');
+        $("#aCard").show('slow');
+        setup();
+    }
+
+    $("#enterName").val('');
+
+    gameSetup += 1;
+});
+
+
+
+for (var i = 0; i < playerTypes.length; i += 1) {//   add player types to select option in html code
+    $("#player").append("<option>" + playerTypes[i].type + "</option>");
+}
+
+
+
+var boardMain = [];
+
+
+function setup() {//           setup map here, also draw it
+    var x = 200,y = 100;
+    for (var i = 0; i < size; i += 1) {
+        var row = [];
+        for (var ii = 0; ii < size; ii += 1) {
+            var path = new Path.RegularPolygon(new Point(x, y), 6, 50);
+            path.strokeColor = '#A1A1A1';
+            path.strokeWidth = 6;
+
+            var hexObject = {
+                x: x,
+                y: y,
+                radius: 50,
+                path: path,
+                type: randomTileType()
+            };
+
+            hexObject.path.fillColor = colorPicker(hexObject.type);
+
+            row.push(hexObject);
+            x += 90;
+        }
+        boardMain.push(row);
+        y += 78;
+        if (boardShape === "Rhombus") {
+            x = (200-5*(i+1)) + (i+1) * 50;
+        } else if (boardShape === "Rectangle") {
+            x = 200 + (((i % 2) - 1) * -45);
+        }
+    }
+    for (var i = 0; i < players.length; i += 1) {
+        var xP = boardMain[players[i].coord.y][players[i].coord.x].path.position.x;
+        var yP = boardMain[players[i].coord.y][players[i].coord.x].path.position.y;
+        players[i].path = new Path.RegularPolygon(new Point(xP, yP), 3, 30);
+        players[i].path.fillColor = players[i].character.color;
+        players[i].nameLabel = new PointText({
+            point: players[i].path.position,
+            justification: 'center',
+            fontSize: 30,
+            fillColor: 'white',
+            content: players[i].nick
+        });
+
+        if (players[i].character.type === "Fragger") {
+            players[i].character.aimerLine = new Path(new Point(0,0), new Point(0,0), new Point(0,0))
+        }
+    }
+    actionCounter = players[currentPlayer].character.numActions;
+}
+
+function colorPicker(type) {
+    if (type === 'forest') {
+        return '#009933';
+    }
+    else if (type === 'sand') {
+        return '#b36b00';
+    }
+    else if (type === 'rock') {
+        return '#878787';
+    }
+}
+function lightColorPicker(type) {
+    if (type === 'forest') {
+        return '#00E34C';
+    }
+    else if (type === 'sand') {
+        return '#ff9900';
+    }
+    else if (type === 'rock') {
+        return '#BABABA';
+    }
+}
+
+function randomTileType() {
+    var randomTile = Math.floor((Math.random() * 6) + 1);
+    if (biome === 'Forest') {
+        if (randomTile <= 4) {
+            return 'forest';
+        } else if (randomTile === 5) {
+            return 'sand';
+        } else if (randomTile === 6) {
+            return 'rock';
+        }
+    } else if (biome === 'Desert') {
+        if (randomTile <= 4) {
+            return 'sand';
+        } else if (randomTile === 5) {
+            return 'rock';
+        } else if (randomTile === 6) {
+            return 'forest';
+        }
+    } else if (biome === 'Mountain') {
+        if (randomTile <= 4) {
+            return 'rock';
+        } else if (randomTile === 5) {
+            return 'forest';
+        } else if (randomTile === 6) {
+            return 'sand';
+        }
+    }
+}
+
+function isNegative(number) {
+    if (number > 0) {
+        return true;
+    } else if (number < 0) {
+        return false;
+    }
+}
+
+function isPlayerThereOrNah(x,y) {
+    for (var i = 0; i < players.length; i += 1) {
+        if (players[i].coord.x === x && players[i].coord.y === y) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function canPlayerMoveOrNah(x,y) {
+
+    var deltaX = x - players[currentPlayer].coord.x;
+    var deltaY = y - players[currentPlayer].coord.y;
+
+    if (boardShape === "Rhombus") {
+
+        if (players[currentPlayer].coord.x + moveCounter >= x && 
+            players[currentPlayer].coord.y + moveCounter >= y && 
+            players[currentPlayer].coord.x - moveCounter <= x && 
+            players[currentPlayer].coord.y - moveCounter <= y && 
+            (Math.abs(deltaX) + Math.abs(deltaY) <= moveCounter || (isNegative(deltaX) !== isNegative(deltaY) && (Math.abs(deltaY) <= moveCounter || Math.abs(deltaX) <= moveCounter))) && 
+            isPlayerThereOrNah(x,y) === false) {
+
+            return true;
+
+        } 
+    }
+
+    if (boardShape === "Rectangle") {
+
+        if (Math.abs(deltaX) <= moveCounter &&  Math.abs(deltaY) <= moveCounter) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function onFrame(event) {
+    if (turnCounter === 1) {
+        for (var i = 0; i < size; i += 1) {//just trying to see where i can go
+            for (var ii = 0; ii < size; ii += 1) {
+                //   move events here
+
+                boardMain[i][ii].path.fillColor = colorPicker(boardMain[i][ii].type);
+
+                
+
+                if (canPlayerMoveOrNah(ii,i)) {
+
+                    //console.log("not even");
+
+                    boardMain[i][ii].path.fillColor = lightColorPicker(boardMain[i][ii].type);
+                } 
+            }
+        }
+    } else if (turnCounter === 2 && players[currentPlayer].character.type !== "Fragger") {
+        for (var i = 0; i < size; i += 1) {//just trying to see where i can go a.k.a. : "the lights"
+            for (var ii = 0; ii < size; ii += 1) {
+                //   move events here
+
+                boardMain[i][ii].path.fillColor = colorPicker(boardMain[i][ii].type);
+
+                var deltaX = ii - players[currentPlayer].coord.x;
+                var deltaY = i - players[currentPlayer].coord.y;
+
+                if (ii === players[currentPlayer].coord.x || i === players[currentPlayer].coord.y || (ii - players[currentPlayer].coord.x)*(-1) === i - players[currentPlayer].coord.y) {
+
+                    //console.log("not even");
+
+                    boardMain[i][ii].path.fillColor = lightColorPicker(boardMain[i][ii].type);
+                } 
+            }
+        }
+    }
+    if (turnCounter !== 2 && players[currentPlayer].character.type === "Fragger") {
+        ///---------------------literally nothing right now-----------------------
+    }
+}
+
+function onMouseMove(event) {
+    for (var i = 0; i < size; i += 1) {
+        for (var ii = 0; ii < size; ii += 1) {
+            if (boardMain[i][ii].path.contains(event.point)) {
+                //   move events here
+                
+                //boardMain[i][ii].path.bounds.width +=10;
+                //boardMain[i][ii].path.bounds.height +=10;
+
+                if (turnCounter === 1) {
+                    //console.log(ii + "  " + i)
+                    var deltaX = ii - players[currentPlayer].coord.x;
+                    var deltaY = i - players[currentPlayer].coord.y;
+
+                    if (canPlayerMoveOrNah(ii,i)) {
+
+                        //console.log("not even");
+
+                        boardMain[i][ii].path.strokeColor = '#6a59ed';
+                    } else {
+                        boardMain[i][ii].path.strokeColor = '#BE0000';
+                    }
+                }
+                if (turnCounter === 2 && players[currentPlayer].character.type === "Fragger") {
+                    players[currentPlayer].character.aimerLine.strokeColor = "#FFFFFF";
+                    players[currentPlayer].character.aimerLine.strokeWidth = 7;
+                    players[currentPlayer].character.aimerLine.segments[0].point = players[currentPlayer].path.position;
+                    players[currentPlayer].character.aimerLine.segments[1].point = new Point(players[currentPlayer].path.position.x + ((event.point.x - players[currentPlayer].path.position.x)/3),event.point.y);
+                    players[currentPlayer].character.aimerLine.segments[2].point = boardMain[i][ii].path.position;
+                    players[currentPlayer].character.aimerLine.smooth();
+                    players[currentPlayer].character.aimerLine.strokeCap = "round";
+                    players[currentPlayer].character.aimerLine.dashArray = [20, 20];
+                }
+            } else {
+                boardMain[i][ii].path.strokeColor = '#A1A1A1';
+            }
+            
+        }
+    }
+}
+
+function onMouseDrag(event) {
+    for (var i = 0; i < size; i += 1) {
+        for (var ii = 0; ii < size; ii += 1) {
+
+            boardMain[i][ii].path.position.x += event.delta.x/3;
+            boardMain[i][ii].path.position.y += event.delta.y/3;
+
+        }
+        if (i < players.length) {
+            players[i].path.position.x += event.delta.x/3;
+            players[i].path.position.y += event.delta.y/3;
+            players[i].nameLabel.position.x += event.delta.x/3;
+            players[i].nameLabel.position.y += event.delta.y/3;
+        }
+    }
+}
+
+function onMouseDown(event) {
+    for (var i = 0; i < size; i += 1) {
+        for (var ii = 0; ii < size; ii += 1) {
+            if (boardMain[i][ii].path.contains(event.point)) {
+                //click events here
+                
+                console.log('x: ' + ii + '  y: ' + i);
+                if (move === true) {
+                    //   move math here
+                }
+            }
+        }
+    }
+    if (button.contains(event.point)) {
+        button.fillColor = '#2576ef';
+        button.strokeColor = '#75a8f5';
+    }
+}
+
+function onMouseUp(event) {
+    
+
+    for (var i = 0; i < size; i += 1) {
+        for (var ii = 0; ii < size; ii += 1) {
+
+
+            if (boardMain[i][ii].path.contains(event.point)) {
+                //   move events here
+                
+                //boardMain[i][ii].path.bounds.width +=10;
+                //boardMain[i][ii].path.bounds.height +=10;
+
+                if (turnCounter === 1) {
+                    //console.log(ii + "  " + i)
+                    var deltaX = ii - players[currentPlayer].coord.x;
+                    var deltaY = i - players[currentPlayer].coord.y;
+
+                    if (canPlayerMoveOrNah(ii,i)) {
+
+
+
+                        //console.log("not even");
+
+                        players[currentPlayer].path.position = boardMain[i][ii].path.position;
+                        players[currentPlayer].nameLabel.position = boardMain[i][ii].path.position;
+                        players[currentPlayer].coord.x = ii;
+                        players[currentPlayer].coord.y = i;
+
+                        moveCounter -= Math.abs(deltaX);
+
+                        boardMain[i][ii].path.strokeColor = '#A1A1A1';
+                    } 
+                }
+            }
+            if (turnCounter === 1) {
+                   boardMain[i][ii].path.fillColor = colorPicker(boardMain[i][ii].type); 
+            }
+        }
+    }
+
+    if (button.contains(event.point)) {
+
+        turnCounter++;
+
+        if (turnCounter === 3) {
+
+            hideBBar();
+
+            turnCounter = 0;
+            currentPlayer++;
+
+            if (currentPlayer === players.length) {
+                currentPlayer = 0;
+            }
+
+            actionCounter = players[currentPlayer].character.numActions;
+        } else if (turnCounter === 1) {
+            moveCounter = Math.floor((Math.random() * players[currentPlayer].character.dice) + 1);
+        }
+
+
+        
+
+        if (turnCounter === 0) {
+            btnText.content = 'roll';
+        } else if (turnCounter === 1) {
+            btnText.content = 'action';
+        } else if (turnCounter === 2) {
+            btnText.content = 'next turn';
+        }
+
+
+
+    }
+
+    button.fillColor = '#75a8f5';
+    button.strokeColor = '#2576ef';
+}
+
+
+//---buttons---
+var button = new Path.RegularPolygon(new Point(view.bounds.width - 100, 100), 3, 70);
+button.fillColor = '#75a8f5';
+button.strokeWidth = 6;
+button.strokeColor = '#2576ef';
+
+var btnText = new PointText({
+    point: button.position,
+    justification: 'center',
+    fontSize: 30,
+    fillColor: 'white',
+    content: 'roll'
+});
+
+
+
+    </script>
+</body>
+</html>
