@@ -19,13 +19,6 @@
                 <select id="player"></select>
             </li>
             <li>
-                <select id="shape">
-                    <option>Rhombus</option>
-                    <option>Rectangle</option>
-                    <option>Hexagon</option>
-                </select>
-            </li>
-            <li>
                 <select id="biome">
                     <option>Forest</option>
                     <option>Desert</option>
@@ -282,29 +275,29 @@ function setup() {//           setup map here, also draw it
             if(ii < ((size-1)/2)-topLeft && i < ((size-1)/2)){    //this removes the top left corner to make the board a hexagon
               
                 var raster = new Raster({ // a raster is just an image and this is where the tile images are made ;)
-                    position: new Point(2000,y),
-                    source: colorPicker(type)
+                    position: new Point(20000,y),
+                    source: imagePicker(type)
                 })
 
-                var circle = new Shape.Circle(new Point(2000,y), 60);//circle for in front of image
+                var circle = new Shape.Circle(new Point(20000,y), 60);//circle for in front of image
                 circle.fillColor = new Color(0.5,0.5,05,0.3);
                 circle.visible = false;
            
             }else if(ii > ((size - ((size-1)/2))-1)-bottomRight && i > ((size - ((size-1)/2))-1)){  //this removes the bottom right corner
                
                 var raster = new Raster({ // a raster is just an image and this is where the tile images are made ;)
-                    position: new Point(2000,y),
-                    source: colorPicker(type)
+                    position: new Point(20000,y),
+                    source: imagePicker(type)
                 })
 
-                var circle = new Shape.Circle(new Point(2000,y), 60);//circle for in front of image
+                var circle = new Shape.Circle(new Point(20000,y), 60);//circle for in front of image
                 circle.fillColor = new Color(0.5,0.5,05,0.3);
                 circle.visible = false;
             
             }else{
                 var raster = new Raster({ // a raster is just an image and this is where the tile images are made ;)
                     position: new Point(x,y),
-                    source: colorPicker(type)
+                    source: imagePicker(type)
                 })
 
                 var circle = new Shape.Circle(new Point(x,y), 60);//circle for in front of image
@@ -344,7 +337,7 @@ function setup() {//           setup map here, also draw it
     actionCounter = players[currentPlayer].character.numActions;
 }
 
-function colorPicker(type) {
+function imagePicker(type) {
     if (type === 'forest') {
         return 'images/grass.png';
     }
@@ -353,17 +346,6 @@ function colorPicker(type) {
     }
     else if (type === 'rock') {
         return 'images/rock.png';
-    }
-}
-function lightColorPicker(type) {
-    if (type === 'forest') {
-        return '#00E34C';
-    }
-    else if (type === 'sand') {
-        return '#ff9900';
-    }
-    else if (type === 'rock') {
-        return '#BABABA';
     }
 }
 
