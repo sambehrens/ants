@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>SparWarsEpicDrools</title>
+	<title>SparDrawersEpilepticDrools</title>
 	<link rel="stylesheet" href="css/style.css">
     <link href='https://fonts.googleapis.com/css?family=Orbitron:400,900' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
@@ -134,7 +134,9 @@ $("#aCard").click(function () {
     
 $("#myCanvas").hide();
 
-var size, biome, playerType, numPlayers = 2, gameSetup = 1, players = [], move = false, currentPlayer = 0, turnCounter = 0, moveCounter = 0, actionCounter = 0, boardShape;
+
+var size, biome, playerType, numPlayers = 2, gameSetup = 1, players = [], move = false, currentPlayer = 0, turnCounter = 0, moveCounter = 0;
+
 var playerTypes = [// array of player types: add new player here
     {
         type: 'Greed',
@@ -244,7 +246,6 @@ $("#proceed").click(function() {
         $("#myCanvas").show("slow");
         size = $("#enterMapSize").val();
         size = parseInt(size,10);
-        boardShape = $("#shape").val();
         $('#bBar').show('slow');
         $("#aCard").show('slow');
         setup();
@@ -275,40 +276,57 @@ function setup() {//           setup map here, also draw it
         topLeft++;
         bottomRight++;
         for (var ii = 0; ii < size; ii += 1) {
-                if(ii < ((size-1)/2)-topLeft && i < ((size-1)/2)){    //this removes the top left corner to make the board a hexagon
-                  
-                    var path = new Path.RegularPolygon(new Point(20000, y), 6, 50);  //places the tile way off the screen
+
+            var type = randomTileType();
+
+            if(ii < ((size-1)/2)-topLeft && i < ((size-1)/2)){    //this removes the top left corner to make the board a hexagon
+              
+                var raster = new Raster({ // a raster is just an image and this is where the tile images are made ;)
+                    position: new Point(2000,y),
+                    source: colorPicker(type)
+                })
+
+                var circle = new Shape.Circle(new Point(2000,y), 60);//circle for in front of image
+                circle.fillColor = new Color(0.5,0.5,05,0.3);
+                circle.visible = false;
+           
+            }else if(ii > ((size - ((size-1)/2))-1)-bottomRight && i > ((size - ((size-1)/2))-1)){  //this removes the bottom right corner
                
-                }else if(ii > ((size - ((size-1)/2))-1)-bottomRight && i > ((size - ((size-1)/2))-1)){  //this removes the bottom right corner
-                   
-                    var path = new Path.RegularPolygon(new Point(20000, y), 6, 50);   //places the tile way off the screen
-                
-                }else{
-                    var path = new Path.RegularPolygon(new Point(x, y), 6, 50);  //places the rest of the tiles in their appropriate spot
-                }
-            path.strokeColor = '#A1A1A1';
-            path.strokeWidth = 6;
+                var raster = new Raster({ // a raster is just an image and this is where the tile images are made ;)
+                    position: new Point(2000,y),
+                    source: colorPicker(type)
+                })
+
+                var circle = new Shape.Circle(new Point(2000,y), 60);//circle for in front of image
+                circle.fillColor = new Color(0.5,0.5,05,0.3);
+                circle.visible = false;
+            
+            }else{
+                var raster = new Raster({ // a raster is just an image and this is where the tile images are made ;)
+                    position: new Point(x,y),
+                    source: colorPicker(type)
+                })
+
+                var circle = new Shape.Circle(new Point(x,y), 60);//circle for in front of image
+                circle.fillColor = new Color(0.5,0.5,05,0.3);
+                circle.visible = false;
+            }
 
             var hexObject = {
-                x: x,
-                y: y,
-                radius: 50,
-                path: path,
-                type: randomTileType()
+                x: x, // x coord in pixels
+                y: y, // y coord in pixels
+                radius: 50, // radius of tile, i need to remember why we need this
+                type: type, // type of tile i.e. forest, mountain
+                path: raster, // image
+                backgroundPath: circle // circle for in front of image
             };
 
-            hexObject.path.fillColor = colorPicker(hexObject.type);
-
             row.push(hexObject);
-            x += 90;
+            x += 110;
         }
         boardMain.push(row);
-        y += 78;
-        if (boardShape === "Rhombus") {
-            x = (200-5*(i+1)) + (i+1) * 50;
-        } else if (boardShape === "Rectangle") {
-            x = 200 + (((i % 2) - 1) * -45);
-        }
+        y += 95;
+        x = (200-5*(i+1)) + (i+1) * 60;
     }
     for (var i = 0; i < players.length; i += 1) {
         var xP = boardMain[players[i].coord.y][players[i].coord.x].path.position.x;
@@ -322,23 +340,19 @@ function setup() {//           setup map here, also draw it
             fillColor: 'white',
             content: players[i].nick
         });
-
-        if (players[i].character.type === "Fragger") {
-            players[i].character.aimerLine = new Path(new Point(0,0), new Point(0,0), new Point(0,0))
-        }
     }
     actionCounter = players[currentPlayer].character.numActions;
 }
 
 function colorPicker(type) {
     if (type === 'forest') {
-        return '#009933';
+        return 'images/grass.png';
     }
     else if (type === 'sand') {
-        return '#b36b00';
+        return 'images/desert.png';
     }
     else if (type === 'rock') {
-        return '#878787';
+        return 'images/rock.png';
     }
 }
 function lightColorPicker(type) {
@@ -404,26 +418,17 @@ function canPlayerMoveOrNah(x,y) {
     var deltaX = x - players[currentPlayer].coord.x;
     var deltaY = y - players[currentPlayer].coord.y;
 
-    if (boardShape === "Rhombus") {
+    if (players[currentPlayer].coord.x + moveCounter >= x && 
+        players[currentPlayer].coord.y + moveCounter >= y && 
+        players[currentPlayer].coord.x - moveCounter <= x && 
+        players[currentPlayer].coord.y - moveCounter <= y && 
+        (Math.abs(deltaX) + Math.abs(deltaY) <= moveCounter || (isNegative(deltaX) !== isNegative(deltaY) && (Math.abs(deltaY) <= moveCounter || Math.abs(deltaX) <= moveCounter))) && 
+        isPlayerThereOrNah(x,y) === false) {
 
-        if (players[currentPlayer].coord.x + moveCounter >= x && 
-            players[currentPlayer].coord.y + moveCounter >= y && 
-            players[currentPlayer].coord.x - moveCounter <= x && 
-            players[currentPlayer].coord.y - moveCounter <= y && 
-            (Math.abs(deltaX) + Math.abs(deltaY) <= moveCounter || (isNegative(deltaX) !== isNegative(deltaY) && (Math.abs(deltaY) <= moveCounter || Math.abs(deltaX) <= moveCounter))) && 
-            isPlayerThereOrNah(x,y) === false) {
+        return true;
 
-            return true;
+    } 
 
-        } 
-    }
-
-    if (boardShape === "Rectangle") {
-
-        if (Math.abs(deltaX) <= moveCounter &&  Math.abs(deltaY) <= moveCounter) {
-            return true;
-        }
-    }
     return false;
 }
 
@@ -433,39 +438,32 @@ function onFrame(event) {
             for (var ii = 0; ii < size; ii += 1) {
                 //   move events here
 
-                boardMain[i][ii].path.fillColor = colorPicker(boardMain[i][ii].type);
-
-                
+                boardMain[i][ii].backgroundPath.visible = false; // reset all tiles to non movable, then set them to movable don there\/
 
                 if (canPlayerMoveOrNah(ii,i)) {
 
-                    //console.log("not even");
+                    boardMain[i][ii].backgroundPath.visible = true;//  can move here
 
-                    boardMain[i][ii].path.fillColor = lightColorPicker(boardMain[i][ii].type);
                 } 
             }
         }
-    } else if (turnCounter === 2 && players[currentPlayer].character.type !== "Fragger") {
-        for (var i = 0; i < size; i += 1) {//just trying to see where i can go a.k.a. : "the lights"
+    } else if (turnCounter === 2) {
+        for (var i = 0; i < size; i += 1) {//just trying to see where i can go 
             for (var ii = 0; ii < size; ii += 1) {
                 //   move events here
 
-                boardMain[i][ii].path.fillColor = colorPicker(boardMain[i][ii].type);
+                boardMain[i][ii].backgroundPath.visible = false;//  set all tiles to unshootable
 
                 var deltaX = ii - players[currentPlayer].coord.x;
                 var deltaY = i - players[currentPlayer].coord.y;
 
                 if (ii === players[currentPlayer].coord.x || i === players[currentPlayer].coord.y || (ii - players[currentPlayer].coord.x)*(-1) === i - players[currentPlayer].coord.y) {
 
-                    //console.log("not even");
+                    boardMain[i][ii].backgroundPath.visible = true; // set tiles to shootble
 
-                    boardMain[i][ii].path.fillColor = lightColorPicker(boardMain[i][ii].type);
                 } 
             }
         }
-    }
-    if (turnCounter !== 2 && players[currentPlayer].character.type === "Fragger") {
-        ///---------------------literally nothing right now-----------------------
     }
 }
 
@@ -474,54 +472,29 @@ function onMouseMove(event) {
         for (var ii = 0; ii < size; ii += 1) {
             if (boardMain[i][ii].path.contains(event.point)) {
                 //   move events here
-                
-                //boardMain[i][ii].path.bounds.width +=10;
-                //boardMain[i][ii].path.bounds.height +=10;
 
-                if (turnCounter === 1) {
-                    //console.log(ii + "  " + i)
-                    var deltaX = ii - players[currentPlayer].coord.x;
-                    var deltaY = i - players[currentPlayer].coord.y;
-
-                    if (canPlayerMoveOrNah(ii,i)) {
-
-                        //console.log("not even");
-
-                        boardMain[i][ii].path.strokeColor = '#6a59ed';
-                    } else {
-                        boardMain[i][ii].path.strokeColor = '#BE0000';
-                    }
-                }
-                if (turnCounter === 2 && players[currentPlayer].character.type === "Fragger") {
-                    players[currentPlayer].character.aimerLine.strokeColor = "#FFFFFF";
-                    players[currentPlayer].character.aimerLine.strokeWidth = 7;
-                    players[currentPlayer].character.aimerLine.segments[0].point = players[currentPlayer].path.position;
-                    players[currentPlayer].character.aimerLine.segments[1].point = new Point(players[currentPlayer].path.position.x + ((event.point.x - players[currentPlayer].path.position.x)/3),event.point.y);
-                    players[currentPlayer].character.aimerLine.segments[2].point = boardMain[i][ii].path.position;
-                    players[currentPlayer].character.aimerLine.smooth();
-                    players[currentPlayer].character.aimerLine.strokeCap = "round";
-                    players[currentPlayer].character.aimerLine.dashArray = [20, 20];
-                }
-            } else {
-                boardMain[i][ii].path.strokeColor = '#A1A1A1';
-            }
+            } 
             
         }
     }
 }
 
 function onMouseDrag(event) {
+    //if statement about if it is too far dragged or not
     for (var i = 0; i < size; i += 1) {
-        for (var ii = 0; ii < size; ii += 1) {
+        for (var ii = 0; ii < size; ii += 1) {//  reposition tiles for the draging of the map
 
-            boardMain[i][ii].path.position.x += event.delta.x/3;
-            boardMain[i][ii].path.position.y += event.delta.y/3;
+            boardMain[i][ii].backgroundPath.position.x += event.delta.x/3; // drag circles that highlight usable tiles: x coord
+            boardMain[i][ii].backgroundPath.position.y += event.delta.y/3; // y ccord
+
+            boardMain[i][ii].path.position.x += event.delta.x/3; // drag the tiles: x coord
+            boardMain[i][ii].path.position.y += event.delta.y/3; // y coord
 
         }
-        if (i < players.length) {
-            players[i].path.position.x += event.delta.x/3;
+        if (i < players.length) { // just using the board checker to also check the players
+            players[i].path.position.x += event.delta.x/3; // move players when map is being drgged
             players[i].path.position.y += event.delta.y/3;
-            players[i].nameLabel.position.x += event.delta.x/3;
+            players[i].nameLabel.position.x += event.delta.x/3; // move the name label
             players[i].nameLabel.position.y += event.delta.y/3;
         }
     }
@@ -532,6 +505,9 @@ function onMouseDown(event) {
         for (var ii = 0; ii < size; ii += 1) {
             if (boardMain[i][ii].path.contains(event.point)) {
                 //click events here
+
+                boardMain[i][ii].path.bounds.width -=10; // make the tile small when click down
+                boardMain[i][ii].path.bounds.height -=10;
                 
                 console.log('x: ' + ii + '  y: ' + i);
                 if (move === true) {
@@ -540,7 +516,7 @@ function onMouseDown(event) {
             }
         }
     }
-    if (button.contains(event.point)) {
+    if (button.contains(event.point)) { // this will go when the statbar is in place with the advance button
         button.fillColor = '#2576ef';
         button.strokeColor = '#75a8f5';
     }
@@ -552,12 +528,16 @@ function onMouseUp(event) {
     for (var i = 0; i < size; i += 1) {
         for (var ii = 0; ii < size; ii += 1) {
 
+            if (boardMain[i][ii].path.bounds.width < 110) {// make the tile large again
+
+                boardMain[i][ii].path.bounds.width +=10;
+                boardMain[i][ii].path.bounds.height +=10;
+            }
 
             if (boardMain[i][ii].path.contains(event.point)) {
                 //   move events here
                 
-                //boardMain[i][ii].path.bounds.width +=10;
-                //boardMain[i][ii].path.bounds.height +=10;
+                
 
                 if (turnCounter === 1) {
                     //console.log(ii + "  " + i)
@@ -577,12 +557,12 @@ function onMouseUp(event) {
 
                         moveCounter -= Math.abs(deltaX);
 
-                        boardMain[i][ii].path.strokeColor = '#A1A1A1';
+                        //boardMain[i][ii].path.strokeColor = '#A1A1A1';!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     } 
                 }
             }
             if (turnCounter === 1) {
-                   boardMain[i][ii].path.fillColor = colorPicker(boardMain[i][ii].type); 
+                   //boardMain[i][ii].path.fillColor = colorPicker(boardMain[i][ii].type); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             }
         }
     }
