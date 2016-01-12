@@ -505,12 +505,11 @@ function onMouseDown(event) {
 }
 
 function onMouseUp(event) {
-    
 
     for (var i = 0; i < size; i += 1) {
         for (var ii = 0; ii < size; ii += 1) {
 
-            if (boardMain[i][ii].path.bounds.width < 110) {// make the tile large again
+            if (boardMain[i][ii].path.bounds.width < 109) {// make the tile large again
 
                 boardMain[i][ii].path.bounds.width +=10;
                 boardMain[i][ii].path.bounds.height +=10;
