@@ -268,10 +268,24 @@ var boardMain = [];
 
 function setup() {//           setup map here, also draw it
     var x = 200,y = 100;
+    var topLeft = -1;
+    var bottomRight = -size;
     for (var i = 0; i < size; i += 1) {
         var row = [];
+        topLeft++;
+        bottomRight++;
         for (var ii = 0; ii < size; ii += 1) {
-            var path = new Path.RegularPolygon(new Point(x, y), 6, 50);
+                if(ii < ((size-1)/2)-topLeft && i < ((size-1)/2)){    //this removes the top left corner to make the board a hexagon
+                  
+                    var path = new Path.RegularPolygon(new Point(20000, y), 6, 50);  //places the tile way off the screen
+               
+                }else if(ii > ((size - ((size-1)/2))-1)-bottomRight && i > ((size - ((size-1)/2))-1)){  //this removes the bottom right corner
+                   
+                    var path = new Path.RegularPolygon(new Point(20000, y), 6, 50);   //places the tile way off the screen
+                
+                }else{
+                    var path = new Path.RegularPolygon(new Point(x, y), 6, 50);  //places the rest of the tiles in their appropriate spot
+                }
             path.strokeColor = '#A1A1A1';
             path.strokeWidth = 6;
 
