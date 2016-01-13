@@ -49,7 +49,7 @@ to do:
 */
 
 var expanded = false; // Is the bottom bar expanded?
-var cardsN = 0; // number of cards
+var numCards = 0; // number of cards
 var bBarWidth = 0;// width of bottom bar for cards
 
 $("#cards").hide();
@@ -67,7 +67,7 @@ function  expandBBar() {// expand the card shelf a.k.a. bottom bar
     $("#bBar").css("width", "100%");
     $("#cards").delay(680).show(680);
     
-    if (cardsN >= 4) {
+    if (numCards >= 4) {
         $("#bBar").css("overflowX", "scroll");
     }
     expanded = true;
@@ -101,24 +101,24 @@ $('#bBar').click(function () {
 //var scrollW = document.getElementsByClassName("");
 $("#aCard").click(function () {
     "use strict";
-    if (cardsN < 12 && actionCounter > 0 && turnCounter === 2) {
-        cardsN += 1;
+    if (numCards < 10 && actionCounter > 0 && turnCounter === 2) {
+        numCards += 1;
 
-
+        var randomCardIndex = Math.floor((Math.random() * (players[currentPlayer].character.cards.length -1)));
         
         //add a card li to the cards div
-        $("#cards").append('<li class="card">This is Card <p>Attack: ' + players[currentPlayer].character.cards[0].attack + '</p> <p>Defense: ' + players[currentPlayer].character.cards[0].defend + '</p> </li>');
+        $("#cards").append('<li class="card">This is Card <p>Attack: ' + players[currentPlayer].character.cards[randomCardIndex].attack + '</p> <p>Defense: ' + players[currentPlayer].character.cards[randomCardIndex].defend + '</p> </li>');
 
         
         //extend bar width
         bBarWidth += (28);
         $("#cards").css("width", bBarWidth + "vw");
         
-        if (cardsN >= 4) {
+        if (numCards >= 4) {
             $("#bBar").css("overflowX", "scroll");
         }
 
-        players[currentPlayer].cards.push(players[currentPlayer].character.cards[0]);
+        players[currentPlayer].cards.push(players[currentPlayer].character.cards[randomCardIndex]);
 
         actionCounter -= 1;
     }
@@ -145,6 +145,11 @@ var playerTypes = [// array of player types: add new player types here
             {
                 attack: 6,
                 defend: 0,
+                rarity: 2
+            },
+            {
+                attack: 2,
+                defend: 2,
                 rarity: 2
             }
         ]
@@ -262,6 +267,7 @@ $("#proceed").click(function() {
             },
             path: new Path.RegularPolygon(new Point(0,0),0,0),
             cards: [],//    put cards that the player can gets in this array
+            health: playerTypes[$("#player option:selected").index()].health,
             nameLabel: new PointText() //   name label
         };
         if (player.nick === '') {
@@ -579,9 +585,20 @@ function onMouseUp(event) {
 
                     } 
                 }
+
+                if (turnCounter === 2 && boardMain[i][ii].backgroundPath.visible === true) { // this whole shabang is about attacking
+                    for (var u = 0; u < players.length; u += 1) {
+                        if (u !== currentPlayer) {
+                            if (players[u].coord.x === ii && players[u].coord.y === i) {
+                                players[u].health -= 1;
+                                console.log("player " + (u+1) + " loses 1 health and is at " + players[u].health + " health");
+                            }
+                        }
+                    }
+                }
             }
-            if (turnCounter === 1) {
-                   //boardMain[i][ii].path.fillColor = colorPicker(boardMain[i][ii].type); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            if (turnCounter === 2) {
+                   //boardMain[i][ii].backgroundPath.visible = false;
             }
         }
     }
@@ -592,15 +609,24 @@ function onMouseUp(event) {
 
         if (turnCounter === 3) {
 
-            hideBBar();
+            for (var i = 0; i < size; i += 1) {//  clearing the circles at end of turn
+                for (var ii = 0; ii < size; ii += 1) {
 
-            turnCounter = 0;
+                    boardMain[i][ii].backgroundPath.visible = false; // reset all tiles to non movable
+
+                }
+            }
+
             currentPlayer++;
-
             if (currentPlayer === players.length) {
                 currentPlayer = 0;
             }
 
+            hideBBar();
+
+            turnCounter = 0;
+            
+            numCards = players[currentPlayer].cards.length;
             actionCounter = players[currentPlayer].character.numActions;
         } else if (turnCounter === 1) {
             moveCounter = Math.floor((Math.random() * players[currentPlayer].character.dice) + 1);
