@@ -480,13 +480,27 @@ function rangedAttack() {
             boardMain[i][players[currentPlayer].coord.x].backgroundPath.visible = true;
         }
     }
-    for (var i = players[currentPlayer].coord.y; i >= 0; i-=1) { // shoot to the up along y axis || RANGED
+    for (var i = players[currentPlayer].coord.y; i >= 0; i-=1) { // shoot up along y axis || RANGED
         if (boardMain[i][players[currentPlayer].coord.x].type === 'rock') {
             break;
         } else {
             boardMain[i][players[currentPlayer].coord.x].backgroundPath.visible = true;
         }
     }
+    // for (var i = 0; i < (size - players[currentPlayer].coord.y); i+=1) { // shoot down along z axis || RANGED
+    //     if (boardMain[players[currentPlayer].coord.y + i][players[currentPlayer].coord.x - i].type === 'rock') {
+    //         break;
+    //     } else {
+    //         boardMain[players[currentPlayer].coord.y + i][players[currentPlayer].coord.x - i].backgroundPath.visible = true;
+    //     }
+    // }
+    // for (var i = 0; i < players[currentPlayer].coord.y; i+=1) { // shoot up along z axis || RANGED
+    //     if (boardMain[players[currentPlayer].coord.y - i][players[currentPlayer].coord.x + i].type === 'rock') {
+    //         break;
+    //     } else {
+    //         boardMain[players[currentPlayer].coord.y - i][players[currentPlayer].coord.x + i].backgroundPath.visible = true;
+    //     }
+    // }
     // third axis ii - players[currentPlayer].coord.x)*(-1) === i - players[currentPlayer].coord.y
 }
 
