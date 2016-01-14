@@ -380,7 +380,7 @@ function setup() {//           setup map here, also draw it
     actionCounter = players[currentPlayer].character.numActions;
 }
 
-function imagePicker(type) {
+function imagePicker(type) { // choose images for tiles
     if (type === 'forest') {
         return 'images/grass.png';
     }
@@ -392,7 +392,7 @@ function imagePicker(type) {
     }
 }
 
-function randomTileType() {
+function randomTileType() { // choose a random tile type to assign to a tile
     var randomTile = Math.floor((Math.random() * 6) + 1);
     if (biome === 'Forest') {
         if (randomTile <= 4) {
@@ -421,7 +421,7 @@ function randomTileType() {
     }
 }
 
-function isNegative(number) {
+function isNegative(number) { // check if number is negative
     if (number > 0) {
         return true;
     } else if (number < 0) {
@@ -429,7 +429,7 @@ function isNegative(number) {
     }
 }
 
-function isPlayerThereOrNah(x,y) {
+function isPlayerThereOrNah(x,y) { //  check if player is on a space
     for (var i = 0; i < players.length; i += 1) {
         if (players[i].coord.x === x && players[i].coord.y === y) {
             return true;
@@ -438,7 +438,7 @@ function isPlayerThereOrNah(x,y) {
     return false;
 }
 
-function canPlayerMoveOrNah(x,y) {
+function canPlayerMoveOrNah(x,y) { // check if player can move to a certain spot
 
     var deltaX = x - players[currentPlayer].coord.x;
     var deltaY = y - players[currentPlayer].coord.y;
@@ -448,7 +448,8 @@ function canPlayerMoveOrNah(x,y) {
         players[currentPlayer].coord.x - moveCounter <= x && 
         players[currentPlayer].coord.y - moveCounter <= y && 
         (Math.abs(deltaX) + Math.abs(deltaY) <= moveCounter || (isNegative(deltaX) !== isNegative(deltaY) && (Math.abs(deltaY) <= moveCounter || Math.abs(deltaX) <= moveCounter))) && 
-        isPlayerThereOrNah(x,y) === false) {
+        isPlayerThereOrNah(x,y) === false &&
+        boardMain[y][x].type !== "rock") { //  player cannot move onto a rock space
 
         return true;
 
@@ -457,7 +458,7 @@ function canPlayerMoveOrNah(x,y) {
     return false;
 }
 
-function onFrame(event) {
+function onFrame(event) { // runs every 60th of a second (60 frmes per second)
     if (turnCounter === 1) {
         for (var i = 0; i < size; i += 1) {//just trying to see where i can go
             for (var ii = 0; ii < size; ii += 1) {
