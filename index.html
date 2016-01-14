@@ -458,38 +458,43 @@ function canPlayerMoveOrNah(x,y) { // check if player can move to a certain spot
     return false;
 }
 
-function onFrame(event) { // runs every 60th of a second (60 frmes per second)
-    if (turnCounter === 1) {
-        for (var i = 0; i < size; i += 1) {//just trying to see where i can go
-            for (var ii = 0; ii < size; ii += 1) {
-                //   move events here
-
-                boardMain[i][ii].backgroundPath.visible = false; // reset all tiles to non movable, then set them to movable don there\/
-
-                if (canPlayerMoveOrNah(ii,i)) {
-
-                    boardMain[i][ii].backgroundPath.visible = true;//  can move here
-
-                } 
-            }
+function rangedAttack() {
+    for (var i = players[currentPlayer].coord.x; i < size; i+=1) { // shoot to the right along x axis || RANGED
+        if (boardMain[players[currentPlayer].coord.y][i].type === 'rock') {
+            break;
+        } else {
+            boardMain[players[currentPlayer].coord.y][i].backgroundPath.visible = true;
         }
-    } else if (turnCounter === 2) {
-        for (var i = 0; i < size; i += 1) {//just trying to see where i can go 
-            for (var ii = 0; ii < size; ii += 1) {
-                //   move events here
-
-                boardMain[i][ii].backgroundPath.visible = false;//  set all tiles to unshootable
-
-                var deltaX = ii - players[currentPlayer].coord.x;
-                var deltaY = i - players[currentPlayer].coord.y;
-
-                if (ii === players[currentPlayer].coord.x || i === players[currentPlayer].coord.y || (ii - players[currentPlayer].coord.x)*(-1) === i - players[currentPlayer].coord.y) { // ranged attack
-
-                    boardMain[i][ii].backgroundPath.visible = true; // set tiles to shootble
-
-                } 
-            }
+    }
+    for (var i = players[currentPlayer].coord.x; i >= 0; i-=1) { // shoot to the left along x axis || RANGED
+        if (boardMain[players[currentPlayer].coord.y][i].type === 'rock') {
+            break;
+        } else {
+            boardMain[players[currentPlayer].coord.y][i].backgroundPath.visible = true;
         }
+    }
+    for (var i = players[currentPlayer].coord.y; i < size; i+=1) { // shoot down along y axis || RANGED
+        if (boardMain[i][players[currentPlayer].coord.x].type === 'rock') {
+            break;
+        } else {
+            boardMain[i][players[currentPlayer].coord.x].backgroundPath.visible = true;
+        }
+    }
+    for (var i = players[currentPlayer].coord.y; i >= 0; i-=1) { // shoot to the up along y axis || RANGED
+        if (boardMain[i][players[currentPlayer].coord.x].type === 'rock') {
+            break;
+        } else {
+            boardMain[i][players[currentPlayer].coord.x].backgroundPath.visible = true;
+        }
+    }
+    // third axis ii - players[currentPlayer].coord.x)*(-1) === i - players[currentPlayer].coord.y
+}
+
+function onFrame(event) { // runs 60 times per second TIP: Dont put a lot of loops in here because it will slow the game down a BUNCH
+    if (turnCounter === 2) {
+
+        rangedAttack();
+
     }
 }
 
@@ -639,6 +644,22 @@ function onMouseUp(event) {
             btnText.content = 'action';
         } else if (turnCounter === 2) {
             btnText.content = 'next turn';
+        }
+    }
+
+    for (var i = 0; i < size; i += 1) {//just trying to see where i can go
+        for (var ii = 0; ii < size; ii += 1) {
+            //   move events here
+
+            boardMain[i][ii].backgroundPath.visible = false; // reset all tiles to non movable, then set them to movable don there\/
+
+            if (turnCounter === 1) { // if in the move phase
+                if (canPlayerMoveOrNah(ii,i)) {// shows you where you can move on the map
+
+                    boardMain[i][ii].backgroundPath.visible = true;//  can move here
+
+                } 
+            }
         }
     }
 
