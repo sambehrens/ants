@@ -376,6 +376,7 @@ function setup() {//           setup map here, also draw it
             fillColor: 'black',
             content: players[i].nick
         });
+        players[i].path.onMouseEnter = enter;
     }
     actionCounter = players[currentPlayer].character.numActions;
 }
@@ -504,6 +505,10 @@ function rangedAttack() {
     // third axis ii - players[currentPlayer].coord.x)*(-1) === i - players[currentPlayer].coord.y
 }
 
+function statBox(player) {
+    console.log(player.health);
+}
+
 function onFrame(event) { // runs 60 times per second TIP: Dont put a lot of loops in here because it will slow the game down a BUNCH
     if (turnCounter === 2) {
 
@@ -512,32 +517,38 @@ function onFrame(event) { // runs 60 times per second TIP: Dont put a lot of loo
     }
 }
 
-function onMouseOut(event){
-
-
+function enter(event) {
+    for (var i = 0; i < players.length; i+=1) { // Checks when the mouse hovers over the player
+        if (players[i].path.position === this.position) {
+             statBox(players[i]);
+        }
+    }
+    this.fillColor = 'black';
 }
 
-function onMouseMove(event) {
-    for (var i = 0; i < size; i += 1) {
-        for (var ii = 0; ii < size; ii += 1) {
-            if (boardMain[i][ii].path.contains(event.point)) {
-                //   move events here
-
-            } 
-            
+function leave(event) {
+    for (var i = 0; i < players.length; i+=1) { // Checks when the mouse hovers over the player
+        if (players[i].path.position === this.position) {
+             
         }
     }
 }
-function onMouseMove(event) {
-    for (var i = 0; i < size; i += 1) {
-        for (var ii = 0; ii < size; ii += 1) {
-            if (boardMain[i][ii].path.contains(event.point)) {
-                //   move events here
 
-            } 
+function onMouseMove(event) {
+    // for (var i = 0; i < size; i += 1) {
+    //     for (var ii = 0; ii < size; ii += 1) {
+    //         if (boardMain[i][ii].path.contains(event.point)) {
+    //             //   move events here
+
+    //         } 
             
+    //     }
+    // }
+/*    for (var i = 0; i < players.length; i+=1) { // Checks when the mouse hovers over the player
+        if (players[i].path.contains(event.point)) {
+             statBox(players[i]);
         }
-    }
+    }*/
 }
 
 function onMouseDrag(event) {
