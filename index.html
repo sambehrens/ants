@@ -512,6 +512,22 @@ function onFrame(event) { // runs 60 times per second TIP: Dont put a lot of loo
     }
 }
 
+function onMouseOut(event){
+
+
+}
+
+function onMouseMove(event) {
+    for (var i = 0; i < size; i += 1) {
+        for (var ii = 0; ii < size; ii += 1) {
+            if (boardMain[i][ii].path.contains(event.point)) {
+                //   move events here
+
+            } 
+            
+        }
+    }
+}
 function onMouseMove(event) {
     for (var i = 0; i < size; i += 1) {
         for (var ii = 0; ii < size; ii += 1) {
