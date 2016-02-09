@@ -1,4 +1,5 @@
 html,
+<<<<<<< HEAD
 
 /**************************************
 CLASSES
@@ -21,6 +22,8 @@ CLASSES
 Not Classes
 **************************************/
 
+=======
+>>>>>>> 58c645dcf69b113ccfd80a14868e96dc7798b595
 body {
     margin: 0;
     overflow: hidden;
@@ -112,6 +115,7 @@ select:hover {
     border-color: black;
 }
 
+<<<<<<< HEAD
 /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% new code*/
 
 #statBar {
@@ -205,6 +209,8 @@ select:hover {
 
 /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end new code*/
 
+=======
+>>>>>>> 58c645dcf69b113ccfd80a14868e96dc7798b595
 #aCard {
     position: fixed;
     bottom: 25%;
