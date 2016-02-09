@@ -5,11 +5,7 @@
     <link href='https://fonts.googleapis.com/css?family=Orbitron:400,900' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
-<<<<<<< HEAD
     <link href='https://fonts.googleapis.com/css?family=Trade+Winds' rel='stylesheet' type='text/css'>
-    
-=======
->>>>>>> 58c645dcf69b113ccfd80a14868e96dc7798b595
 </head>
 <body background="images/background.png">
     <div id="menu">
@@ -35,7 +31,6 @@
             </li>
         </ul>
     </div>
-<<<<<<< HEAD
     <div id="statBar" class="noselect"> <!-- Stat Bar for player info and actions -->
         <div id="statHealthFill"></div> <!-- Element that gets smaller as the current player's health gets lower -->
         <h2 id="statName">Player 1</h2> <!-- Current player name -->
@@ -47,12 +42,6 @@
         <div id="statActionButton">Roll</div> <!-- Button for proceeding though the current player's turn: Move -> End turn. -->
     </div>
     <canvas id="myCanvas" resize></canvas>
-=======
-    <canvas id="myCanvas" resize></canvas>
-    <button id="aCard">
-        <p>Add card</p>
-    </button>
->>>>>>> 58c645dcf69b113ccfd80a14868e96dc7798b595
     <div id="bBar">
         <div class="deck"></div>
         <ul id="cards">
@@ -73,11 +62,7 @@ var bBarWidth = 0;// width of bottom bar for cards
 
 $("#cards").hide();
 $('#bBar').hide();
-<<<<<<< HEAD
 $("#statBar").hide();
-=======
-$("#aCard").hide();
->>>>>>> 58c645dcf69b113ccfd80a14868e96dc7798b595
 
 function  expandBBar() {// expand the card shelf a.k.a. bottom bar
 
@@ -93,14 +78,10 @@ function  expandBBar() {// expand the card shelf a.k.a. bottom bar
     if (numCards >= 4) {
         $("#bBar").css("overflowX", "scroll");
     }
-<<<<<<< HEAD
     
     if (turnCounter === 2) {
         $("#statActionButton").html('Add Card');
     }
-    
-=======
->>>>>>> 58c645dcf69b113ccfd80a14868e96dc7798b595
     expanded = true;
 }
 
@@ -112,14 +93,10 @@ function hideBBar() { // hide the card cabinet a.k.a. bottom bar
         $("#cards").hide(0);
         $("#bBar").css("overflowX", "hidden");
         $(".card").remove();
-<<<<<<< HEAD
-        
+
         if (turnCounter === 2) {
             $("#statActionButton").html('Next Turn');
         }
-        
-=======
->>>>>>> 58c645dcf69b113ccfd80a14868e96dc7798b595
         expanded = false;
     }
 }
@@ -137,14 +114,8 @@ $('#bBar').click(function () {
     }
 });
 
-<<<<<<< HEAD
-
 //var scrollW = document.getElementsByClassName("");
 function addCard() {
-=======
-//var scrollW = document.getElementsByClassName("");
-$("#aCard").click(function () {
->>>>>>> 58c645dcf69b113ccfd80a14868e96dc7798b595
     "use strict";
     if (numCards < 10 && actionCounter > 0 && turnCounter === 2) {
         numCards += 1;
@@ -167,7 +138,6 @@ $("#aCard").click(function () {
 
         actionCounter -= 1;
     }
-<<<<<<< HEAD
 }
 
 $("#statActionButton").click(function () {
@@ -213,8 +183,6 @@ $("#statActionButton").click(function () {
             $("#statActionButton").html('Next Turn');
         }
     }
-=======
->>>>>>> 58c645dcf69b113ccfd80a14868e96dc7798b595
 });
     
 $("#myCanvas").hide();
@@ -376,11 +344,7 @@ $("#proceed").click(function() {
         $("#menu").hide();
         $("#myCanvas").fadeToggle("slow");
         $('#bBar').show('slow');
-<<<<<<< HEAD
         $("#statBar").show();
-=======
-        $("#aCard").show('slow');
->>>>>>> 58c645dcf69b113ccfd80a14868e96dc7798b595
         setup();
     }
 
@@ -477,11 +441,7 @@ function setup() {//           setup map here, also draw it
     actionCounter = players[currentPlayer].character.numActions;
 }
 
-<<<<<<< HEAD
-function imagePicker(type) {
-=======
 function imagePicker(type) { // choose images for tiles
->>>>>>> 58c645dcf69b113ccfd80a14868e96dc7798b595
     if (type === 'forest') {
         return 'images/grass.png';
     }
@@ -493,11 +453,8 @@ function imagePicker(type) { // choose images for tiles
     }
 }
 
-<<<<<<< HEAD
-function randomTileType() {
-=======
+
 function randomTileType() { // choose a random tile type to assign to a tile
->>>>>>> 58c645dcf69b113ccfd80a14868e96dc7798b595
     var randomTile = Math.floor((Math.random() * 6) + 1);
     if (biome === 'Forest') {
         if (randomTile <= 4) {
@@ -526,11 +483,7 @@ function randomTileType() { // choose a random tile type to assign to a tile
     }
 }
 
-<<<<<<< HEAD
-function isNegative(number) {
-=======
 function isNegative(number) { // check if number is negative
->>>>>>> 58c645dcf69b113ccfd80a14868e96dc7798b595
     if (number > 0) {
         return true;
     } else if (number < 0) {
@@ -538,11 +491,8 @@ function isNegative(number) { // check if number is negative
     }
 }
 
-<<<<<<< HEAD
-function isPlayerThereOrNah(x,y) {
-=======
+
 function isPlayerThereOrNah(x,y) { //  check if player is on a space
->>>>>>> 58c645dcf69b113ccfd80a14868e96dc7798b595
     for (var i = 0; i < players.length; i += 1) {
         if (players[i].coord.x === x && players[i].coord.y === y) {
             return true;
@@ -551,11 +501,7 @@ function isPlayerThereOrNah(x,y) { //  check if player is on a space
     return false;
 }
 
-<<<<<<< HEAD
-function canPlayerMoveOrNah(x,y) {
-=======
 function canPlayerMoveOrNah(x,y) { // check if player can move to a certain spot
->>>>>>> 58c645dcf69b113ccfd80a14868e96dc7798b595
 
     var deltaX = x - players[currentPlayer].coord.x;
     var deltaY = y - players[currentPlayer].coord.y;
@@ -565,12 +511,8 @@ function canPlayerMoveOrNah(x,y) { // check if player can move to a certain spot
         players[currentPlayer].coord.x - moveCounter <= x && 
         players[currentPlayer].coord.y - moveCounter <= y && 
         (Math.abs(deltaX) + Math.abs(deltaY) <= moveCounter || (isNegative(deltaX) !== isNegative(deltaY) && (Math.abs(deltaY) <= moveCounter || Math.abs(deltaX) <= moveCounter))) && 
-<<<<<<< HEAD
-        isPlayerThereOrNah(x,y) === false) {
-=======
         isPlayerThereOrNah(x,y) === false &&
         boardMain[y][x].type !== "rock") { //  player cannot move onto a rock space
->>>>>>> 58c645dcf69b113ccfd80a14868e96dc7798b595
 
         return true;
 
@@ -579,40 +521,6 @@ function canPlayerMoveOrNah(x,y) { // check if player can move to a certain spot
     return false;
 }
 
-<<<<<<< HEAD
-function onFrame(event) {
-    if (turnCounter === 1) {
-        for (var i = 0; i < size; i += 1) {//just trying to see where i can go
-            for (var ii = 0; ii < size; ii += 1) {
-                //   move events here
-
-                boardMain[i][ii].backgroundPath.visible = false; // reset all tiles to non movable, then set them to movable don there\/
-
-                if (canPlayerMoveOrNah(ii,i)) {
-
-                    boardMain[i][ii].backgroundPath.visible = true;//  can move here
-
-                } 
-            }
-        }
-    } else if (turnCounter === 2) {
-        for (var i = 0; i < size; i += 1) {//just trying to see where i can go 
-            for (var ii = 0; ii < size; ii += 1) {
-                //   move events here
-
-                boardMain[i][ii].backgroundPath.visible = false;//  set all tiles to unshootable
-
-                var deltaX = ii - players[currentPlayer].coord.x;
-                var deltaY = i - players[currentPlayer].coord.y;
-
-                if (ii === players[currentPlayer].coord.x || i === players[currentPlayer].coord.y || (ii - players[currentPlayer].coord.x)*(-1) === i - players[currentPlayer].coord.y) { // ranged attack
-
-                    boardMain[i][ii].backgroundPath.visible = true; // set tiles to shootble
-
-                } 
-            }
-        }
-=======
 function rangedAttack() {
     for (var i = players[currentPlayer].coord.x; i < size; i+=1) { // shoot to the right along x axis || RANGED
         if (boardMain[players[currentPlayer].coord.y][i].type === 'rock') {
@@ -671,20 +579,10 @@ function onFrame(event) { // runs 60 times per second TIP: Dont put a lot of loo
 
         rangedAttack();
 
->>>>>>> 58c645dcf69b113ccfd80a14868e96dc7798b595
     }
 }
 
 function onMouseMove(event) {
-<<<<<<< HEAD
-    for (var i = 0; i < size; i += 1) {
-        for (var ii = 0; ii < size; ii += 1) {
-            if (boardMain[i][ii].path.contains(event.point)) {
-                //   move events here
-
-            } 
-            
-=======
     // for (var i = 0; i < size; i += 1) {
     //     for (var ii = 0; ii < size; ii += 1) {
     //         if (boardMain[i][ii].path.contains(event.point)) {
@@ -699,7 +597,6 @@ function onMouseMove(event) {
              statBox(players[i]);
         } else {
 
->>>>>>> 58c645dcf69b113ccfd80a14868e96dc7798b595
         }
     }
 }
@@ -744,13 +641,6 @@ function onMouseDown(event) {
             }
         }
     }
-<<<<<<< HEAD
-=======
-    if (button.contains(event.point)) { // this will go when the statbar is in place with the advance button
-        button.fillColor = '#2576ef';
-        button.strokeColor = '#75a8f5';
-    }
->>>>>>> 58c645dcf69b113ccfd80a14868e96dc7798b595
 }
 
 function onMouseUp(event) {
@@ -805,49 +695,7 @@ function onMouseUp(event) {
             }
         }
     }
-<<<<<<< HEAD
-}
 
-
-=======
-
-    if (button.contains(event.point)) {
-
-        turnCounter++;
-
-        if (turnCounter === 3) {
-
-            for (var i = 0; i < size; i += 1) {//  clearing the circles at end of turn
-                for (var ii = 0; ii < size; ii += 1) {
-
-                    boardMain[i][ii].backgroundPath.visible = false; // reset all tiles to non movable
-
-                }
-            }
-
-            currentPlayer++;
-            if (currentPlayer === players.length) {
-                currentPlayer = 0;
-            }
-
-            hideBBar();
-
-            turnCounter = 0;
-            
-            numCards = players[currentPlayer].cards.length;
-            actionCounter = players[currentPlayer].character.numActions;
-        } else if (turnCounter === 1) {
-            moveCounter = Math.floor((Math.random() * players[currentPlayer].character.dice) + 1);
-        }
-
-        if (turnCounter === 0) {
-            btnText.content = 'roll';
-        } else if (turnCounter === 1) {
-            btnText.content = 'action';
-        } else if (turnCounter === 2) {
-            btnText.content = 'next turn';
-        }
-    }
 
     for (var i = 0; i < size; i += 1) {//just trying to see where i can go
         for (var ii = 0; ii < size; ii += 1) {
@@ -865,26 +713,10 @@ function onMouseUp(event) {
         }
     }
 
-    button.fillColor = '#75a8f5'; // can remove this after stat bar is completed
-    button.strokeColor = '#2576ef';
 }
 
 
-//---buttons---
-var button = new Path.RegularPolygon(new Point(view.bounds.width - 100, 100), 3, 70);
-button.fillColor = '#75a8f5';
-button.strokeWidth = 6;
-button.strokeColor = '#2576ef';
 
-var btnText = new PointText({
-    point: button.position,
-    justification: 'center',
-    fontSize: 30,
-    fillColor: 'white',
-    content: 'roll'
-});
-
->>>>>>> 58c645dcf69b113ccfd80a14868e96dc7798b595
 
 
     </script>
