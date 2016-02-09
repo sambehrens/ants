@@ -183,6 +183,21 @@ $("#statActionButton").click(function () {
             $("#statActionButton").html('Next Turn');
         }
     }
+    for (var i = 0; i < size; i += 1) {//just trying to see where i can go
+        for (var ii = 0; ii < size; ii += 1) {
+            //   move events here
+
+            boardMain[i][ii].backgroundPath.visible = false; // reset all tiles to non movable, then set them to movable don there\/
+
+            if (turnCounter === 1) { // if in the move phase
+                if (canPlayerMoveOrNah(ii,i)) {// shows you where you can move on the map
+
+                    boardMain[i][ii].backgroundPath.visible = true;//  can move here
+
+                } 
+            }
+        }
+    }
 });
     
 $("#myCanvas").hide();
@@ -693,26 +708,9 @@ function onMouseUp(event) {
             if (turnCounter === 2) {
                    //boardMain[i][ii].backgroundPath.visible = false;
             }
+            boardMain[i][ii].backgroundPath.visible = false; // reset all tiles to non movable
         }
     }
-
-
-    for (var i = 0; i < size; i += 1) {//just trying to see where i can go
-        for (var ii = 0; ii < size; ii += 1) {
-            //   move events here
-
-            boardMain[i][ii].backgroundPath.visible = false; // reset all tiles to non movable, then set them to movable don there\/
-
-            if (turnCounter === 1) { // if in the move phase
-                if (canPlayerMoveOrNah(ii,i)) {// shows you where you can move on the map
-
-                    boardMain[i][ii].backgroundPath.visible = true;//  can move here
-
-                } 
-            }
-        }
-    }
-
 }
 
 
