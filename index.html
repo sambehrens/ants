@@ -1,10 +1,12 @@
 <html>
 <head>
-	<title>SparWarsEpicDrools</title>
+	<title>SparDrawersEpilepticDrools</title>
 	<link rel="stylesheet" href="css/style.css">
     <link href='https://fonts.googleapis.com/css?family=Orbitron:400,900' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Trade+Winds' rel='stylesheet' type='text/css'>
+    
 </head>
 <body background="images/background.png">
     <div id="menu">
@@ -13,17 +15,10 @@
                 <input id="enterName" type="text" value="" title="Come on, be creative" placeHolder="Nick" maxlength="15" spellcheck="false">
             </li>
             <li>
-                <input id="enterMapSize" type="text" value="" placeHolder="Map Size" maxlength="2">
+                <input id="enterNumPlayers" type="text" value="" placeHolder="Number of players" maxlength="1">
             </li>
             <li>
                 <select id="player"></select>
-            </li>
-            <li>
-                <select id="shape">
-                    <option>Rhombus</option>
-                    <option>Rectangle</option>
-                    <option>Hexagon</option>
-                </select>
             </li>
             <li>
                 <select id="biome">
@@ -37,10 +32,17 @@
             </li>
         </ul>
     </div>
+    <div id="statBar" class="noselect"> <!-- Stat Bar for player info and actions -->
+        <div id="statHealthFill"></div> <!-- Element that gets smaller as the current player's health gets lower -->
+        <h2 id="statName">Player 1</h2> <!-- Current player name -->
+        <h2 id="statCharacter">Greed</h2> <!-- Current player character type -->
+        <h3 id="statHealth">Health:</h3> <!-- Current player health label -->
+        <div id="statHealthNumber">20</div> <!-- Current player health variable displayed -->
+        <h3 id="statActions">Remaining Actions:</h3> <!-- Current player actions label -->
+        <div id="statActionNumber">2</div> <!-- Current player actions variable displayed -->
+        <div id="statActionButton">Roll</div> <!-- Button for proceeding though the current player's turn: Move -> End turn. -->
+    </div>
     <canvas id="myCanvas" resize></canvas>
-    <button id="aCard">
-        <p>Add card</p>
-    </button>
     <div id="bBar">
         <div class="deck"></div>
         <ul id="cards">
@@ -52,25 +54,21 @@
 
 /*
 to do:
-1. map shapes
-2. scale map to # of players
 3. figure out what the hell to do with attacks
-4. figure out how to remove frag aimer when not in use
-5. figure out what the theme is
 */
 
 var expanded = false; // Is the bottom bar expanded?
-var cardsN = 0; // number of cards
-var cardHolder = "dog";
-var bBarWidth = 0;
+var numCards = 0; // number of cards
+var bBarWidth = 0;// width of bottom bar for cards
 
 $("#cards").hide();
 $('#bBar').hide();
-$("#aCard").hide();
+$("#statBar").hide();
 
-function  expandBBar() {
+function  expandBBar() {// expand the card shelf a.k.a. bottom bar
+
     for (var i = 0; i < players[currentPlayer].cards.length; i += 1) {
-        $("#cards").append('<li class="card">This is Card <p>Attack: ' + players[currentPlayer].character.cards[i].attack + '</p> <p>Defense: ' + players[currentPlayer].character.cards[i].defend + '</p> </li>');
+        $("#cards").append('<li class="card">This is Card <p>Attack: ' + players[currentPlayer].cards[i].attack + '</p> <p>Defense: ' + players[currentPlayer].cards[i].defend + '</p> </li>');
     }
 
 
@@ -78,18 +76,32 @@ function  expandBBar() {
     $("#bBar").css("width", "100%");
     $("#cards").delay(680).show(680);
     
-    if (cardsN >= 4) {
+    if (numCards >= 4) {
         $("#bBar").css("overflowX", "scroll");
     }
+    
+    if (turnCounter === 2) {
+        $("#statActionButton").html('Add Card');
+    }
+    
+    expanded = true;
 }
 
-function hideBBar() {
-    $("#cards").delay(600).show(600).finish();
-    $("#bBar").css("background", "AntiqueWhite");
-    $("#bBar").css("width", "20vw");
-    $("#cards").hide(0);
-    $("#bBar").css("overflowX", "hidden");
-    $(".card").remove();
+function hideBBar() { // hide the card cabinet a.k.a. bottom bar
+    if (expanded === true) {
+        $("#cards").delay(600).show(600).finish();
+        $("#bBar").css("background", "AntiqueWhite");
+        $("#bBar").css("width", "20vw");
+        $("#cards").hide(0);
+        $("#bBar").css("overflowX", "hidden");
+        $(".card").remove();
+        
+        if (turnCounter === 2) {
+            $("#statActionButton").html('Next Turn');
+        }
+        
+        expanded = false;
+    }
 }
 
 $('#bBar').click(function () {
@@ -103,39 +115,86 @@ $('#bBar').click(function () {
         hideBBar();
 
     }
-    expanded = !expanded;
 });
 
+
 //var scrollW = document.getElementsByClassName("");
-$("#aCard").click(function () {
+function addCard() {
     "use strict";
-    if (cardsN < 12 && actionCounter > 0 && turnCounter === 2) {
-        cardsN += 1;
+    if (numCards < 10 && actionCounter > 0 && turnCounter === 2) {
+        numCards += 1;
 
-
+        var randomCardIndex = Math.floor((Math.random() * (players[currentPlayer].character.cards.length -1)));
         
         //add a card li to the cards div
-        $("#cards").append('<li class="card">This is Card <p>Attack: ' + players[currentPlayer].character.cards[0].attack + '</p> <p>Defense: ' + players[currentPlayer].character.cards[0].defend + '</p> </li>');
+        $("#cards").append('<li class="card">This is Card <p>Attack: ' + players[currentPlayer].character.cards[randomCardIndex].attack + '</p> <p>Defense: ' + players[currentPlayer].character.cards[randomCardIndex].defend + '</p> </li>');
 
         
         //extend bar width
         bBarWidth += (28);
         $("#cards").css("width", bBarWidth + "vw");
         
-        if (cardsN >= 4) {
+        if (numCards >= 4) {
             $("#bBar").css("overflowX", "scroll");
         }
 
-        players[currentPlayer].cards.push(players[currentPlayer].character.cards[0]);
+        players[currentPlayer].cards.push(players[currentPlayer].character.cards[randomCardIndex]);
 
         actionCounter -= 1;
+    }
+}
+
+$("#statActionButton").click(function () {
+    
+    if (expanded === false) {
+        turnCounter++;
+    }
+
+    if (turnCounter === 3) {
+
+        for (var i = 0; i < size; i += 1) {//  clearing the circles at end of turn
+            for (var ii = 0; ii < size; ii += 1) {
+
+                boardMain[i][ii].backgroundPath.visible = false; // reset all tiles to non movable
+
+            }
+        }
+
+        currentPlayer++;
+        if (currentPlayer === players.length) {
+            currentPlayer = 0;
+        }
+
+        hideBBar();
+
+        turnCounter = 0;
+
+        numCards = players[currentPlayer].cards.length;
+        actionCounter = players[currentPlayer].character.numActions;
+    } else if (turnCounter === 1) {
+        moveCounter = Math.floor((Math.random() * players[currentPlayer].character.dice) + 1);
+    }
+
+    if (turnCounter === 0) {
+        $("#statActionButton").html('Roll');
+    } else if (turnCounter === 1) {
+        $("#statActionButton").html('Action');
+    } else if (turnCounter === 2) {
+        
+        if (expanded === true) {
+            addCard();
+        } else {
+            $("#statActionButton").html('Next Turn');
+        }
     }
 });
     
 $("#myCanvas").hide();
 
-var size, biome, playerType, numPlayers = 2, gameSetup = 1, players = [], move = false, currentPlayer = 0, turnCounter = 0, moveCounter = 0, actionCounter = 0, boardShape;
-var playerTypes = [// array of player types: add new player here
+
+var size, biome, playerType, numPlayers = 30, gameSetup = 1, players = [], move = false, currentPlayer = 0, turnCounter = 0, moveCounter = 0;
+
+var playerTypes = [// array of player types: add new player types here
     {
         type: 'Greed',
         color: '#cc00cc',
@@ -151,6 +210,11 @@ var playerTypes = [// array of player types: add new player here
             {
                 attack: 6,
                 defend: 0,
+                rarity: 2
+            },
+            {
+                attack: 2,
+                defend: 2,
                 rarity: 2
             }
         ]
@@ -197,11 +261,6 @@ var playerTypes = [// array of player types: add new player here
 ];
 
 
-
-if (numPlayers + 1 === gameSetup) {
-        $("#proceed").html('Start Game');
-}
-
 $("#player").hide();
 $("#enterName").hide();
 
@@ -209,29 +268,75 @@ $("#proceed").click(function() {
     playerType = $("#player").val();
     biome = $("#biome").val();
 
+    if (numPlayers === gameSetup) {
+        $("#proceed").html('Start Game');
+    }
+
     if (gameSetup === 1) {
-        $("#enterMapSize").hide();
+        $("#enterNumPlayers").hide();
         $("#biome").hide();
-        $("#shape").hide();
+
+        numPlayers = $("#enterNumPlayers").val();// taking in the number of players
+        numPlayers = parseInt(numPlayers,10);
+        size = 3 + (numPlayers * 2);//  scaling the size of map to the number of players
 
         $("#player").show();
         $("#enterName").show();
     }
 
     if (gameSetup > 1) {
+
+        var xSpawn = 6, ySpawn = 6; //  coords where players spawn
+
+        if (numPlayers === 2) {
+            if (gameSetup === 2) {
+                xSpawn = 4;
+                ySpawn = 1;
+            } else {
+                xSpawn = 2;
+                ySpawn = 5;
+            }
+        } else if (numPlayers === 3) {
+            if (gameSetup === 2) {
+                xSpawn = 4;
+                ySpawn = 1;
+            } else if (gameSetup === 3) {
+                xSpawn = 7;
+                ySpawn = 4;
+            } else {
+                xSpawn = 1;
+                ySpawn = 7;
+            }
+        } else if (numPlayers === 4) {
+            if (gameSetup === 2) {
+                xSpawn = 5;
+                ySpawn = 1;
+            } else if (gameSetup === 3) {
+                xSpawn = 9;
+                ySpawn = 2;
+            } else if (gameSetup === 4) {
+                xSpawn = 1;
+                ySpawn = 9;
+            } else {
+                xSpawn = 6;
+                ySpawn = 8;
+            }
+        }
+
         player = {
             nick: $("#enterName").val(),
             character: playerTypes[$("#player option:selected").index()],
             coord: {
-                x: 5,
-                y: (1 + gameSetup)
+                x: xSpawn,//   x coord of where player spawns
+                y: ySpawn //   y coord of where player spawns
             },
             path: new Path.RegularPolygon(new Point(0,0),0,0),
-            cards: [],//    put cards that the player can use in this array
-            nameLabel: new PointText()
+            cards: [],//    put cards that the player can gets in this array
+            health: playerTypes[$("#player option:selected").index()].health,
+            nameLabel: new PointText() //   name label
         };
         if (player.nick === '') {
-            player.nick = 'Player ' + (gameSetup-1);
+            player.nick = 'Player ' + (gameSetup-1); // if no nickname is entered, they get assigne a player number
         }
 
         players.push(player);
@@ -240,13 +345,10 @@ $("#proceed").click(function() {
 
     if (numPlayers + 1 === gameSetup) {
         $("body").css('background-image', 'none');
-        $("#menu").hide("slow");
-        $("#myCanvas").show("slow");
-        size = $("#enterMapSize").val();
-        size = parseInt(size,10);
-        boardShape = $("#shape").val();
+        $("#menu").hide();
+        $("#myCanvas").fadeToggle("slow");
         $('#bBar').show('slow');
-        $("#aCard").show('slow');
+        $("#statBar").show();
         setup();
     }
 
@@ -268,35 +370,66 @@ var boardMain = [];
 
 function setup() {//           setup map here, also draw it
     var x = 200,y = 100;
+    var topLeft = -1;
+    var bottomRight = -size;
     for (var i = 0; i < size; i += 1) {
         var row = [];
+        topLeft++;
+        bottomRight++;
         for (var ii = 0; ii < size; ii += 1) {
-            var path = new Path.RegularPolygon(new Point(x, y), 6, 50);
-            path.strokeColor = '#A1A1A1';
-            path.strokeWidth = 6;
+
+            var type = randomTileType();
+
+            if (ii < ((size-1)/2)-topLeft && i < ((size-1)/2)){    //this removes the top left corner to make the board a hexagon
+              
+                var raster = new Raster({ // a raster is just an image and this is where the tile images are made ;)
+                    position: new Point(20000,y),
+                    source: imagePicker(type)
+                })
+
+                var circle = new Shape.Circle(new Point(20000,y), 60);//circle for in front of image
+                circle.fillColor = new Color(0.5,0.5,05,0.3);
+                circle.visible = false;
+           
+            } else if (ii > ((size - ((size-1)/2))-1)-bottomRight && i > ((size - ((size-1)/2))-1)){  //this removes the bottom right corner
+               
+                var raster = new Raster({ // a raster is just an image and this is where the tile images are made ;)
+                    position: new Point(20000,y),
+                    source: imagePicker(type)
+                })
+
+                var circle = new Shape.Circle(new Point(20000,y), 60);//circle for in front of image
+                circle.fillColor = new Color(0.5,0.5,05,0.3);
+                circle.visible = false;
+            
+            } else {
+                var raster = new Raster({ // a raster is just an image and this is where the tile images are made ;)
+                    position: new Point(x,y),
+                    source: imagePicker(type)
+                })
+
+                var circle = new Shape.Circle(new Point(x,y), 60);//circle for in front of image
+                circle.fillColor = new Color(0.5,0.5,05,0.3);
+                circle.visible = false;
+            }
 
             var hexObject = {
-                x: x,
-                y: y,
-                radius: 50,
-                path: path,
-                type: randomTileType()
+                x: x, // x coord in pixels
+                y: y, // y coord in pixels
+                radius: 50, // radius of tile, i need to remember why we need this
+                type: type, // type of tile i.e. forest, mountain
+                path: raster, // image
+                backgroundPath: circle // circle for in front of image
             };
 
-            hexObject.path.fillColor = colorPicker(hexObject.type);
-
             row.push(hexObject);
-            x += 90;
+            x += 110;
         }
         boardMain.push(row);
-        y += 78;
-        if (boardShape === "Rhombus") {
-            x = (200-5*(i+1)) + (i+1) * 50;
-        } else if (boardShape === "Rectangle") {
-            x = 200 + (((i % 2) - 1) * -45);
-        }
+        y += 95;
+        x = (200-5*(i+1)) + (i+1) * 60;
     }
-    for (var i = 0; i < players.length; i += 1) {
+    for (var i = 0; i < players.length; i += 1) {//  setup all of the images for the players including the nametag
         var xP = boardMain[players[i].coord.y][players[i].coord.x].path.position.x;
         var yP = boardMain[players[i].coord.y][players[i].coord.x].path.position.y;
         players[i].path = new Path.RegularPolygon(new Point(xP, yP), 3, 30);
@@ -305,37 +438,22 @@ function setup() {//           setup map here, also draw it
             point: players[i].path.position,
             justification: 'center',
             fontSize: 30,
-            fillColor: 'white',
+            fillColor: 'black',
             content: players[i].nick
         });
-
-        if (players[i].character.type === "Fragger") {
-            players[i].character.aimerLine = new Path(new Point(0,0), new Point(0,0), new Point(0,0))
-        }
     }
     actionCounter = players[currentPlayer].character.numActions;
 }
 
-function colorPicker(type) {
+function imagePicker(type) {
     if (type === 'forest') {
-        return '#009933';
+        return 'images/grass.png';
     }
     else if (type === 'sand') {
-        return '#b36b00';
+        return 'images/desert.png';
     }
     else if (type === 'rock') {
-        return '#878787';
-    }
-}
-function lightColorPicker(type) {
-    if (type === 'forest') {
-        return '#00E34C';
-    }
-    else if (type === 'sand') {
-        return '#ff9900';
-    }
-    else if (type === 'rock') {
-        return '#BABABA';
+        return 'images/rock.png';
     }
 }
 
@@ -390,26 +508,17 @@ function canPlayerMoveOrNah(x,y) {
     var deltaX = x - players[currentPlayer].coord.x;
     var deltaY = y - players[currentPlayer].coord.y;
 
-    if (boardShape === "Rhombus") {
+    if (players[currentPlayer].coord.x + moveCounter >= x && 
+        players[currentPlayer].coord.y + moveCounter >= y && 
+        players[currentPlayer].coord.x - moveCounter <= x && 
+        players[currentPlayer].coord.y - moveCounter <= y && 
+        (Math.abs(deltaX) + Math.abs(deltaY) <= moveCounter || (isNegative(deltaX) !== isNegative(deltaY) && (Math.abs(deltaY) <= moveCounter || Math.abs(deltaX) <= moveCounter))) && 
+        isPlayerThereOrNah(x,y) === false) {
 
-        if (players[currentPlayer].coord.x + moveCounter >= x && 
-            players[currentPlayer].coord.y + moveCounter >= y && 
-            players[currentPlayer].coord.x - moveCounter <= x && 
-            players[currentPlayer].coord.y - moveCounter <= y && 
-            (Math.abs(deltaX) + Math.abs(deltaY) <= moveCounter || (isNegative(deltaX) !== isNegative(deltaY) && (Math.abs(deltaY) <= moveCounter || Math.abs(deltaX) <= moveCounter))) && 
-            isPlayerThereOrNah(x,y) === false) {
+        return true;
 
-            return true;
+    } 
 
-        } 
-    }
-
-    if (boardShape === "Rectangle") {
-
-        if (Math.abs(deltaX) <= moveCounter &&  Math.abs(deltaY) <= moveCounter) {
-            return true;
-        }
-    }
     return false;
 }
 
@@ -419,39 +528,32 @@ function onFrame(event) {
             for (var ii = 0; ii < size; ii += 1) {
                 //   move events here
 
-                boardMain[i][ii].path.fillColor = colorPicker(boardMain[i][ii].type);
-
-                
+                boardMain[i][ii].backgroundPath.visible = false; // reset all tiles to non movable, then set them to movable don there\/
 
                 if (canPlayerMoveOrNah(ii,i)) {
 
-                    //console.log("not even");
+                    boardMain[i][ii].backgroundPath.visible = true;//  can move here
 
-                    boardMain[i][ii].path.fillColor = lightColorPicker(boardMain[i][ii].type);
                 } 
             }
         }
-    } else if (turnCounter === 2 && players[currentPlayer].character.type !== "Fragger") {
-        for (var i = 0; i < size; i += 1) {//just trying to see where i can go a.k.a. : "the lights"
+    } else if (turnCounter === 2) {
+        for (var i = 0; i < size; i += 1) {//just trying to see where i can go 
             for (var ii = 0; ii < size; ii += 1) {
                 //   move events here
 
-                boardMain[i][ii].path.fillColor = colorPicker(boardMain[i][ii].type);
+                boardMain[i][ii].backgroundPath.visible = false;//  set all tiles to unshootable
 
                 var deltaX = ii - players[currentPlayer].coord.x;
                 var deltaY = i - players[currentPlayer].coord.y;
 
-                if (ii === players[currentPlayer].coord.x || i === players[currentPlayer].coord.y || (ii - players[currentPlayer].coord.x)*(-1) === i - players[currentPlayer].coord.y) {
+                if (ii === players[currentPlayer].coord.x || i === players[currentPlayer].coord.y || (ii - players[currentPlayer].coord.x)*(-1) === i - players[currentPlayer].coord.y) { // ranged attack
 
-                    //console.log("not even");
+                    boardMain[i][ii].backgroundPath.visible = true; // set tiles to shootble
 
-                    boardMain[i][ii].path.fillColor = lightColorPicker(boardMain[i][ii].type);
                 } 
             }
         }
-    }
-    if (turnCounter !== 2 && players[currentPlayer].character.type === "Fragger") {
-        ///---------------------literally nothing right now-----------------------
     }
 }
 
@@ -460,54 +562,29 @@ function onMouseMove(event) {
         for (var ii = 0; ii < size; ii += 1) {
             if (boardMain[i][ii].path.contains(event.point)) {
                 //   move events here
-                
-                //boardMain[i][ii].path.bounds.width +=10;
-                //boardMain[i][ii].path.bounds.height +=10;
 
-                if (turnCounter === 1) {
-                    //console.log(ii + "  " + i)
-                    var deltaX = ii - players[currentPlayer].coord.x;
-                    var deltaY = i - players[currentPlayer].coord.y;
-
-                    if (canPlayerMoveOrNah(ii,i)) {
-
-                        //console.log("not even");
-
-                        boardMain[i][ii].path.strokeColor = '#6a59ed';
-                    } else {
-                        boardMain[i][ii].path.strokeColor = '#BE0000';
-                    }
-                }
-                if (turnCounter === 2 && players[currentPlayer].character.type === "Fragger") {
-                    players[currentPlayer].character.aimerLine.strokeColor = "#FFFFFF";
-                    players[currentPlayer].character.aimerLine.strokeWidth = 7;
-                    players[currentPlayer].character.aimerLine.segments[0].point = players[currentPlayer].path.position;
-                    players[currentPlayer].character.aimerLine.segments[1].point = new Point(players[currentPlayer].path.position.x + ((event.point.x - players[currentPlayer].path.position.x)/3),event.point.y);
-                    players[currentPlayer].character.aimerLine.segments[2].point = boardMain[i][ii].path.position;
-                    players[currentPlayer].character.aimerLine.smooth();
-                    players[currentPlayer].character.aimerLine.strokeCap = "round";
-                    players[currentPlayer].character.aimerLine.dashArray = [20, 20];
-                }
-            } else {
-                boardMain[i][ii].path.strokeColor = '#A1A1A1';
-            }
+            } 
             
         }
     }
 }
 
 function onMouseDrag(event) {
+    //if statement about if it is too far dragged or not
     for (var i = 0; i < size; i += 1) {
-        for (var ii = 0; ii < size; ii += 1) {
+        for (var ii = 0; ii < size; ii += 1) {//  reposition tiles for the draging of the map
 
-            boardMain[i][ii].path.position.x += event.delta.x/3;
-            boardMain[i][ii].path.position.y += event.delta.y/3;
+            boardMain[i][ii].backgroundPath.position.x += event.delta.x/3; // drag circles that highlight usable tiles: x coord
+            boardMain[i][ii].backgroundPath.position.y += event.delta.y/3; // y ccord
+
+            boardMain[i][ii].path.position.x += event.delta.x/3; // drag the tiles: x coord
+            boardMain[i][ii].path.position.y += event.delta.y/3; // y coord
 
         }
-        if (i < players.length) {
-            players[i].path.position.x += event.delta.x/3;
+        if (i < players.length) { // just using the board checker to also check the players
+            players[i].path.position.x += event.delta.x/3; // move players when map is being drgged
             players[i].path.position.y += event.delta.y/3;
-            players[i].nameLabel.position.x += event.delta.x/3;
+            players[i].nameLabel.position.x += event.delta.x/3; // move the name label
             players[i].nameLabel.position.y += event.delta.y/3;
         }
     }
@@ -518,6 +595,12 @@ function onMouseDown(event) {
         for (var ii = 0; ii < size; ii += 1) {
             if (boardMain[i][ii].path.contains(event.point)) {
                 //click events here
+
+                boardMain[i][ii].path.bounds.width -=10; // make the tile small when click down
+                boardMain[i][ii].path.bounds.height -=10;
+
+                boardMain[i][ii].path.position.x +=5;// reposition tile to center
+                boardMain[i][ii].path.position.y +=5;
                 
                 console.log('x: ' + ii + '  y: ' + i);
                 if (move === true) {
@@ -526,24 +609,26 @@ function onMouseDown(event) {
             }
         }
     }
-    if (button.contains(event.point)) {
-        button.fillColor = '#2576ef';
-        button.strokeColor = '#75a8f5';
-    }
 }
 
 function onMouseUp(event) {
-    
 
     for (var i = 0; i < size; i += 1) {
         for (var ii = 0; ii < size; ii += 1) {
 
+            if (boardMain[i][ii].path.bounds.width < 109) {// make the tile large again
+
+                boardMain[i][ii].path.bounds.width +=10;
+                boardMain[i][ii].path.bounds.height +=10;
+
+                boardMain[i][ii].path.position.x -=5;// reposition tile back to center
+                boardMain[i][ii].path.position.y -=5;
+            }
 
             if (boardMain[i][ii].path.contains(event.point)) {
                 //   move events here
                 
-                //boardMain[i][ii].path.bounds.width +=10;
-                //boardMain[i][ii].path.bounds.height +=10;
+                
 
                 if (turnCounter === 1) {
                     //console.log(ii + "  " + i)
@@ -552,80 +637,34 @@ function onMouseUp(event) {
 
                     if (canPlayerMoveOrNah(ii,i)) {
 
-
-
-                        //console.log("not even");
-
                         players[currentPlayer].path.position = boardMain[i][ii].path.position;
                         players[currentPlayer].nameLabel.position = boardMain[i][ii].path.position;
                         players[currentPlayer].coord.x = ii;
                         players[currentPlayer].coord.y = i;
 
-                        moveCounter -= Math.abs(deltaX);
+                        moveCounter = 0;
 
-                        boardMain[i][ii].path.strokeColor = '#A1A1A1';
                     } 
                 }
+
+                if (turnCounter === 2 && boardMain[i][ii].backgroundPath.visible === true) { // this whole shabang is about attacking
+                    for (var u = 0; u < players.length; u += 1) {
+                        if (u !== currentPlayer) {
+                            if (players[u].coord.x === ii && players[u].coord.y === i) {
+                                players[u].health -= 1;
+                                console.log("player " + (u+1) + " loses 1 health and is at " + players[u].health + " health");
+                            }
+                        }
+                    }
+                }
             }
-            if (turnCounter === 1) {
-                   boardMain[i][ii].path.fillColor = colorPicker(boardMain[i][ii].type); 
+            if (turnCounter === 2) {
+                   //boardMain[i][ii].backgroundPath.visible = false;
             }
         }
     }
-
-    if (button.contains(event.point)) {
-
-        turnCounter++;
-
-        if (turnCounter === 3) {
-
-            hideBBar();
-
-            turnCounter = 0;
-            currentPlayer++;
-
-            if (currentPlayer === players.length) {
-                currentPlayer = 0;
-            }
-
-            actionCounter = players[currentPlayer].character.numActions;
-        } else if (turnCounter === 1) {
-            moveCounter = Math.floor((Math.random() * players[currentPlayer].character.dice) + 1);
-        }
-
-
-        
-
-        if (turnCounter === 0) {
-            btnText.content = 'roll';
-        } else if (turnCounter === 1) {
-            btnText.content = 'action';
-        } else if (turnCounter === 2) {
-            btnText.content = 'next turn';
-        }
-
-
-
-    }
-
-    button.fillColor = '#75a8f5';
-    button.strokeColor = '#2576ef';
 }
 
-
-//---buttons---
-var button = new Path.RegularPolygon(new Point(view.bounds.width - 100, 100), 3, 70);
-button.fillColor = '#75a8f5';
-button.strokeWidth = 6;
-button.strokeColor = '#2576ef';
-
-var btnText = new PointText({
-    point: button.position,
-    justification: 'center',
-    fontSize: 30,
-    fillColor: 'white',
-    content: 'roll'
-});
 
 
 
