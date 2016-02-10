@@ -12,8 +12,8 @@ CLASSES
     user-select: none;           /* non-prefixed version, currently
                                   not supported by any browser */
     
-    /*cursor: url('../images/grass.png'),auto;*/
-    cursor: default;
+    cursor: url('../images/cursor1.png'),auto;
+    /*cursor: default;*/
 
 }
 
@@ -31,6 +31,7 @@ body {
 canvas[resize] {
     width: 100%;
     height: 100%;
+    background-color: black;
 }
 
 #menu {
@@ -44,7 +45,7 @@ canvas[resize] {
     max-width: 500px;
 }
 input {
-    font-family: 'Bree Serif', serif;
+    font-family: 'Trade Winds', cursive;
     margin: 0 0 10px 0 ;
     width: 60%;
     border:3px solid #2D0088;
@@ -53,12 +54,13 @@ input {
     list-style: inline-block;
     max-width: 300px;
     outline-color: #2D0088;
+    text-align: center;
 }
 input:hover {
     background-color: AntiqueWhite;
 }
 select {
-    font-family: 'Bree Serif', serif;
+    font-family: 'Trade Winds', cursive;
     margin: 0 0 10px 0;
     width: 60%;
     height: 43px;
@@ -68,13 +70,14 @@ select {
     list-style: inline-block;
     max-width: 300px;
     outline-color: #2D0088;
+    text-indent: 40%;
 }
 select:hover {
     background-color: AntiqueWhite;
 }
 
 #proceed {
-    font-family: 'Bree Serif', serif;
+    font-family: 'Trade Winds', cursive;
     font-weight: 900;
     width: 90%;
     padding: 10px;
@@ -105,7 +108,7 @@ select:hover {
     right: 0px;
     position: fixed;
     width: 20vw;
-    background: AntiqueWhite;
+    background: #663300;
     transition: width 1s;
 /*    overflow-x: scroll;*/
     height: 25%;

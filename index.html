@@ -17,17 +17,17 @@
                 <input id="enterNumPlayers" type="text" value="" placeHolder="Number of players" maxlength="1">
             </li>
             <li>
-                <select id="player"></select>
+                <select id="player" class="noselect"></select>
             </li>
             <li>
-                <select id="biome">
+                <select id="biome" class="noselect">
                     <option>Forest</option>
                     <option>Desert</option>
                     <option>Mountain</option>
                 </select>
             </li>
             <li>
-                <button id="proceed">Next</button>
+                <button id="proceed" class="noselect">Next</button>
             </li>
         </ul>
     </div>
@@ -71,7 +71,7 @@ function  expandBBar() {// expand the card shelf a.k.a. bottom bar
     }
 
 
-    $("#bBar").css("background", "black");
+    $("#bBar").css("background", "#996633");
     $("#bBar").css("width", "100%");
     $("#cards").delay(680).show(680);
     
@@ -80,7 +80,7 @@ function  expandBBar() {// expand the card shelf a.k.a. bottom bar
     }
     
     if (turnCounter === 2) {
-        $("#statActionButton").html('Add Card');
+        $("#statActionButton").html('Draw Card');
     }
     expanded = true;
 }
@@ -88,7 +88,7 @@ function  expandBBar() {// expand the card shelf a.k.a. bottom bar
 function hideBBar() { // hide the card cabinet a.k.a. bottom bar
     if (expanded === true) {
         $("#cards").delay(600).show(600).finish();
-        $("#bBar").css("background", "AntiqueWhite");
+        $("#bBar").css("background", "#663300");
         $("#bBar").css("width", "20vw");
         $("#cards").hide(0);
         $("#bBar").css("overflowX", "hidden");
@@ -167,6 +167,11 @@ $("#statActionButton").click(function () {
 
         numCards = players[currentPlayer].cards.length;
         actionCounter = players[currentPlayer].character.numActions;
+
+        $("#statActionNumber").html(actionCounter);
+        $("#statHealthNumber").html(players[currentPlayer].health);
+        $("#statName").html(players[currentPlayer].nick);
+
     } else if (turnCounter === 1) {
         moveCounter = Math.floor((Math.random() * players[currentPlayer].character.dice) + 1);
     }
@@ -208,7 +213,7 @@ var size, biome, playerType, numPlayers = 30, gameSetup = 1, players = [], move 
 var playerTypes = [// array of player types: add new player types here
     {
         type: 'Greed',
-        color: '#cc00cc',
+        color: '#00BFFF',
         dice: 12,
         health: 20,
         numActions: 3,
@@ -419,8 +424,8 @@ function setup() {//           setup map here, also draw it
                     source: imagePicker(type)
                 })
 
-                var circle = new Shape.Circle(new Point(x,y), 60);//circle for in front of image
-                circle.fillColor = new Color(0.5,0.5,05,0.3);
+                var circle = new Path.RegularPolygon(new Point(x,y),6, 64);//circle for in front of image
+                circle.fillColor = new Color((22/255),(240/255),(80/255),0.3);
                 circle.visible = false;
             }
 
@@ -449,7 +454,7 @@ function setup() {//           setup map here, also draw it
             point: players[i].path.position,
             justification: 'center',
             fontSize: 30,
-            fillColor: 'black',
+            fillColor: 'white',
             content: players[i].nick
         });
     }
@@ -583,13 +588,7 @@ function rangedAttack() {
 }
 
 function statBox(player) {
-    console.log(player.health);
-    var box = new Path.Rectangle({
-        point: [player.path.position.x,player.path.position.y],
-        size: [60, 60],
-        strokeColor: 'black',
-        fillColor: 'yellow'
-    });
+
 }
 
 function onFrame(event) { // runs 60 times per second TIP: Dont put a lot of loops in here because it will slow the game down a BUNCH
@@ -703,6 +702,7 @@ function onMouseUp(event) {
                             if (players[u].coord.x === ii && players[u].coord.y === i) {
                                 players[u].health -= 1;
                                 console.log("player " + (u+1) + " loses 1 health and is at " + players[u].health + " health");
+                                actionCounter -= 1;
                             }
                         }
                     }
