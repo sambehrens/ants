@@ -506,8 +506,11 @@ function rangedAttack() {
 
 function statBox(player) {
     console.log(player.health);
-    var box = new Path({
-        
+    var box = new Path.Rectangle({
+        point: [player.path.position.x,player.path.position.y],
+        size: [60, 60],
+        strokeColor: 'black',
+        fillColor: 'yellow'
     });
 }
 
