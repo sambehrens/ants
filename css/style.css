@@ -1,4 +1,26 @@
 html,
+
+/**************************************
+CLASSES
+**************************************/
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* IE/Edge */
+    user-select: none;           /* non-prefixed version, currently
+                                  not supported by any browser */
+    
+    /*cursor: url('../images/grass.png'),auto;*/
+    cursor: default;
+
+}
+
+/**************************************
+Not Classes
+**************************************/
+
 body {
     margin: 0;
     overflow: hidden;
@@ -90,12 +112,98 @@ select:hover {
     border-color: black;
 }
 
-#aCard {
+/*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% new code*/
+
+#statBar {
+    min-width: 170px;
+    font-family: 'Trade Winds', cursive;
+    height: 100%;
+    right: 0px;
+    top: 0px;
+    float: right;
     position: fixed;
-    bottom: 25%;
-    right: 0;
-    width: 100px;
+    width: 20vw;
+    background: antiquewhite;
+    text-align: center;
+    
 }
+
+#statHealthFill {
+    min-width: 170px;
+    z-index: -1;
+    height: 75%;
+    right: 0px;
+    top: 0px;
+    float: right;
+    position: fixed;
+    width: 20vw;
+    background: darkred;
+}
+
+#statName {
+    font-size: 2.5em;
+}
+
+#statCharacter {
+    font-size: 1.8em;
+    margin-top: -1em;
+}
+
+#statHealth {
+    margin-bottom: -.2em;
+}
+
+#statHealthNumber {
+    width: 30%;
+    margin-left: 32%;
+    font-size: 2.3em;
+    border-style: solid;
+    border-radius: 100px;
+    border-width: 10px;
+    background: darkred;
+    border-color: orangered;
+    color: orangered;
+}
+
+#statActions {
+    margin-bottom: -.2em;
+}
+
+#statActionNumber {
+    width: 30%;
+    margin-left: 32%;
+    font-size: 2.3em;
+    border-style: solid;
+    border-radius: 100px;
+    border-width: 10px;
+    background: darkred;
+    border-color: darkorange;
+    color: darkorange;
+}
+
+#statActionButton {
+    font-size: 1.4em;
+    width: 40%;
+    margin-left: 18%;
+    padding: 10%;
+    background: blueviolet;
+    border-style: outset;
+    border-radius: 10px;
+    border-width: 7px;
+    border-color: purple;
+    margin-top: 5vh;
+}
+
+#statActionButton:hover {
+    background-color: mediumpurple;
+}
+
+#statActionButton:active {
+    background-color: blueviolet;
+    border-color: mediumpurple;
+}
+
+/*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end new code*/
 
 #cards {
     list-style: none;

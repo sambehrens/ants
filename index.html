@@ -5,6 +5,7 @@
     <link href='https://fonts.googleapis.com/css?family=Orbitron:400,900' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Trade+Winds' rel='stylesheet' type='text/css'>
 </head>
 <body background="images/background.png">
     <div id="menu">
@@ -30,10 +31,17 @@
             </li>
         </ul>
     </div>
+    <div id="statBar" class="noselect"> <!-- Stat Bar for player info and actions -->
+        <div id="statHealthFill"></div> <!-- Element that gets smaller as the current player's health gets lower -->
+        <h2 id="statName">Player 1</h2> <!-- Current player name -->
+        <h2 id="statCharacter">Greed</h2> <!-- Current player character type -->
+        <h3 id="statHealth">Health:</h3> <!-- Current player health label -->
+        <div id="statHealthNumber">20</div> <!-- Current player health variable displayed -->
+        <h3 id="statActions">Remaining Actions:</h3> <!-- Current player actions label -->
+        <div id="statActionNumber">2</div> <!-- Current player actions variable displayed -->
+        <div id="statActionButton">Roll</div> <!-- Button for proceeding though the current player's turn: Move -> End turn. -->
+    </div>
     <canvas id="myCanvas" resize></canvas>
-    <button id="aCard">
-        <p>Add card</p>
-    </button>
     <div id="bBar">
         <div class="deck"></div>
         <ul id="cards">
@@ -54,7 +62,7 @@ var bBarWidth = 0;// width of bottom bar for cards
 
 $("#cards").hide();
 $('#bBar').hide();
-$("#aCard").hide();
+$("#statBar").hide();
 
 function  expandBBar() {// expand the card shelf a.k.a. bottom bar
 
@@ -70,6 +78,10 @@ function  expandBBar() {// expand the card shelf a.k.a. bottom bar
     if (numCards >= 4) {
         $("#bBar").css("overflowX", "scroll");
     }
+    
+    if (turnCounter === 2) {
+        $("#statActionButton").html('Add Card');
+    }
     expanded = true;
 }
 
@@ -81,6 +93,10 @@ function hideBBar() { // hide the card cabinet a.k.a. bottom bar
         $("#cards").hide(0);
         $("#bBar").css("overflowX", "hidden");
         $(".card").remove();
+
+        if (turnCounter === 2) {
+            $("#statActionButton").html('Next Turn');
+        }
         expanded = false;
     }
 }
@@ -99,7 +115,7 @@ $('#bBar').click(function () {
 });
 
 //var scrollW = document.getElementsByClassName("");
-$("#aCard").click(function () {
+function addCard() {
     "use strict";
     if (numCards < 10 && actionCounter > 0 && turnCounter === 2) {
         numCards += 1;
@@ -121,6 +137,66 @@ $("#aCard").click(function () {
         players[currentPlayer].cards.push(players[currentPlayer].character.cards[randomCardIndex]);
 
         actionCounter -= 1;
+    }
+}
+
+$("#statActionButton").click(function () {
+    
+    if (expanded === false) {
+        turnCounter++;
+    }
+
+    if (turnCounter === 3) {
+
+        for (var i = 0; i < size; i += 1) {//  clearing the circles at end of turn
+            for (var ii = 0; ii < size; ii += 1) {
+
+                boardMain[i][ii].backgroundPath.visible = false; // reset all tiles to non movable
+
+            }
+        }
+
+        currentPlayer++;
+        if (currentPlayer === players.length) {
+            currentPlayer = 0;
+        }
+
+        hideBBar();
+
+        turnCounter = 0;
+
+        numCards = players[currentPlayer].cards.length;
+        actionCounter = players[currentPlayer].character.numActions;
+    } else if (turnCounter === 1) {
+        moveCounter = Math.floor((Math.random() * players[currentPlayer].character.dice) + 1);
+    }
+
+    if (turnCounter === 0) {
+        $("#statActionButton").html('Roll');
+    } else if (turnCounter === 1) {
+        $("#statActionButton").html('Action');
+    } else if (turnCounter === 2) {
+        
+        if (expanded === true) {
+            addCard();
+        } else {
+            $("#statActionButton").html('Next Turn');
+        }
+    }
+    for (var i = 0; i < size; i += 1) {//just trying to see where i can go
+        for (var ii = 0; ii < size; ii += 1) {
+            //   move events here
+
+            boardMain[i][ii].backgroundPath.visible = false; // reset all tiles to non movable, then set them to movable don there\/
+
+            if (turnCounter === 1) { // if in the move phase
+                if (canPlayerMoveOrNah(ii,i)) {// shows you where you can move on the map
+
+                    boardMain[i][ii].backgroundPath.visible = true;//  can move here
+
+                } 
+            }
+        }
     }
 });
     
@@ -283,7 +359,7 @@ $("#proceed").click(function() {
         $("#menu").hide();
         $("#myCanvas").fadeToggle("slow");
         $('#bBar').show('slow');
-        $("#aCard").show('slow');
+        $("#statBar").show();
         setup();
     }
 
@@ -392,6 +468,7 @@ function imagePicker(type) { // choose images for tiles
     }
 }
 
+
 function randomTileType() { // choose a random tile type to assign to a tile
     var randomTile = Math.floor((Math.random() * 6) + 1);
     if (biome === 'Forest') {
@@ -428,6 +505,7 @@ function isNegative(number) { // check if number is negative
         return false;
     }
 }
+
 
 function isPlayerThereOrNah(x,y) { //  check if player is on a space
     for (var i = 0; i < players.length; i += 1) {
@@ -581,10 +659,6 @@ function onMouseDown(event) {
             }
         }
     }
-    if (button.contains(event.point)) { // this will go when the statbar is in place with the advance button
-        button.fillColor = '#2576ef';
-        button.strokeColor = '#75a8f5';
-    }
 }
 
 function onMouseUp(event) {
@@ -637,81 +711,12 @@ function onMouseUp(event) {
             if (turnCounter === 2) {
                    //boardMain[i][ii].backgroundPath.visible = false;
             }
+            boardMain[i][ii].backgroundPath.visible = false; // reset all tiles to non movable
         }
     }
-
-    if (button.contains(event.point)) {
-
-        turnCounter++;
-
-        if (turnCounter === 3) {
-
-            for (var i = 0; i < size; i += 1) {//  clearing the circles at end of turn
-                for (var ii = 0; ii < size; ii += 1) {
-
-                    boardMain[i][ii].backgroundPath.visible = false; // reset all tiles to non movable
-
-                }
-            }
-
-            currentPlayer++;
-            if (currentPlayer === players.length) {
-                currentPlayer = 0;
-            }
-
-            hideBBar();
-
-            turnCounter = 0;
-            
-            numCards = players[currentPlayer].cards.length;
-            actionCounter = players[currentPlayer].character.numActions;
-        } else if (turnCounter === 1) {
-            moveCounter = Math.floor((Math.random() * players[currentPlayer].character.dice) + 1);
-        }
-
-        if (turnCounter === 0) {
-            btnText.content = 'roll';
-        } else if (turnCounter === 1) {
-            btnText.content = 'action';
-        } else if (turnCounter === 2) {
-            btnText.content = 'next turn';
-        }
-    }
-
-    for (var i = 0; i < size; i += 1) {//just trying to see where i can go
-        for (var ii = 0; ii < size; ii += 1) {
-            //   move events here
-
-            boardMain[i][ii].backgroundPath.visible = false; // reset all tiles to non movable, then set them to movable don there\/
-
-            if (turnCounter === 1) { // if in the move phase
-                if (canPlayerMoveOrNah(ii,i)) {// shows you where you can move on the map
-
-                    boardMain[i][ii].backgroundPath.visible = true;//  can move here
-
-                } 
-            }
-        }
-    }
-
-    button.fillColor = '#75a8f5'; // can remove this after stat bar is completed
-    button.strokeColor = '#2576ef';
 }
 
 
-//---buttons---
-var button = new Path.RegularPolygon(new Point(view.bounds.width - 100, 100), 3, 70);
-button.fillColor = '#75a8f5';
-button.strokeWidth = 6;
-button.strokeColor = '#2576ef';
-
-var btnText = new PointText({
-    point: button.position,
-    justification: 'center',
-    fontSize: 30,
-    fillColor: 'white',
-    content: 'roll'
-});
 
 
 
