@@ -61,7 +61,7 @@ var numCards = 0; // number of cards
 var bBarWidth = 0;// width of bottom bar for cards
 
 $("#cards").hide();
-$('#bBar').hide();
+$('#bBar').hide(); // hides the card holder bar
 $("#statBar").hide();
 
 function  expandBBar() {// expand the card shelf a.k.a. bottom bar
@@ -712,14 +712,13 @@ function onMouseUp(event) {
                     }
                 }
             }
-            if (turnCounter === 2) {
+            if (turnCounter === 2) { 
                    //boardMain[i][ii].backgroundPath.visible = false;
             }
             boardMain[i][ii].backgroundPath.visible = false; // reset all tiles to non movable
         }
     }
 }
-
 
 
 
