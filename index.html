@@ -365,6 +365,10 @@ $("#proceed").click(function() {
         $("#myCanvas").fadeToggle("slow");
         $('#bBar').show('slow');
         $("#statBar").show();
+        actionCounter = players[currentPlayer].character.numActions;
+        $("#statActionNumber").html(actionCounter);
+        $("#statHealthNumber").html(players[currentPlayer].health);
+        $("#statName").html(players[currentPlayer].nick);
         setup();
     }
 
@@ -696,7 +700,7 @@ function onMouseUp(event) {
                     } 
                 }
 
-                if (turnCounter === 2 && boardMain[i][ii].backgroundPath.visible === true) { // this whole shabang is about attacking
+                if (turnCounter === 2 && boardMain[i][ii].backgroundPath.visible === true && actionCounter !== 0) { // this whole shabang is about attacking
                     for (var u = 0; u < players.length; u += 1) {
                         if (u !== currentPlayer) {
                             if (players[u].coord.x === ii && players[u].coord.y === i) {
