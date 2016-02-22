@@ -71,7 +71,7 @@ function  expandBBar() {// expand the card shelf a.k.a. bottom bar
     }
 
 
-    $("#bBar").css("background", "#996633");
+    $("#bBar").css("background", "#C96A4B");
     $("#bBar").css("width", "100%");
     $("#cards").delay(680).show(680);
     
@@ -88,7 +88,7 @@ function  expandBBar() {// expand the card shelf a.k.a. bottom bar
 function hideBBar() { // hide the card cabinet a.k.a. bottom bar
     if (expanded === true) {
         $("#cards").delay(600).show(600).finish();
-        $("#bBar").css("background", "#663300");
+        $("#bBar").css("background", "#FF551C");
         $("#bBar").css("width", "20vw");
         $("#cards").hide(0);
         $("#bBar").css("overflowX", "hidden");
@@ -171,6 +171,7 @@ $("#statActionButton").click(function () {
         $("#statActionNumber").html(actionCounter);
         $("#statHealthNumber").html(players[currentPlayer].health);
         $("#statName").html(players[currentPlayer].nick);
+        $("#statCharacter").html(players[currentPlayer].character.type);
 
     } else if (turnCounter === 1) {
         moveCounter = Math.floor((Math.random() * players[currentPlayer].character.dice) + 1);
@@ -218,21 +219,13 @@ var playerTypes = [// array of player types: add new player types here
         health: 20,
         numActions: 3,
         cards: [// array of cards: put new cards here
-            {
-                attack: 5,
-                defend: 3,
-                rarity: 1
-            },
-            {
-                attack: 6,
-                defend: 0,
-                rarity: 2
-            },
-            {
-                attack: 2,
-                defend: 2,
-                rarity: 2
-            }
+            {attack: 4,defend: 2,move: 5,count: 6},
+            {attack: 5,defend: 1,count: 4},
+            {attack: 6,defend: 0,count: 2},
+            {attack: 3,defend: 4,count: 5},
+            {attack: 3,defend: 0,count: 3},
+            {attack: 4,defend: 5,count: 2},
+            {attack: 0,defend: 5,count: 3}
         ]
     },
     {
@@ -242,16 +235,14 @@ var playerTypes = [// array of player types: add new player types here
         health: 16,
         numActions: 2,
         cards: [// array of cards: put new cards here
-            {
-                attack: 3,
-                defend: 5,
-                rarity: 1
-            },
-            {
-                attack: 6,
-                defend: 0,
-                rarity: 2
-            }
+            {attack: 8,defend: 0,count: 2},
+            {attack: 4,defend: 1,count: 5},
+            {attack: 3,defend: 2,count: 7},
+            {attack: 0,defend: 4,count: 3},
+            {attack: 5,defend: 0,count: 3},
+            {attack: 6,defend: 0,count: 1},
+            {attack: 3,defend: 0,pierce: true,count: 3},
+            {attack: 3,defend: 3,pierce: true,count: 1}
         ]
     },
     {
@@ -261,16 +252,14 @@ var playerTypes = [// array of player types: add new player types here
         health: 22,
         numActions: 2,
         cards: [// array of cards: put new cards here
-            {
-                attack: 3,
-                defend: 5,
-                rarity: 1
-            },
-            {
-                attack: 6,
-                defend: 0,
-                rarity: 2
-            }
+            {attack: 8,defend: 0,count: 2},
+            {attack: 0,defend: 7,count: 3},
+            {attack: 5,defend: 2,count: 5},
+            {attack: 3,defend: 2,count: 4},
+            {attack: 2,defend: 3,count: 4},
+            {attack: 0,defend: 0,heal: 8,count: 2},
+            {attack: 0,defend: 0,heal: 2,count: 1},
+            {attack: 4,defend: 4,count: 4}
         ],
         aimerLine: new Path()
     }
@@ -369,6 +358,7 @@ $("#proceed").click(function() {
         $("#statActionNumber").html(actionCounter);
         $("#statHealthNumber").html(players[currentPlayer].health);
         $("#statName").html(players[currentPlayer].nick);
+        $("#statCharacter").html(players[currentPlayer].character.type);
         setup();
     }
 

@@ -108,7 +108,7 @@ select:hover {
     right: 0px;
     position: fixed;
     width: 20vw;
-    background: #663300;
+    background: #FF551C;
     transition: width 1s;
 /*    overflow-x: scroll;*/
     height: 25%;
@@ -219,7 +219,7 @@ select:hover {
 
 #cards li {
     height: 17vw;
-    width: 23vw;
+    width: 13vw;
     border-style: solid;
     border-width: 1vw;
     border-color: AntiqueWhite;
@@ -255,24 +255,24 @@ CARDS
 **************************************/
 
 .card {
-    color: yellow;
+    color: AntiqueWhite;
     background: blue;
     background-image: url('../images/samTheSham.jpg');
 }
 
-.card2 {
+.card1 {
     color: white;
     background: green;
     background-image: url('../images/samTheSham.jpg');
 }
 
-.card3 {
+.card2 {
     background: yellow;
     color: red;
     background-image: url('../images/samTheSham.jpg');
 }
 
-.card4 {
+.card3 {
     background: black;
     color: white;
     background-image: url('../images/samTheSham.jpg');
