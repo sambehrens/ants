@@ -54,11 +54,14 @@
 /*
 to do:
 3. figure out what the hell to do with attacks
+
+players[currentPlayer].health/players[currentPlayer].character.health
 */
 
 var expanded = false; // Is the bottom bar expanded?
 var numCards = 0; // number of cards
 var bBarWidth = 0;// width of bottom bar for cards
+var healthRatio = 1; // change in health fill on the statbar
 
 $("#cards").hide();
 $('#bBar').hide(); // hides the card holder bar
@@ -146,9 +149,9 @@ $("#statActionButton").click(function () {
         turnCounter++;
     }
 
-    if (turnCounter === 3) {
+    if (turnCounter === 3) { // next players turn !!!!!!!!!!!!!!!!!!!!!!
 
-        for (var i = 0; i < size; i += 1) {//  clearing the circles at end of turn
+        for (var i = 0; i < size; i += 1) {//  clearing the highlights at end of turn
             for (var ii = 0; ii < size; ii += 1) {
 
                 boardMain[i][ii].backgroundPath.visible = false; // reset all tiles to non movable
@@ -165,12 +168,21 @@ $("#statActionButton").click(function () {
 
         turnCounter = 0;
 
+
         numCards = players[currentPlayer].cards.length;
         actionCounter = players[currentPlayer].character.numActions;
 
+
+        // $("#statHealthFill").css("transition", "top: 0s");
+        // $("#statHealthFill").css("top", ((1 - players[currentPlayer].healthFromLastTurn) * 0.75 * 100) + '%'); //shifts red health fill downwards in sync with the health from the current player's previous turn
+        healthRatio = players[currentPlayer].health / players[currentPlayer].character.health;
+        $("#statHealthFill").css("transition", "top: 2s");
+        $("#statHealthFill").css("top", ((1 - healthRatio) * 0.75 * 100) + '%'); //slowly shifts red health fill downwards in sync with the the current player's current health
+        // players[currentPlayer].healthFromLastTurn = healthRatio; //records what the current player's health was at the start of their turn
+
+        $("#statName").html(players[currentPlayer].nick);
         $("#statActionNumber").html(actionCounter);
         $("#statHealthNumber").html(players[currentPlayer].health);
-        $("#statName").html(players[currentPlayer].nick);
 
     } else if (turnCounter === 1) {
         moveCounter = Math.floor((Math.random() * players[currentPlayer].character.dice) + 1);
@@ -349,6 +361,7 @@ $("#proceed").click(function() {
             path: new Path.RegularPolygon(new Point(0,0),0,0),
             cards: [],//    put cards that the player can gets in this array
             health: playerTypes[$("#player option:selected").index()].health,
+            // healthFromLastTurn: 1, // ratio of health that the player had at the start of their previous turn
             nameLabel: new PointText() //   name label
         };
         if (player.nick === '') {
@@ -707,6 +720,12 @@ function onMouseUp(event) {
                                 players[u].health -= 1;
                                 console.log("player " + (u+1) + " loses 1 health and is at " + players[u].health + " health");
                                 actionCounter -= 1;
+                                $("#statActionNumber").html(actionCounter);
+                                // healthRatio = players[currentPlayer].health / players[currentPlayer].character.health;
+
+                                // $("#statHealthFill").css("height", (healthRatio * 0.75 * 100) + '%');
+                                // $("#statHealthFill").css("top", ((1 - (healthRatio * 0.75)) * 100) +'%');
+
                             }
                         }
                     }

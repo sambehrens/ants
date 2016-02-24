@@ -136,11 +136,14 @@ select:hover {
     z-index: -1;
     height: 75%;
     right: 0px;
-    top: 0px;
+    top: 0%;
     float: right;
     position: fixed;
     width: 20vw;
     background: darkred;
+    transition: top 2s;
+/*    transition: height 2s;*/
+
 }
 
 #statName {
@@ -163,7 +166,6 @@ select:hover {
     border-style: solid;
     border-radius: 100px;
     border-width: 10px;
-    background: darkred;
     border-color: orangered;
     color: orangered;
 }
@@ -179,7 +181,6 @@ select:hover {
     border-style: solid;
     border-radius: 100px;
     border-width: 10px;
-    background: darkred;
     border-color: darkorange;
     color: darkorange;
 }
