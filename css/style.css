@@ -17,6 +17,34 @@ CLASSES
 
 }
 
+.triangle {
+	position: relative;
+	text-align: left;
+}
+.triangle:before,
+.triangle:after {
+	content: '';
+	position: absolute;
+	background-color: inherit;
+}
+.triangle,
+.triangle:before,
+.triangle:after {
+	width:  5.5em;
+	height: 5.5em;
+	border-top-right-radius: 30%;
+}
+
+.triangle {
+	transform: rotate(-30deg) skewX(-30deg) scale(1,.866);
+}
+.triangle:before {
+	transform: rotate(-135deg) skewX(-45deg) scale(1.414,.707) translate(0,-50%);
+}
+.triangle:after {
+	transform: rotate(135deg) skewY(-45deg) scale(.707,1.414) translate(50%);
+}
+
 /**************************************
 Not Classes
 **************************************/
@@ -101,21 +129,24 @@ select:hover {
     text-align: center;
 }
 
+/**************************************
+STATBAR ITEMS
+**************************************/
+
 #bBar {
     border-radius: 8px;
     font-size: 2.2vw;
     bottom: 0px;
     right: 0px;
     position: fixed;
-    width: 20vw;
+    width: 0vw;
+    margin-right: 20vw;
     background: #FF551C;
     transition: width 1s;
 /*    overflow-x: scroll;*/
     height: 25%;
     border-color: black;
 }
-
-/*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% new code*/
 
 #statBar {
     min-width: 170px;
@@ -134,7 +165,7 @@ select:hover {
 #statHealthFill {
     min-width: 170px;
     z-index: -1;
-    height: 75%;
+    height: 100%;
     right: 0px;
     top: 0%;
     float: right;
@@ -187,8 +218,8 @@ select:hover {
 
 #statActionButton {
     font-size: 1.4em;
-    width: 40%;
-    margin-left: 18%;
+    width: 50%;
+    margin-left: 13%;
     padding: 10%;
     background: blueviolet;
     border-style: outset;
@@ -207,7 +238,29 @@ select:hover {
     border-color: mediumpurple;
 }
 
-/*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end new code*/
+#cardShowButton {
+    background: blue;
+    margin: 5vw 0vw 9vw 9vw;
+    
+    z-index: 3;
+    position: fixed;
+}
+
+#cardShowButtonText {
+    
+    width: 10%;
+    margin: 7.2vw 0vw 20vw 6vw;
+    font-size: 1.7em;
+    color: orangered;
+    z-index: 4;
+    position: fixed;
+    
+}
+
+
+/**************************************
+CARD STYLE
+**************************************/
 
 #cards {
     list-style: none;

@@ -40,6 +40,8 @@
         <h3 id="statActions">Remaining Actions:</h3> <!-- Current player actions label -->
         <div id="statActionNumber">2</div> <!-- Current player actions variable displayed -->
         <div id="statActionButton">Roll</div> <!-- Button for proceeding though the current player's turn: Move -> End turn. -->
+        <h3 id="cardShowButtonText">Show Cards</h3> <!-- Label for card show button -->
+        <div id="cardShowButton" class="triangle"></div> <!-- Button for expanding the bar, showing the cards. -->
     </div>
     <canvas id="myCanvas" resize></canvas>
     <div id="bBar">
@@ -75,8 +77,12 @@ function  expandBBar() {// expand the card shelf a.k.a. bottom bar
 
 
     $("#bBar").css("background", "#C96A4B");
-    $("#bBar").css("width", "100%");
+    $("#bBar").css("width", "80%");
     $("#cards").delay(680).show(680);
+    
+    $(".triangle").css("transform","rotate(30deg) skewX(-30deg) scale(1,.866)");
+    $("#cardShowButton").css("margin", "6.6vw 0vw 9vw 9vw")
+    $("#cardShowButtonText").html('Hide Cards')
     
     if (numCards >= 4) {
         $("#bBar").css("overflowX", "scroll");
@@ -92,10 +98,15 @@ function hideBBar() { // hide the card cabinet a.k.a. bottom bar
     if (expanded === true) {
         $("#cards").delay(600).show(600).finish();
         $("#bBar").css("background", "#FF551C");
-        $("#bBar").css("width", "20vw");
+        $("#bBar").css("width", "0");
         $("#cards").hide(0);
         $("#bBar").css("overflowX", "hidden");
         $(".card").remove();
+        
+        $("#cardShowButton").css("margin", "5vw 0vw 9vw 9vw")
+        $("#cardShowButtonText").html('Show Cards')
+        
+        $(".triangle").css("transform","rotate(-30deg) skewX(-30deg) scale(1,.866)");
 
         if (turnCounter === 2) {
             $("#statActionButton").html('Next Turn');
@@ -104,7 +115,19 @@ function hideBBar() { // hide the card cabinet a.k.a. bottom bar
     }
 }
 
-$('#bBar').click(function () {
+$('#cardShowButton').click(function () {
+    "use strict";
+    if (expanded === false) {
+
+        expandBBar();
+
+    } else {
+
+        hideBBar();
+
+    }
+});
+$('#cardShowButtonText').click(function () {
     "use strict";
     if (expanded === false) {
 
@@ -174,10 +197,10 @@ $("#statActionButton").click(function () {
 
 
         // $("#statHealthFill").css("transition", "top: 0s");
-        // $("#statHealthFill").css("top", ((1 - players[currentPlayer].healthFromLastTurn) * 0.75 * 100) + '%'); //shifts red health fill downwards in sync with the health from the current player's previous turn
+        // $("#statHealthFill").css("top", ((1 - players[currentPlayer].healthFromLastTurn) * 100) + '%'); //shifts red health fill downwards in sync with the health from the current player's previous turn
         healthRatio = players[currentPlayer].health / players[currentPlayer].character.health;
         $("#statHealthFill").css("transition", "top: 2s");
-        $("#statHealthFill").css("top", ((1 - healthRatio) * 0.75 * 100) + '%'); //slowly shifts red health fill downwards in sync with the the current player's current health
+        $("#statHealthFill").css("top", ((1 - healthRatio)  * 100) + '%'); //slowly shifts red health fill downwards in sync with the the current player's current health
         // players[currentPlayer].healthFromLastTurn = healthRatio; //records what the current player's health was at the start of their turn
 
         $("#statName").html(players[currentPlayer].nick);
@@ -714,8 +737,8 @@ function onMouseUp(event) {
                                 $("#statActionNumber").html(actionCounter);
                                 // healthRatio = players[currentPlayer].health / players[currentPlayer].character.health;
 
-                                // $("#statHealthFill").css("height", (healthRatio * 0.75 * 100) + '%');
-                                // $("#statHealthFill").css("top", ((1 - (healthRatio * 0.75)) * 100) +'%');
+                                // $("#statHealthFill").css("height", (healthRatio * 100) + '%');
+                                // $("#statHealthFill").css("top", ((1 - healthRatio) * 100) +'%');
 
                             }
                         }
