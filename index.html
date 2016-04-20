@@ -43,7 +43,9 @@
         <h3 id="cardShowButtonText">Show Cards</h3> <!-- Label for card show button -->
         <div id="cardShowButton" class="triangle"></div> <!-- Button for expanding the bar, showing the cards. -->
     </div>
+    
     <canvas id="myCanvas" resize></canvas>
+    <!-- <canvas id="spriteCanvas" resize></canvas> -->
     <div id="bBar">
         <div class="deck"></div>
         <ul id="cards">
@@ -51,6 +53,7 @@
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="js/paper-full.js"></script>
+    <script type="text/javascript" src="js/spriteAnimationCode.js"></script> 
     <script type="text/paperscript" canvas="myCanvas">
 
 /*
@@ -71,6 +74,8 @@ $("#statBar").hide();
 
 function  expandBBar() {// expand the card shelf a.k.a. bottom bar
 
+    $(".card").remove();
+
     for (var i = 0; i < players[currentPlayer].cards.length; i += 1) {
         $("#cards").append('<li class="card">This is Card <p>Attack: ' + players[currentPlayer].cards[i].attack + '</p> <p>Defense: ' + players[currentPlayer].cards[i].defend + '</p> </li>');
     }
@@ -81,7 +86,7 @@ function  expandBBar() {// expand the card shelf a.k.a. bottom bar
     $("#cards").delay(680).show(680);
     
     $(".triangle").css("transform","rotate(30deg) skewX(-30deg) scale(1,.866)");
-    $("#cardShowButton").css("margin", "6.6vw 0vw 9vw 9vw")
+    $("#cardShowButton").css("margin", "4.9vw 0vw 9vw 9vw")
     $("#cardShowButtonText").html('Hide Cards')
     
     if (numCards >= 4) {
@@ -103,7 +108,7 @@ function hideBBar() { // hide the card cabinet a.k.a. bottom bar
         $("#bBar").css("overflowX", "hidden");
         $(".card").remove();
         
-        $("#cardShowButton").css("margin", "5vw 0vw 9vw 9vw")
+        $("#cardShowButton").css("margin", "3vw 0vw 9vw 7.5vw")
         $("#cardShowButtonText").html('Show Cards')
         
         $(".triangle").css("transform","rotate(-30deg) skewX(-30deg) scale(1,.866)");
@@ -140,6 +145,14 @@ $('#cardShowButtonText').click(function () {
     }
 });
 
+$('#cards').click(function () {
+    console.log("Here is being card clicked yo");
+    if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
+        cardSelected = true;
+
+    }
+});
+
 //var scrollW = document.getElementsByClassName("");
 function addCard() {
     "use strict";
@@ -149,7 +162,7 @@ function addCard() {
         var randomCardIndex = Math.floor((Math.random() * (players[currentPlayer].character.cards.length -1)));
         
         //add a card li to the cards div
-        $("#cards").append('<li class="card">This is Card <p>Attack: ' + players[currentPlayer].character.cards[randomCardIndex].attack + '</p> <p>Defense: ' + players[currentPlayer].character.cards[randomCardIndex].defend + '</p> </li>');
+        $("#cards").append('<li class="card0">This is Card <p>Attack: ' + players[currentPlayer].character.cards[randomCardIndex].attack + '</p> <p>Defense: ' + players[currentPlayer].character.cards[randomCardIndex].defend + '</p> </li>');
 
         
         //extend bar width
@@ -163,14 +176,20 @@ function addCard() {
         players[currentPlayer].cards.push(players[currentPlayer].character.cards[randomCardIndex]);
 
         actionCounter -= 1;
+        $("#statActionNumber").html(actionCounter);
     }
 }
 
+var actionJustSwitched = true;
+
 $("#statActionButton").click(function () {
     
-    if (expanded === false) {
+     if ($("#statActionButton").html() !== "Draw Card") {
         turnCounter++;
-    }
+        if (turnCounter === 2) {
+            actionJustSwitched = true;
+        }
+     }
 
     if (turnCounter === 3) { // next players turn !!!!!!!!!!!!!!!!!!!!!!
 
@@ -195,18 +214,16 @@ $("#statActionButton").click(function () {
         numCards = players[currentPlayer].cards.length;
         actionCounter = players[currentPlayer].character.numActions;
 
+        cardSelected = false;
 
-        // $("#statHealthFill").css("transition", "top: 0s");
-        // $("#statHealthFill").css("top", ((1 - players[currentPlayer].healthFromLastTurn) * 100) + '%'); //shifts red health fill downwards in sync with the health from the current player's previous turn
         healthRatio = players[currentPlayer].health / players[currentPlayer].character.health;
         $("#statHealthFill").css("transition", "top: 2s");
-        $("#statHealthFill").css("top", ((1 - healthRatio)  * 100) + '%'); //slowly shifts red health fill downwards in sync with the the current player's current health
-        // players[currentPlayer].healthFromLastTurn = healthRatio; //records what the current player's health was at the start of their turn
+        $("#statHealthFill").css("top", ((1 - healthRatio)  * 100) + '%'); //slowly shifts red health fill downwards in sync with 
 
         $("#statName").html(players[currentPlayer].nick);
         $("#statActionNumber").html(actionCounter);
         $("#statHealthNumber").html(players[currentPlayer].health);
-        $("#statName").html(players[currentPlayer].nick);
+        //$("#statName").html(players[currentPlayer].nick);
         $("#statCharacter").html(players[currentPlayer].character.type);
 
     } else if (turnCounter === 1) {
@@ -220,10 +237,14 @@ $("#statActionButton").click(function () {
     } else if (turnCounter === 2) {
         
         if (expanded === true) {
-            addCard();
+            $("#statActionButton").html('Draw Card');
+            if (actionJustSwitched === false) {
+                addCard();
+            }
         } else {
             $("#statActionButton").html('Next Turn');
         }
+        actionJustSwitched = false;
     }
     for (var i = 0; i < size; i += 1) {//just trying to see where i can go
         for (var ii = 0; ii < size; ii += 1) {
@@ -245,7 +266,7 @@ $("#statActionButton").click(function () {
 $("#myCanvas").hide();
 
 
-var size, biome, playerType, numPlayers = 30, gameSetup = 1, players = [], move = false, currentPlayer = 0, turnCounter = 0, moveCounter = 0;
+var size, biome, playerType, numPlayers = 30, gameSetup = 1, players = [], move = false, currentPlayer = 0, turnCounter = 0, moveCounter = 0, cardSelected = false;
 
 var playerTypes = [// array of player types: add new player types here
     {
@@ -486,6 +507,7 @@ function setup() {//           setup map here, also draw it
             justification: 'center',
             fontSize: 30,
             fillColor: 'white',
+            fontFamily: 'Trade Winds',
             content: players[i].nick
         });
     }
@@ -602,17 +624,23 @@ function rangedAttack() {
         }
     }
     // for (var i = 0; i < (size - players[currentPlayer].coord.y); i+=1) { // shoot down along z axis || RANGED
-    //     if (boardMain[players[currentPlayer].coord.y + i][players[currentPlayer].coord.x - i].type === 'rock') {
-    //         break;
-    //     } else {
-    //         boardMain[players[currentPlayer].coord.y + i][players[currentPlayer].coord.x - i].backgroundPath.visible = true;
+    //     if (players[currentPlayer].coord.y + i - 1 <= size && players[currentPlayer].coord.x - i + 1 >= 0) {
+    //         if (boardMain[players[currentPlayer].coord.y + i][players[currentPlayer].coord.x - i].type === 'rock') {
+    //             break;
+    //             Console.log(i);
+    //         } else {
+    //             boardMain[players[currentPlayer].coord.y + i][players[currentPlayer].coord.x - i].backgroundPath.visible = true;
+    //         }
     //     }
+        
     // }
-    // for (var i = 0; i < players[currentPlayer].coord.y; i+=1) { // shoot up along z axis || RANGED
-    //     if (boardMain[players[currentPlayer].coord.y - i][players[currentPlayer].coord.x + i].type === 'rock') {
-    //         break;
-    //     } else {
-    //         boardMain[players[currentPlayer].coord.y - i][players[currentPlayer].coord.x + i].backgroundPath.visible = true;
+    // for (var i = 0; i < (players[currentPlayer].coord.y) + 1; i+=1) { // shoot up along z axis || RANGED
+    //     if (players[currentPlayer].coord.x + i <= size && players[currentPlayer].coord.y - i >= 0) {
+    //         if (boardMain[players[currentPlayer].coord.y - i][players[currentPlayer].coord.x + i].type === 'rock') {
+    //             break;
+    //         } else {
+    //             boardMain[players[currentPlayer].coord.y - i][players[currentPlayer].coord.x + i].backgroundPath.visible = true;
+    //         }
     //     }
     // }
     // third axis ii - players[currentPlayer].coord.x)*(-1) === i - players[currentPlayer].coord.y
@@ -623,7 +651,7 @@ function statBox(player) {
 }
 
 function onFrame(event) { // runs 60 times per second TIP: Dont put a lot of loops in here because it will slow the game down a BUNCH
-    if (turnCounter === 2) {
+    if (turnCounter === 2 && cardSelected === true) {
 
         rangedAttack();
 
@@ -735,6 +763,7 @@ function onMouseUp(event) {
                                 console.log("player " + (u+1) + " loses 1 health and is at " + players[u].health + " health");
                                 actionCounter -= 1;
                                 $("#statActionNumber").html(actionCounter);
+                                cardSelected = false;
                                 // healthRatio = players[currentPlayer].health / players[currentPlayer].character.health;
 
                                 // $("#statHealthFill").css("height", (healthRatio * 100) + '%');

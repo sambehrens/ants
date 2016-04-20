@@ -18,6 +18,7 @@ CLASSES
 }
 
 .triangle {
+    transition: transform .5s, margin .5s;
 	position: relative;
 	text-align: left;
 }
@@ -59,6 +60,16 @@ body {
 canvas[resize] {
     width: 100%;
     height: 100%;
+    
+}
+
+#spriteCanvas {
+    z-index: 1;
+    background-color: transparent;
+}
+
+#myCanvas {
+    z-index: 0;
     background-color: black;
 }
 
@@ -239,8 +250,8 @@ STATBAR ITEMS
 }
 
 #cardShowButton {
-    background: blue;
-    margin: 5vw 0vw 9vw 9vw;
+    background: mediumpurple;
+    margin: 3vw 0vw 9vw 8vw;
     
     z-index: 3;
     position: fixed;
@@ -248,10 +259,10 @@ STATBAR ITEMS
 
 #cardShowButtonText {
     
-    width: 10%;
-    margin: 7.2vw 0vw 20vw 6vw;
-    font-size: 1.7em;
-    color: orangered;
+    width: 8%;
+    margin: 5.7vw 0vw 20vw 6vw;
+    font-size: 1.4em;
+    color: black;
     z-index: 4;
     position: fixed;
     
@@ -308,7 +319,7 @@ ICONS AND IMAGES
 CARDS
 **************************************/
 
-.card {
+.card0 {
     color: AntiqueWhite;
     background: blue;
     background-image: url('../images/samTheSham.jpg');
