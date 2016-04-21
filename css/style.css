@@ -283,22 +283,19 @@ CARD STYLE
 }
 
 #cards li {
-    height: 17vw;
-    width: 13vw;
-    border-style: solid;
-    border-width: 1vw;
-    border-color: AntiqueWhite;
-    text-align: right;
+    height: 10vw;
+    width: 7vw;
 /*    background: pink;*/
-    
+    font-family: 'Trade Winds', cursive;
+    font-size: 0.6em;
     
     list-style: none;
     display: inline-block;
     min-height: 50px;
     background-repeat: no-repeat;
-    background-size: 34px;
-    padding: 1vw 1vw 1vw 0vw;
-    margin: 0px 2vw 0px 0px;
+    background-size: 100%;
+    padding: 0.5vw 0.5vw 0.5vw 0.5vw;
+    margin: 0px 0px 0px 0px;
 /*    background-image: url('../imagesOfPower/samTheSham.jpg');*/
 }
 
@@ -319,44 +316,108 @@ ICONS AND IMAGES
 CARDS
 **************************************/
 
+#attackLabel {
+    display:inline;
+}
+
+#defendLabel {
+    display:inline;
+    margin-left: 42%;
+}
+
+#cardLabels {
+    margin-top: 94%;
+    margin-left: 21%;
+}
+
 .card0 {
-    color: AntiqueWhite;
-    background: blue;
-    background-image: url('../images/samTheSham.jpg');
+    background-image: url('../images/greedcard.png');
 }
 
 .card1 {
-    color: white;
-    background: green;
-    background-image: url('../images/samTheSham.jpg');
+    background-image: url('../images/greedcard.png');
 }
 
 .card2 {
-    background: yellow;
-    color: red;
-    background-image: url('../images/samTheSham.jpg');
+    background-image: url('../images/greedcard.png');
 }
 
 .card3 {
-    background: black;
-    color: white;
-    background-image: url('../images/samTheSham.jpg');
+    background-image: url('../images/greedcard.png');
 }
 
 .card4 {
-    background: white;
-    color: black;
-    background-image: url('../images/samTheSham.jpg');
+    background-image: url('../images/greedcard.png');
 }
 
 .card5 {
-    background: orange;
-    color: darkgreen;
-    background-image: url('../images/samTheSham.jpg');
+    background-image: url('../images/greedcard.png');
 }
 
 .card6 {
-    background: pink;
-    color: blue;
-    background-image: url('../images/samTheSham.jpg');
+    background-image: url('../images/greedcard.png');
+}
+
+.card7 {
+    background-image: url('../images/greedcard.png');
+}
+
+.card8 {
+    background-image: url('../images/wrathcard.png');
+}
+
+.card9 {
+    background-image: url('../images/wrathcard.png');
+}
+
+.card10 {    
+    background-image: url('../images/wrathcard.png');
+}
+
+.card11 {
+    background-image: url('../images/wrathcard.png');
+}
+
+.card12 {
+    background-image: url('../images/wrathcard.png');
+}
+
+.card13 {
+    background-image: url('../images/wrathcard.png');
+}
+
+.card14 {
+    background-image: url('../images/wrathcard.png');
+}
+
+.card15 {
+    background-image: url('../images/wrathcard.png');
+}
+
+.card16 {
+    background-image: url('../images/pridecard.png');
+}
+
+.card17 {
+    background-image: url('../images/pridecard.png');
+}
+
+.card18 {
+    background-image: url('../images/pridecard.png');
+}
+
+.card19 {
+    background-image: url('../images/pridecard.png');
+}
+
+.card20 {
+    background-image: url('../images/pridecard.png');
+}
+
+.card21 {
+    background-image: url('../images/pridecard.png');
+}
+
+.card22 {
+    background-image: url('../images/pridecard.png');
 }

@@ -67,6 +67,7 @@ var expanded = false; // Is the bottom bar expanded?
 var numCards = 0; // number of cards
 var bBarWidth = 0;// width of bottom bar for cards
 var healthRatio = 1; // change in health fill on the statbar
+var currentAttack = 0, currentDefense = 0;
 
 $("#cards").hide();
 $('#bBar').hide(); // hides the card holder bar
@@ -77,7 +78,7 @@ function  expandBBar() {// expand the card shelf a.k.a. bottom bar
     $(".card").remove();
 
     for (var i = 0; i < players[currentPlayer].cards.length; i += 1) {
-        $("#cards").append('<li class="card">This is Card <p>Attack: ' + players[currentPlayer].cards[i].attack + '</p> <p>Defense: ' + players[currentPlayer].cards[i].defend + '</p> </li>');
+        $("#cards").append('<li id="cardy" class="' + players[currentPlayer].cards[i].css + '"><div id="cardLabels"><p id="attackLabel">' + players[currentPlayer].cards[i].attack + '</p> <p id="defendLabel">' + players[currentPlayer].cards[i].defend + '</p></div></li>');
     }
 
 
@@ -106,7 +107,9 @@ function hideBBar() { // hide the card cabinet a.k.a. bottom bar
         $("#bBar").css("width", "0");
         $("#cards").hide(0);
         $("#bBar").css("overflowX", "hidden");
-        $(".card").remove();
+        for (var i = 0; i < players[currentPlayer].cards.length; i += 1) {
+            $("#cardy").remove();
+        }
         
         $("#cardShowButton").css("margin", "3vw 0vw 9vw 7.5vw")
         $("#cardShowButtonText").html('Show Cards')
@@ -145,13 +148,80 @@ $('#cardShowButtonText').click(function () {
     }
 });
 
-$('#cards').click(function () {
+// $('#cards').click(function () {
+//     console.log("Here is being card clicked yo");
+//     if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
+//         cardSelected = true;
+
+//     }
+// });
+$('.card1').click(function () {
     console.log("Here is being card clicked yo");
     if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
         cardSelected = true;
-
+        currentAttack = playerTypes[0].cards[0].attack;
+        currentDefense = playerTypes[0].cards[0].defend;
+        this.remove();
     }
 });
+$('.card2').click(function () {
+    console.log("Here is being card clicked yo");
+    if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
+        cardSelected = true;
+        currentAttack = playerTypes[0].cards[1].attack;
+        currentDefense = playerTypes[0].cards[1].defend;
+        this.remove();
+    }
+});
+$('.card3').click(function () {
+    console.log("Here is being card clicked yo");
+    if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
+        cardSelected = true;
+        currentAttack = playerTypes[0].cards[2].attack;
+        currentDefense = playerTypes[0].cards[2].defend;
+        this.remove();
+    }
+});
+$('.card4').click(function () {
+    console.log("Here is being card clicked yo");
+    if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
+        cardSelected = true;
+        currentAttack = playerTypes[0].cards[3].attack;
+        currentDefense = playerTypes[0].cards[3].defend;
+        this.remove();
+    }
+});
+$('.card5').click(function () {
+    console.log("Here is being card clicked yo");
+    if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
+        cardSelected = true;
+        currentAttack = playerTypes[0].cards[4].attack;
+        currentDefense = playerTypes[0].cards[4].defend;
+        this.remove();
+    }
+});
+$('.card6').click(function () {
+    console.log("Here is being card clicked yo");
+    if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
+        cardSelected = true;
+        currentAttack = playerTypes[0].cards[5].attack;
+        currentDefense = playerTypes[0].cards[5].defend;
+        this.remove();
+    }
+});
+$('.card7').click(function () {
+    console.log("Here is being card clicked yo");
+    if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
+        cardSelected = true;
+        currentAttack = playerTypes[0].cards[6].attack;
+        currentDefense = playerTypes[0].cards[6].defend;
+        this.remove();
+    }
+});
+
+$("#cardy").click(function() {
+    Console.log("blick");
+})
 
 //var scrollW = document.getElementsByClassName("");
 function addCard() {
@@ -162,7 +232,7 @@ function addCard() {
         var randomCardIndex = Math.floor((Math.random() * (players[currentPlayer].character.cards.length -1)));
         
         //add a card li to the cards div
-        $("#cards").append('<li class="card0">This is Card <p>Attack: ' + players[currentPlayer].character.cards[randomCardIndex].attack + '</p> <p>Defense: ' + players[currentPlayer].character.cards[randomCardIndex].defend + '</p> </li>');
+        $("#cards").append('<li id="cardy" class="' + players[currentPlayer].character.cards[randomCardIndex].css + '"><div id="cardLabels"><p id="attackLabel">' + players[currentPlayer].character.cards[randomCardIndex].attack + '</p> <p id="defendLabel">' + players[currentPlayer].character.cards[randomCardIndex].defend + '</p></div></li>');
 
         
         //extend bar width
@@ -201,15 +271,19 @@ $("#statActionButton").click(function () {
             }
         }
 
+        hideBBar();
+
         currentPlayer++;
         if (currentPlayer === players.length) {
             currentPlayer = 0;
         }
 
-        hideBBar();
+        //hideBBar();
 
         turnCounter = 0;
 
+        currentAttack = 0;
+        currentDefense = 0;
 
         numCards = players[currentPlayer].cards.length;
         actionCounter = players[currentPlayer].character.numActions;
@@ -266,7 +340,7 @@ $("#statActionButton").click(function () {
 $("#myCanvas").hide();
 
 
-var size, biome, playerType, numPlayers = 30, gameSetup = 1, players = [], move = false, currentPlayer = 0, turnCounter = 0, moveCounter = 0, cardSelected = false;
+var size, biome, playerType, numPlayers = 30, gameSetup = 1, players = [], move = false, currentPlayer = 0, turnCounter = 0, moveCounter = 0, cardSelected = false, dragging = false;
 
 var playerTypes = [// array of player types: add new player types here
     {
@@ -276,13 +350,13 @@ var playerTypes = [// array of player types: add new player types here
         health: 20,
         numActions: 3,
         cards: [// array of cards: put new cards here
-            {attack: 4,defend: 2,move: 5,count: 6},
-            {attack: 5,defend: 1,count: 4},
-            {attack: 6,defend: 0,count: 2},
-            {attack: 3,defend: 4,count: 5},
-            {attack: 3,defend: 0,count: 3},
-            {attack: 4,defend: 5,count: 2},
-            {attack: 0,defend: 5,count: 3}
+            {attack: 4,defend: 2,move: 5,count: 6, css: "card1"},
+            {attack: 5,defend: 1,count: 4, css: "card2"},
+            {attack: 6,defend: 0,count: 2, css: "card3"},
+            {attack: 3,defend: 4,count: 5, css: "card4"},
+            {attack: 3,defend: 0,count: 3, css: "card5"},
+            {attack: 4,defend: 5,count: 2, css: "card6"},
+            {attack: 0,defend: 5,count: 3, css: "card7"}
         ]
     },
     {
@@ -292,14 +366,14 @@ var playerTypes = [// array of player types: add new player types here
         health: 16,
         numActions: 2,
         cards: [// array of cards: put new cards here
-            {attack: 8,defend: 0,count: 2},
-            {attack: 4,defend: 1,count: 5},
-            {attack: 3,defend: 2,count: 7},
-            {attack: 0,defend: 4,count: 3},
-            {attack: 5,defend: 0,count: 3},
-            {attack: 6,defend: 0,count: 1},
-            {attack: 3,defend: 0,pierce: true,count: 3},
-            {attack: 3,defend: 3,pierce: true,count: 1}
+            {attack: 8,defend: 0,count: 2, css: "card8"},
+            {attack: 4,defend: 1,count: 5, css: "card9"},
+            {attack: 3,defend: 2,count: 7, css: "card10"},
+            {attack: 0,defend: 4,count: 3, css: "card11"},
+            {attack: 5,defend: 0,count: 3, css: "card12"},
+            {attack: 6,defend: 0,count: 1, css: "card13"},
+            {attack: 3,defend: 0,pierce: true,count: 3, css: "card14"},
+            {attack: 3,defend: 3,pierce: true,count: 1, css: "card15"}
         ]
     },
     {
@@ -309,13 +383,13 @@ var playerTypes = [// array of player types: add new player types here
         health: 22,
         numActions: 2,
         cards: [// array of cards: put new cards here
-            {attack: 8,defend: 0,count: 2},
-            {attack: 0,defend: 7,count: 3},
-            {attack: 5,defend: 2,count: 5},
-            {attack: 3,defend: 2,count: 4},
-            {attack: 2,defend: 3,count: 4},
-            {attack: 0,defend: 0,heal: 8,count: 2},
-            {attack: 0,defend: 0,heal: 2,count: 1},
+            {attack: 8,defend: 0,count: 2, css: "card16"},
+            {attack: 0,defend: 7,count: 3, css: "card17"},
+            {attack: 5,defend: 2,count: 5, css: "card18"},
+            {attack: 3,defend: 2,count: 4, css: "card19"},
+            {attack: 2,defend: 3,count: 4, css: "card20"},
+            {attack: 0,defend: 0,heal: 8,count: 2, css: "card21"},
+            {attack: 0,defend: 0,heal: 2,count: 1, css: "card22"},
             {attack: 4,defend: 4,count: 4}
         ],
         aimerLine: new Path()
@@ -679,6 +753,7 @@ function onMouseMove(event) {
 
 function onMouseDrag(event) {
     //if statement about if it is too far dragged or not
+    dragging = true;
     for (var i = 0; i < size; i += 1) {
         for (var ii = 0; ii < size; ii += 1) {//  reposition tiles for the draging of the map
 
@@ -701,8 +776,9 @@ function onMouseDrag(event) {
 function onMouseDown(event) {
     for (var i = 0; i < size; i += 1) {
         for (var ii = 0; ii < size; ii += 1) {
-            if (boardMain[i][ii].path.contains(event.point)) {
+            if (Math.pow(event.point.x - boardMain[i][ii].path.position.x,2) + Math.pow(event.point.y - boardMain[i][ii].path.position.y,2) < Math.pow(43,2)) {
                 //click events here
+
 
                 boardMain[i][ii].path.bounds.width -=10; // make the tile small when click down
                 boardMain[i][ii].path.bounds.height -=10;
@@ -733,12 +809,12 @@ function onMouseUp(event) {
                 boardMain[i][ii].path.position.y -=5;
             }
 
-            if (boardMain[i][ii].path.contains(event.point)) {
+            if (Math.pow(event.point.x - boardMain[i][ii].path.position.x,2) + Math.pow(event.point.y - boardMain[i][ii].path.position.y,2) < Math.pow(43,2)) {
                 //   move events here
                 
                 
 
-                if (turnCounter === 1) {
+                if (turnCounter === 1 && dragging === false) {
                     //console.log(ii + "  " + i)
                     var deltaX = ii - players[currentPlayer].coord.x;
                     var deltaY = i - players[currentPlayer].coord.y;
@@ -755,11 +831,11 @@ function onMouseUp(event) {
                     } 
                 }
 
-                if (turnCounter === 2 && boardMain[i][ii].backgroundPath.visible === true && actionCounter !== 0) { // this whole shabang is about attacking
+                if (turnCounter === 2 && boardMain[i][ii].backgroundPath.visible === true && actionCounter !== 0 && dragging === false) { // this whole shabang is about attacking
                     for (var u = 0; u < players.length; u += 1) {
                         if (u !== currentPlayer) {
                             if (players[u].coord.x === ii && players[u].coord.y === i) {
-                                players[u].health -= 1;
+                                players[u].health -= currentAttack;
                                 console.log("player " + (u+1) + " loses 1 health and is at " + players[u].health + " health");
                                 actionCounter -= 1;
                                 $("#statActionNumber").html(actionCounter);
@@ -777,9 +853,12 @@ function onMouseUp(event) {
             if (turnCounter === 2) { 
                    //boardMain[i][ii].backgroundPath.visible = false;
             }
-            boardMain[i][ii].backgroundPath.visible = false; // reset all tiles to non movable
+            if (dragging === false) {
+                boardMain[i][ii].backgroundPath.visible = false; // reset all tiles to non movable
+            }
         }
     }
+    dragging = false;
 }
 
 
