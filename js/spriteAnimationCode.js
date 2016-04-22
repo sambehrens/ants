@@ -40,8 +40,8 @@
   // var coin,
   //   coinImage,
   //   canvas;
-  var rock,
-    rockImage,
+  var wrathSprite,
+    wrathImage,
     canvas;         
 
   function gameLoop () {
@@ -50,8 +50,8 @@
 
     // coin.update();
     // coin.render();
-    rock.update();
-    rock.render();
+    wrathSprite.update();
+    wrathSprite.render();
   }
   
   function sprite (options) {
@@ -113,14 +113,14 @@
   }
   
   // Get canvas
-  canvas = document.getElementById("myCanvas");
-  // canvas.width = 1500;
-  // canvas.height = 1500;
+  canvas = document.getElementById("spriteCanvas");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
   
   // Create sprite sheet
 
   //coinImage = new Image(); 
-  rockImage = new Image(); 
+  wrathImage = new Image(); 
   
   // Create sprite
 
@@ -133,25 +133,25 @@
   //   ticksPerFrame: 2
   // });
 
-  rock = sprite({
+  wrathSprite = sprite({
     context: canvas.getContext("2d"),
     width: 3420,
-    height: 154,
-    destinationX: 70,
-    destinationY: 0,
-    sizeWidth: 190,
-    sizeHeight: 154,
-    image: rockImage,
+    height: 158,
+    destinationX: 300,
+    destinationY: 500,
+    sizeWidth: 110,
+    sizeHeight: 90,
+    image: wrathImage,
     numberOfFrames: 18,
     ticksPerFrame: 2
   });
   
+  wrathSprite.destinationX = 900;
   // Load sprite sheet
   // coinImage.addEventListener("load", gameLoop);
   // coinImage.src = "images/coin-sprite-animation.png";
-  rockImage.addEventListener("load", gameLoop);
-  rockImage.src = "images/tryRun2.png";
-
+  wrathImage.addEventListener("load", gameLoop);
+  wrathImage.src = "images/tryRun2.png";
 } ());
 
 

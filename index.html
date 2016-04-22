@@ -43,9 +43,8 @@
         <h3 id="cardShowButtonText">Show Cards</h3> <!-- Label for card show button -->
         <div id="cardShowButton" class="triangle"></div> <!-- Button for expanding the bar, showing the cards. -->
     </div>
-    
+    <canvas id="spriteCanvas"></canvas>
     <canvas id="myCanvas" resize></canvas>
-    <!-- <canvas id="spriteCanvas" resize></canvas> -->
     <div id="bBar">
         <div class="deck"></div>
         <ul id="cards">
@@ -62,12 +61,13 @@ to do:
 
 players[currentPlayer].health/players[currentPlayer].character.health
 */
-
+// wrathSprite.destinationX = 900;
 var expanded = false; // Is the bottom bar expanded?
 var numCards = 0; // number of cards
-var bBarWidth = 0;// width of bottom bar for cards
+var bBarWidth = 6;// width of bottom bar for cards
 var healthRatio = 1; // change in health fill on the statbar
 var currentAttack = 0, currentDefense = 0;
+
 
 $("#cards").hide();
 $('#bBar').hide(); // hides the card holder bar
@@ -236,7 +236,7 @@ function addCard() {
 
         
         //extend bar width
-        bBarWidth += (28);
+        bBarWidth += (players[currentPlayer].cards.length * 1.4 + 8);
         $("#cards").css("width", bBarWidth + "vw");
         
         if (numCards >= 4) {
@@ -477,6 +477,7 @@ $("#proceed").click(function() {
         }
 
         players.push(player);
+
     }
 
 
@@ -506,6 +507,7 @@ for (var i = 0; i < playerTypes.length; i += 1) {//   add player types to select
 }
 
 
+//wrathSprite.destinationX = 500;
 
 var boardMain = [];
 
