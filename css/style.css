@@ -337,14 +337,12 @@ CARDS
     margin-left: 20%;
 }
 
-#card0 {
-    background-image: url('../images/greedcard.png');
+.cardy {
     height: 12vw;
     width: 8.3vw;
     font-family: 'Trade Winds', cursive;
     font-size: 0.84em;
     
-    list-style: none;
     display: inline-block;
     min-height: 50px;
     background-repeat: no-repeat;
@@ -355,165 +353,92 @@ CARDS
 
 #card1 {
     background-image: url('../images/greedcard.png');
-    height: 12vw;
-    width: 8.3vw;
-    font-family: 'Trade Winds', cursive;
-    font-size: 0.84em;
-    
-    display: inline-block;
-    min-height: 50px;
-    background-repeat: no-repeat;
-    background-size: 100%;
-    padding: .3vw 0.5vw 0.5vw 0.5vw;
-    margin: 0px 2vw 0px 0px;
 }
 
 #card2 {
     background-image: url('../images/greedcard.png');
-    height: 12vw;
-    width: 8.3vw;
-    font-family: 'Trade Winds', cursive;
-    font-size: 0.84em;
-    
-    display: inline-block;
-    min-height: 50px;
-    background-repeat: no-repeat;
-    background-size: 100%;
-    padding: .3vw 0.5vw 0.5vw 0.5vw;
-    margin: 0px 2vw 0px 0px;
 }
 
 #card3 {
     background-image: url('../images/greedcard.png');
-    height: 12vw;
-    width: 8.3vw;
-    font-family: 'Trade Winds', cursive;
-    font-size: 0.84em;
-    
-    display: inline-block;
-    min-height: 50px;
-    background-repeat: no-repeat;
-    background-size: 100%;
-    padding: .3vw 0.5vw 0.5vw 0.5vw;
-    margin: 0px 2vw 0px 0px;
 }
 
 #card4 {
     background-image: url('../images/greedcard.png');
-    height: 12vw;
-    width: 8.3vw;
-    font-family: 'Trade Winds', cursive;
-    font-size: 0.84em;
-    
-    display: inline-block;
-    min-height: 50px;
-    background-repeat: no-repeat;
-    background-size: 100%;
-    padding: .3vw 0.5vw 0.5vw 0.5vw;
-    margin: 0px 2vw 0px 0px;
 }
 
 #card5 {
     background-image: url('../images/greedcard.png');
-    height: 12vw;
-    width: 8.3vw;
-    font-family: 'Trade Winds', cursive;
-    font-size: 0.84em;
-    
-    display: inline-block;
-    min-height: 50px;
-    background-repeat: no-repeat;
-    background-size: 100%;
-    padding: .3vw 0.5vw 0.5vw 0.5vw;
-    margin: 0px 2vw 0px 0px;
 }
 
 #card6 {
     background-image: url('../images/greedcard.png');
-    height: 12vw;
-    width: 8.3vw;
-    font-family: 'Trade Winds', cursive;
-    font-size: 0.84em;
-    
-    display: inline-block;
-    min-height: 50px;
-    background-repeat: no-repeat;
-    background-size: 100%;
-    padding: .3vw 0.5vw 0.5vw 0.5vw;
-    margin: 0px 2vw 0px 0px;
 }
 
 #card7 {
     background-image: url('../images/greedcard.png');
-    height: 12vw;
-    width: 8.3vw;
-    font-family: 'Trade Winds', cursive;
-    font-size: 0.84em;
-    
-    display: inline-block;
-    min-height: 50px;
-    background-repeat: no-repeat;
-    background-size: 100%;
-    padding: .3vw 0.5vw 0.5vw 0.5vw;
-    margin: 0px 2vw 0px 0px;
 }
 
-.card8 {
+#card8 {
     background-image: url('../images/wrathcard.png');
 }
 
-.card9 {
+#card9 {
     background-image: url('../images/wrathcard.png');
 }
 
-.card10 {    
+#card10 {    
     background-image: url('../images/wrathcard.png');
 }
 
-.card11 {
+#card11 {
     background-image: url('../images/wrathcard.png');
 }
 
-.card12 {
+#card12 {
     background-image: url('../images/wrathcard.png');
 }
 
-.card13 {
+#card13 {
     background-image: url('../images/wrathcard.png');
 }
 
-.card14 {
+#card14 {
     background-image: url('../images/wrathcard.png');
 }
 
-.card15 {
+#card15 {
     background-image: url('../images/wrathcard.png');
 }
 
-.card16 {
+#card16 {
     background-image: url('../images/pridecard.png');
 }
 
-.card17 {
+#card17 {
     background-image: url('../images/pridecard.png');
 }
 
-.card18 {
+#card18 {
     background-image: url('../images/pridecard.png');
 }
 
-.card19 {
+#card19 {
     background-image: url('../images/pridecard.png');
 }
 
-.card20 {
+#card20 {
     background-image: url('../images/pridecard.png');
 }
 
-.card21 {
+#card21 {
     background-image: url('../images/pridecard.png');
 }
 
-.card22 {
+#card22 {
+    background-image: url('../images/pridecard.png');
+}
+
+#card23 {
     background-image: url('../images/pridecard.png');
 }

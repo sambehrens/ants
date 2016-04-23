@@ -146,7 +146,7 @@ var wrathSprite;
     that.render = function () {
     
       // Clear the canvas
-      that.context.clearRect(that.destinationX - 100, that.destinationY - 100, that.sizeWidth+200, that.sizeHeight+200);
+      that.context.clearRect(that.destinationX - 1800, that.destinationY - 1800, that.sizeWidth+3600, that.sizeHeight+3600);
       
       // Draw the animation
       that.context.drawImage(
@@ -219,145 +219,105 @@ $("#statBar").hide();
 
 function  expandBBar() {// expand the card shelf a.k.a. bottom bar
 
-    for (var i = 0; i < players[currentPlayer].cards.length; i += 1) {
+    for (var i = 0; i < players[currentPlayer].cards.length; i += 1) {// add the cards that the player has to the bbar
         $("#cards").append('<div class="cardy" id="' + players[currentPlayer].cards[i].css + '"><div id="cardLabels"><p id="attackLabel">' + players[currentPlayer].cards[i].attack + '</p> <p id="defendLabel">' + players[currentPlayer].cards[i].defend + '</p></div></div>');
     }
 
 
-    $("#bBar").css("background", "#C96A4B");
-    $("#bBar").css("width", "80%");
-    $("#cards").delay(680).show(680);
+    $("#bBar").css("background", "#C96A4B");//set the background color to a new color
+    $("#bBar").css("width", "80%");// set the wisth to expand the screen
+    $("#cards").delay(680).show(680);// delay the showing of the cards
     
-    $(".triangle").css("transform","rotate(30deg) skewX(-30deg) scale(1,.866)");
-    $("#cardShowButton").css("margin", "4.9vw 0vw 9vw 9vw")
-    $("#cardShowButtonText").html('Hide Cards')
+    $(".triangle").css("transform","rotate(30deg) skewX(-30deg) scale(1,.866)");//rotate the triangle that is for showing cards
+    $("#cardShowButton").css("margin", "4.9vw 0vw 9vw 9vw")// move the show card text to be centered in the recently moved triangle
+    $("#cardShowButtonText").html('Hide Cards')// set the triangles text to hide cards
     
-    if (numCards >= 4) {
+    if (numCards >= 4) {// set the overflow so the cards can go off screen
         $("#bBar").css("overflowX", "scroll");
     }
     
-    if (turnCounter === 2) {
+    if (turnCounter === 2) {// if it is time to action, set the text to draw cards
         $("#statActionButton").html('Draw Card');
     }
-    expanded = true;
+    expanded = true;// set the expanded to true because the bbar is expanded
 }
 
 function hideBBar() { // hide the card cabinet a.k.a. bottom bar
-    if (expanded === true) {
-        $("#cards").delay(600).show(600).finish();
-        $("#bBar").css("background", "#FF551C");
-        $("#bBar").css("width", "0");
-        $("#cards").hide(0);
-        $("#bBar").css("overflowX", "hidden");
-        for (var i = 0; i < players[currentPlayer].cards.length; i += 1) {
-            $(".cardy").remove();
+    if (expanded === true) {   // if the bar is expanded
+        $("#cards").delay(600).show(600).finish();//delay the showing of the cards
+        $("#bBar").css("background", "#FF551C");// change the bbar color
+        $("#bBar").css("width", "0");// collapse the bbar
+        $("#cards").hide(0);//hide all of the cards
+        $("#bBar").css("overflowX", "hidden");//hide the overflow
+        for (var i = 0; i < players[currentPlayer].cards.length; i += 1) {// remove all the cards from #cards. when expanded, add them back
+            $(".cardy").remove();// remve individual cards
         }
         
-        $("#cardShowButton").css("margin", "3vw 0vw 9vw 7.5vw")
-        $("#cardShowButtonText").html('Show Cards')
+        $("#cardShowButton").css("margin", "3vw 0vw 9vw 7.5vw")//center the text in the triangle
+        $("#cardShowButtonText").html('Show Cards')// change the text back to show cards
         
-        $(".triangle").css("transform","rotate(-30deg) skewX(-30deg) scale(1,.866)");
+        $(".triangle").css("transform","rotate(-30deg) skewX(-30deg) scale(1,.866)");//rotate the triangle back
 
-        if (turnCounter === 2) {
+        if (turnCounter === 2) {// change the trext back to next turn from draw card
             $("#statActionButton").html('Next Turn');
         }
-        expanded = false;
+        expanded = false;// set card bar to not expanded
     }
 }
 
-$('#cardShowButton').click(function () {
+$('#cardShowButton').click(function () {//this is if you click on the triangle to show cards or hide them
     "use strict";
     if (expanded === false) {
 
-        expandBBar();
+        expandBBar();//expand the card bar to show cards
 
     } else {
 
-        hideBBar();
+        hideBBar();//hide the card bar to hide cards
 
     }
 });
-$('#cardShowButtonText').click(function () {
+$('#cardShowButtonText').click(function () {// this is if you click on the show card text
     "use strict";
     if (expanded === false) {
 
-        expandBBar();
+        expandBBar();//expand the card bar to show cards
 
     } else {
 
-        hideBBar();
+        hideBBar();//hide the card bar to hide cards
 
     }
 });
 
-
-$("body").on('click', '#card1', function () {
-    console.log("here is card1 click");
-    if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
-        cardSelected = true;
-        currentAttack = playerTypes[0].cards[0].attack;
-        currentDefense = playerTypes[0].cards[0].defend;
-        this.remove();
-    }
-});
-$("body").on('click', '#card2', function () {
-    console.log("here is card2 click");
-    if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
-        cardSelected = true;
-        currentAttack = playerTypes[0].cards[1].attack;
-        currentDefense = playerTypes[0].cards[1].defend;
-        this.remove();
-    }
-});
-$("body").on('click', '#card3', function () {
-    console.log("here is card3 click");
-    if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
-        cardSelected = true;
-        currentAttack = playerTypes[0].cards[2].attack;
-        currentDefense = playerTypes[0].cards[2].defend;
-        this.remove();
-    }
-});
-$("body").on('click', '#card4', function () {
-    console.log("here is card4 click");
-    if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
-        cardSelected = true;
-        currentAttack = playerTypes[0].cards[3].attack;
-        currentDefense = playerTypes[0].cards[3].defend;
-        this.remove();
-    }
-});
-$("body").on('click', '#card5', function () {
-    console.log("here is card5 click");
-    if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
-        cardSelected = true;
-        currentAttack = playerTypes[0].cards[4].attack;
-        currentDefense = playerTypes[0].cards[4].defend;
-        this.remove();
-    }
-});
-$("body").on('click', '#card6', function () {
-    console.log("here is card6 click");
-    if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
-        cardSelected = true;
-        currentAttack = playerTypes[0].cards[5].attack;
-        currentDefense = playerTypes[0].cards[5].defend;
-        this.remove();
-    }
-});
-$("body").on('click', '#card6', function () {
-    console.log("Here is being card clicked yo");
-    if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
-        cardSelected = true;
-        currentAttack = playerTypes[0].cards[6].attack;
-        currentDefense = playerTypes[0].cards[6].defend;
-        this.remove();
-    }
-});
+// this block is for card clicks! do not enter. you will not come out alive
+$("body").on('click', '#card1', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[0].cards[0].attack;currentDefense = playerTypes[0].cards[0].defend;this.remove();}});
+$("body").on('click', '#card2', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[0].cards[1].attack;currentDefense = playerTypes[0].cards[1].defend;this.remove();}});
+$("body").on('click', '#card3', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[0].cards[2].attack;currentDefense = playerTypes[0].cards[2].defend;this.remove();}});
+$("body").on('click', '#card4', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[0].cards[3].attack;currentDefense = playerTypes[0].cards[3].defend;this.remove();}});
+$("body").on('click', '#card5', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[0].cards[4].attack;currentDefense = playerTypes[0].cards[4].defend;this.remove();}});
+$("body").on('click', '#card6', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[0].cards[5].attack;currentDefense = playerTypes[0].cards[5].defend;this.remove();}});
+$("body").on('click', '#card7', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[0].cards[6].attack;currentDefense = playerTypes[0].cards[6].defend;this.remove();}});
+$("body").on('click', '#card8', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[1].cards[0].attack;currentDefense = playerTypes[1].cards[0].defend;this.remove();}});
+$("body").on('click', '#card9', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[1].cards[1].attack;currentDefense = playerTypes[1].cards[1].defend;this.remove();}});
+$("body").on('click', '#card10', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[1].cards[2].attack;currentDefense = playerTypes[1].cards[2].defend;this.remove();}});
+$("body").on('click', '#card11', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[1].cards[3].attack;currentDefense = playerTypes[1].cards[3].defend;this.remove();}});
+$("body").on('click', '#card12', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[1].cards[4].attack;currentDefense = playerTypes[1].cards[4].defend;this.remove();}});
+$("body").on('click', '#card13', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[1].cards[5].attack;currentDefense = playerTypes[1].cards[5].defend;this.remove();}});
+$("body").on('click', '#card14', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[1].cards[6].attack;currentDefense = playerTypes[1].cards[6].defend;this.remove();}});
+$("body").on('click', '#card15', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[1].cards[7].attack;currentDefense = playerTypes[1].cards[7].defend;this.remove();}});
+$("body").on('click', '#card16', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[2].cards[0].attack;currentDefense = playerTypes[2].cards[0].defend;this.remove();}});
+$("body").on('click', '#card17', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[2].cards[1].attack;currentDefense = playerTypes[2].cards[1].defend;this.remove();}});
+$("body").on('click', '#card18', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[2].cards[2].attack;currentDefense = playerTypes[2].cards[2].defend;this.remove();}});
+$("body").on('click', '#card19', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[2].cards[3].attack;currentDefense = playerTypes[2].cards[3].defend;this.remove();}});
+$("body").on('click', '#card20', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[2].cards[4].attack;currentDefense = playerTypes[2].cards[4].defend;this.remove();}});
+$("body").on('click', '#card21', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[2].cards[5].attack;currentDefense = playerTypes[2].cards[5].defend;this.remove();}});
+$("body").on('click', '#card22', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[2].cards[6].attack;currentDefense = playerTypes[2].cards[6].defend;this.remove();}});
+$("body").on('click', '#card23', function () {if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {cardSelected = true;currentAttack = playerTypes[2].cards[7].attack;currentDefense = playerTypes[2].cards[7].defend;this.remove();}});
 
 
 //var scrollW = document.getElementsByClassName("");
-function addCard() {
+function addCard() {// add card to youtr hand and have it show up in thr bbar
     "use strict";
     if (numCards < 10 && actionCounter > 0 && turnCounter === 2) {
         numCards += 1;
@@ -376,19 +336,19 @@ function addCard() {
             $("#bBar").css("overflowX", "scroll");
         }
 
-        players[currentPlayer].cards.push(players[currentPlayer].character.cards[randomCardIndex]);
+        players[currentPlayer].cards.push(players[currentPlayer].character.cards[randomCardIndex]);// add new random card to players hand
 
-        actionCounter -= 1;
-        $("#statActionNumber").html(actionCounter);
+        actionCounter -= 1;// you lose an action because drawing a card takes an action
+        $("#statActionNumber").html(actionCounter);// update the action counter
     }
 }
 
-var actionJustSwitched = true;
+var actionJustSwitched = true;// if an action was just switched, this keeps track
 
-$("#statActionButton").click(function () {
+$("#statActionButton").click(function () {// this is the main gameplay button
     
-     if ($("#statActionButton").html() !== "Draw Card") {
-        turnCounter++;
+     if ($("#statActionButton").html() !== "Draw Card") {//if it isnt time to draw a card
+        turnCounter++;// add to the turn counter so we know what part of the turn it is
         if (turnCounter === 2) {
             actionJustSwitched = true;
         }
@@ -404,30 +364,30 @@ $("#statActionButton").click(function () {
             }
         }
 
-        hideBBar();
+        hideBBar();// hide the card bar when it is the next players turn
 
-        currentPlayer++;
-        if (currentPlayer === players.length) {
-            currentPlayer = 0;
+        currentPlayer++;// set the current player to the next person
+        if (currentPlayer === players.length) {// if the next person desn't exist, switch it back to the first player
+            currentPlayer = 0;// first player
         }
 
         //hideBBar();
 
-        turnCounter = 0;
+        turnCounter = 0;// rest the turn counter
 
-        currentAttack = 0;
-        currentDefense = 0;
+        currentAttack = 0;// reset the attack variabe
+        currentDefense = 0;// reset the defense variable
 
-        numCards = players[currentPlayer].cards.length;
-        actionCounter = players[currentPlayer].character.numActions;
+        numCards = players[currentPlayer].cards.length;// set the number of cards to the current players amount of cards
+        actionCounter = players[currentPlayer].character.numActions;// set the action counter to the current player number of actions
 
-        cardSelected = false;
+        cardSelected = false;// set the checer for card selected to false
 
-        healthRatio = players[currentPlayer].health / players[currentPlayer].character.health;
-        $("#statHealthFill").css("transition", "top: 2s");
+        healthRatio = players[currentPlayer].health / players[currentPlayer].character.health;// the ratio of health to available health
+        $("#statHealthFill").css("transition", "top: 2s");// set the stat bars red to the amount of health
         $("#statHealthFill").css("top", ((1 - healthRatio)  * 100) + '%'); //slowly shifts red health fill downwards in sync with 
 
-        $("#statName").html(players[currentPlayer].nick);
+        $("#statName").html(players[currentPlayer].nick);// change the name in the sta bar to the currnet players name
         $("#statActionNumber").html(actionCounter);
         $("#statHealthNumber").html(players[currentPlayer].health);
         //$("#statName").html(players[currentPlayer].nick);
@@ -478,10 +438,10 @@ var size, biome, playerType, numPlayers = 30, gameSetup = 1, players = [], move 
 var playerTypes = [// array of player types: add new player types here
     {
         type: 'Greed',
-        sprite: wrathSprite,
-        dice: 12,
-        health: 20,
-        numActions: 3,
+        sprite: wrathSprite,// the player sprite
+        dice: 12,//the max a man can move
+        health: 20,// the haelth at the beginning of the game
+        numActions: 3,// the num actions givent o the player
         cards: [// array of cards: put new cards here
             {attack: 4,defend: 2,move: 5,count: 6, css: "card1"},
             {attack: 5,defend: 1,count: 4, css: "card2"},
@@ -494,10 +454,10 @@ var playerTypes = [// array of player types: add new player types here
     },
     {
         type: 'Wrath',
-        sprite: wrathSprite,
-        dice: 4,
-        health: 16,
-        numActions: 2,
+        sprite: wrathSprite,// the player sprite
+        dice: 4,//the max a man can move
+        health: 16,// the haelth at the beginning of the game
+        numActions: 2,// the num actions givent o the player
         cards: [// array of cards: put new cards here
             {attack: 8,defend: 0,count: 2, css: "card8"},
             {attack: 4,defend: 1,count: 5, css: "card9"},
@@ -511,10 +471,10 @@ var playerTypes = [// array of player types: add new player types here
     },
     {
         type: 'Pride',
-        sprite: wrathSprite,
-        dice: 8,
-        health: 22,
-        numActions: 2,
+        sprite: wrathSprite,// the player sprite
+        dice: 8,//the max a man can move
+        health: 22,// the haelth at the beginning of the game
+        numActions: 2,// the num actions givent o the player
         cards: [// array of cards: put new cards here
             {attack: 8,defend: 0,count: 2, css: "card16"},
             {attack: 0,defend: 7,count: 3, css: "card17"},
@@ -523,24 +483,24 @@ var playerTypes = [// array of player types: add new player types here
             {attack: 2,defend: 3,count: 4, css: "card20"},
             {attack: 0,defend: 0,heal: 8,count: 2, css: "card21"},
             {attack: 0,defend: 0,heal: 2,count: 1, css: "card22"},
-            {attack: 4,defend: 4,count: 4}
+            {attack: 4,defend: 4,count: 4, css: "card23"}
         ]
     }
 ];
 
 
-$("#player").hide();
-$("#enterName").hide();
+$("#player").hide(); // hide the player selector
+$("#enterName").hide();// hide the name enterer
 
-$("#proceed").click(function() {
-    playerType = $("#player").val();
-    biome = $("#biome").val();
+$("#proceed").click(function() {// the main setup button function
+    playerType = $("#player").val();// set players type to the selected type
+    biome = $("#biome").val();// set the biome to the selected type
 
-    if (numPlayers === gameSetup) {
+    if (numPlayers === gameSetup) {// if all game setup is gone, set the text to start the game
         $("#proceed").html('Start Game');
     }
 
-    if (gameSetup === 1) {
+    if (gameSetup === 1) {//
         $("#enterNumPlayers").hide();
         $("#biome").hide();
 
@@ -610,6 +570,15 @@ $("#proceed").click(function() {
 
         players.push(player);
 
+        playerTypes.splice($("#player option:selected").index(),1);
+        for (var i = 0; i < playerTypes.length + 1; i += 1) {
+            $(".playerTypes").remove();
+        }
+        for (var i = 0; i < playerTypes.length; i += 1) {//   add player types to select option in html code
+            $("#player").append("<option class='playerTypes'>" + playerTypes[i].type + "</option>");
+        }
+        console.log("playertypes length: " + playerTypes.length)
+
     }
 
 
@@ -632,10 +601,8 @@ $("#proceed").click(function() {
     gameSetup += 1;
 });
 
-
-
 for (var i = 0; i < playerTypes.length; i += 1) {//   add player types to select option in html code
-    $("#player").append("<option>" + playerTypes[i].type + "</option>");
+    $("#player").append("<option class='playerTypes'>" + playerTypes[i].type + "</option>");
 }
 
 
@@ -643,8 +610,33 @@ for (var i = 0; i < playerTypes.length; i += 1) {//   add player types to select
 
 var boardMain = [];
 
+var paralaxReady = false;
+var count = 50;
 
 function setup() {//           setup map here, also draw it
+
+
+    // this is the paralax code -------------
+
+    // Create a symbol, which we will use to place instances of later:
+    var path = new Path.Circle({
+        center: [0, 0],
+        radius: 10,
+        fillColor: 'blue'
+    });
+
+    var symbol = new Symbol(path);
+
+    // Place the instances of the symbol:
+    for (var i = 0; i < count; i++) {
+        // The center position is a random point in the view:
+        var center = Point.random() * view.size;
+        var placedSymbol = symbol.place(center);
+        placedSymbol.scale(i / count);
+    }
+    paralaxReady = true;
+    // end paralax code -----------------------
+
     var x = 200,y = 100;
     var topLeft = -1;
     var bottomRight = -size;
@@ -864,6 +856,22 @@ function onFrame(event) { // runs 60 times per second TIP: Dont put a lot of loo
 
         rangedAttack();
 
+    }
+
+    if (paralaxReady === true) {
+        for (var i = 0; i < count; i++) {
+            var item = project.activeLayer.children[i];
+            
+            // Move the item 1/20th of its width to the right. This way
+            // larger circles move faster than smaller circles:
+            item.position.x += item.bounds.width / 20;
+
+            // If the item has left the view on the right, move it back
+            // to the left:
+            if (item.bounds.left > view.size.width) {
+                item.position.x = -item.bounds.width;
+            }
+        }
     }
 }
 
