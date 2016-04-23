@@ -60,7 +60,8 @@ to do:
 players[currentPlayer].health/players[currentPlayer].character.health
 */
 // wrathSprite.destinationX = 900;
-
+var canvas = document.getElementById('spriteCanvas');
+var context = canvas.getContext('2d');
 
 (function() {
 
@@ -89,23 +90,26 @@ players[currentPlayer].health/players[currentPlayer].character.health
 }());
 
 var wrathSprite;
+var greedSprite;
+var prideSprite;
 
 (function () {
       
-  // var coin,
-  //   coinImage,
-  //   canvas;
-  var wrathImage,
-    canvas;         
+  var wrathImage;
+  var greedImage;
+  var prideImage;
+  var canvas;         
 
   function gameLoop () {
   
     window.requestAnimationFrame(gameLoop);
 
-    // coin.update();
-    // coin.render();
     wrathSprite.update();
+    greedSprite.update();
+    prideSprite.update();
     wrathSprite.render();
+    greedSprite.render();
+    prideSprite.render();
   }
   
   function sprite (options) {
@@ -146,7 +150,7 @@ var wrathSprite;
     that.render = function () {
     
       // Clear the canvas
-      that.context.clearRect(that.destinationX - 1800, that.destinationY - 1800, that.sizeWidth+3600, that.sizeHeight+3600);
+      that.context.clearRect(that.destinationX, that.destinationY, that.sizeWidth, that.sizeHeight);
       
       // Draw the animation
       that.context.drawImage(
@@ -172,20 +176,10 @@ var wrathSprite;
   canvas.height = window.innerHeight;
   
   // Create sprite sheet
-
-  //coinImage = new Image(); 
   wrathImage = new Image(); 
-  
-  // Create sprite
+  prideImage = new Image();
+  greedImage = new Image();
 
-  // coin = sprite({
-  //   context: canvas.getContext("2d"),
-  //   width: 1000,
-  //   height: 100,
-  //   image: coinImage,
-  //   numberOfFrames: 10,
-  //   ticksPerFrame: 2
-  // });
 
   wrathSprite = sprite({
     context: canvas.getContext("2d"),
@@ -197,14 +191,43 @@ var wrathSprite;
     sizeHeight: 90,
     image: wrathImage,
     numberOfFrames: 18,
-    ticksPerFrame: 2
+    ticksPerFrame: 5
+  });
+
+  greedSprite = sprite({
+    context: canvas.getContext("2d"),
+    width: 11952,
+    height: 377,
+    destinationX: -500,
+    destinationY: -500,
+    sizeWidth: 110,
+    sizeHeight: 90,
+    image: greedImage,
+    numberOfFrames: 18,
+    ticksPerFrame: 5
+  });
+
+  prideSprite = sprite({
+    context: canvas.getContext("2d"),
+    width: 8676,
+    height: 356,
+    destinationX: -500,
+    destinationY: -500,
+    sizeWidth: 110,
+    sizeHeight: 90,
+    image: prideImage,
+    numberOfFrames: 18,
+    ticksPerFrame: 6
   });
   
   // Load sprite sheet
-  // coinImage.addEventListener("load", gameLoop);
-  // coinImage.src = "images/coin-sprite-animation.png";
   wrathImage.addEventListener("load", gameLoop);
+  greedImage.addEventListener("load", gameLoop);
+  prideImage.addEventListener("load", gameLoop);
   wrathImage.src = "images/tryRun2.png";
+  greedImage.src = "images/greedSprite.png";
+  prideImage.src = "images/prideSprite.png";
+
 } ());
 
 var expanded = false; // Is the bottom bar expanded?
@@ -438,7 +461,7 @@ var size, biome, playerType, numPlayers = 30, gameSetup = 1, players = [], move 
 var playerTypes = [// array of player types: add new player types here
     {
         type: 'Greed',
-        sprite: wrathSprite,// the player sprite
+        sprite: greedSprite,// the player sprite
         dice: 12,//the max a man can move
         health: 20,// the haelth at the beginning of the game
         numActions: 3,// the num actions givent o the player
@@ -471,7 +494,7 @@ var playerTypes = [// array of player types: add new player types here
     },
     {
         type: 'Pride',
-        sprite: wrathSprite,// the player sprite
+        sprite: prideSprite,// the player sprite
         dice: 8,//the max a man can move
         health: 22,// the haelth at the beginning of the game
         numActions: 2,// the num actions givent o the player
@@ -892,6 +915,8 @@ function onMouseMove(event) {
 function onMouseDrag(event) {
     //if statement about if it is too far dragged or not
     dragging = true;
+    //$("#spriteCanvas").context.clearRect(0, 0, window.width, window.height);
+    context.clearRect(0, 0, canvas.width, canvas.height);
     for (var i = 0; i < size; i += 1) {
         for (var ii = 0; ii < size; ii += 1) {//  reposition tiles for the draging of the map
 
@@ -964,6 +989,7 @@ function onMouseUp(event) {
                         players[currentPlayer].nameLabel.position = boardMain[i][ii].path.position;
                         players[currentPlayer].coord.x = ii;
                         players[currentPlayer].coord.y = i;
+                        context.clearRect(0, 0, canvas.width, canvas.height);
 
                         moveCounter = 0;
 
