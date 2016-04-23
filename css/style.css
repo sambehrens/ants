@@ -81,7 +81,7 @@ canvas[resize] {
 
 #menu {
     margin: auto;
-    margin-top: 200px;
+    margin-top: 150px;
     width: 70%;
     padding: 10px;
     border:14px solid #000000;
@@ -143,6 +143,22 @@ select:hover {
     margin: 0;
     list-style: none;
     display: inline;
+    text-align: center;
+}
+#story {
+    font-family: 'Trade Winds', cursive;
+    font-size: 1.1em;
+    margin: auto;
+    padding: 10px;
+    color: white;
+    text-align: center;
+}
+#titlename {
+    font-family: 'Trade Winds', cursive;
+    font-size: 2em;
+    margin: auto;
+    padding: 10px;
+    color: white;
     text-align: center;
 }
 
