@@ -1031,9 +1031,27 @@ function onMouseUp(event) {
             }
         }
     }
+    for (var i = 0; i < players.length; i += 1) {
+        if (players[i].health <= 0) {
+            players.splice(i,1);
+            numPlayers--;
+        }
+    }
+    if (players.length === 1) {
+        $("canvas").fadeToggle("slow");
+        $("#statBar").hide();
+        hideBBar();
+        $("body").append("<div id='winScreen'>" + players[0].nick + " Wins!<p id='clickContinue'>Click to continue</p></div>");
+        $("body").css("background","black");
+        document.cookie = players[0].nick + " was the last winner!";
+    }
     dragging = false;
 }
 
+$("body").on('click', '#winScreen', function () {
+    location.reload();
+    consol.log("reload");
+});
     </script>
 </body>
 </html>
