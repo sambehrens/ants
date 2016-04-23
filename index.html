@@ -7,6 +7,8 @@
     <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Trade+Winds' rel='stylesheet' type='text/css'>
 </head>
+<audio id="audio">
+</audio>
 <body background="images/background.png">
     <div id="menu">
         <ul id="wrapper">
@@ -60,6 +62,12 @@ to do:
 players[currentPlayer].health/players[currentPlayer].character.health
 */
 // wrathSprite.destinationX = 900;
+var audio = $("#audio")[0];
+audio.setAttribute('src', "music/mainTheme.mp3");
+// audio.play();
+//audio.setAttribute('src', "music/victoryTheme.wav");
+audio.play();
+
 var canvas = document.getElementById('spriteCanvas');
 var context = canvas.getContext('2d');
 
