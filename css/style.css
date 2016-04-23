@@ -280,7 +280,6 @@ CARD STYLE
 **************************************/
 
 #cards {
-    list-style: none;
     display: inline;
     margin: 0 0 0 0;
     float: top;
@@ -288,10 +287,11 @@ CARD STYLE
     
 }
 
-#cards li {
+/*
+.cardy {
     height: 12vw;
     width: 8.3vw;
-/*    background: pink;*/
+    background: pink;
     font-family: 'Trade Winds', cursive;
     font-size: 0.84em;
     
@@ -302,8 +302,9 @@ CARD STYLE
     background-size: 100%;
     padding: .3vw 0.5vw 0.5vw 0.5vw;
     margin: 0px 2vw 0px 0px;
-/*    background-image: url('../imagesOfPower/samTheSham.jpg');*/
+    background-image: url('../imagesOfPower/samTheSham.jpg');
 }
+*/
 
 
 /**************************************
@@ -336,36 +337,125 @@ CARDS
     margin-left: 20%;
 }
 
-.card0 {
+#card0 {
     background-image: url('../images/greedcard.png');
+    height: 12vw;
+    width: 8.3vw;
+    font-family: 'Trade Winds', cursive;
+    font-size: 0.84em;
+    
+    list-style: none;
+    display: inline-block;
+    min-height: 50px;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    padding: .3vw 0.5vw 0.5vw 0.5vw;
+    margin: 0px 2vw 0px 0px;
 }
 
-.card1 {
+#card1 {
     background-image: url('../images/greedcard.png');
+    height: 12vw;
+    width: 8.3vw;
+    font-family: 'Trade Winds', cursive;
+    font-size: 0.84em;
+    
+    display: inline-block;
+    min-height: 50px;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    padding: .3vw 0.5vw 0.5vw 0.5vw;
+    margin: 0px 2vw 0px 0px;
 }
 
-.card2 {
+#card2 {
     background-image: url('../images/greedcard.png');
+    height: 12vw;
+    width: 8.3vw;
+    font-family: 'Trade Winds', cursive;
+    font-size: 0.84em;
+    
+    display: inline-block;
+    min-height: 50px;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    padding: .3vw 0.5vw 0.5vw 0.5vw;
+    margin: 0px 2vw 0px 0px;
 }
 
-.card3 {
+#card3 {
     background-image: url('../images/greedcard.png');
+    height: 12vw;
+    width: 8.3vw;
+    font-family: 'Trade Winds', cursive;
+    font-size: 0.84em;
+    
+    display: inline-block;
+    min-height: 50px;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    padding: .3vw 0.5vw 0.5vw 0.5vw;
+    margin: 0px 2vw 0px 0px;
 }
 
-.card4 {
+#card4 {
     background-image: url('../images/greedcard.png');
+    height: 12vw;
+    width: 8.3vw;
+    font-family: 'Trade Winds', cursive;
+    font-size: 0.84em;
+    
+    display: inline-block;
+    min-height: 50px;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    padding: .3vw 0.5vw 0.5vw 0.5vw;
+    margin: 0px 2vw 0px 0px;
 }
 
-.card5 {
+#card5 {
     background-image: url('../images/greedcard.png');
+    height: 12vw;
+    width: 8.3vw;
+    font-family: 'Trade Winds', cursive;
+    font-size: 0.84em;
+    
+    display: inline-block;
+    min-height: 50px;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    padding: .3vw 0.5vw 0.5vw 0.5vw;
+    margin: 0px 2vw 0px 0px;
 }
 
-.card6 {
+#card6 {
     background-image: url('../images/greedcard.png');
+    height: 12vw;
+    width: 8.3vw;
+    font-family: 'Trade Winds', cursive;
+    font-size: 0.84em;
+    
+    display: inline-block;
+    min-height: 50px;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    padding: .3vw 0.5vw 0.5vw 0.5vw;
+    margin: 0px 2vw 0px 0px;
 }
 
-.card7 {
+#card7 {
     background-image: url('../images/greedcard.png');
+    height: 12vw;
+    width: 8.3vw;
+    font-family: 'Trade Winds', cursive;
+    font-size: 0.84em;
+    
+    display: inline-block;
+    min-height: 50px;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    padding: .3vw 0.5vw 0.5vw 0.5vw;
+    margin: 0px 2vw 0px 0px;
 }
 
 .card8 {

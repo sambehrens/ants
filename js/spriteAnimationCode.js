@@ -8,7 +8,7 @@
 // }
 
 
-
+//Sprite Animation code
 (function() {
 
     var lastTime = 0;

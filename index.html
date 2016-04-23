@@ -47,14 +47,12 @@
     <canvas id="myCanvas" resize></canvas>
     <div id="bBar">
         <div class="deck"></div>
-        <ul id="cards">
-        </ul>
+        <div id="cards"></div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="js/paper-full.js"></script>
-    <script type="text/javascript" src="js/spriteAnimationCode.js"></script> 
+    <!--<script type="text/javascript" src="js/spriteAnimationCode.js"></script> -->
     <script type="text/paperscript" canvas="myCanvas">
-
 /*
 to do:
 3. figure out what the hell to do with attacks
@@ -62,12 +60,158 @@ to do:
 players[currentPlayer].health/players[currentPlayer].character.health
 */
 // wrathSprite.destinationX = 900;
+
+
+(function() {
+
+    var lastTime = 0;
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] 
+                                   || window[vendors[x]+'CancelRequestAnimationFrame'];
+    }
+ 
+    if (!window.requestAnimationFrame)
+        window.requestAnimationFrame = function(callback, element) {
+            var currTime = new Date().getTime();
+            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+            var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
+              timeToCall);
+            lastTime = currTime + timeToCall;
+            return id;
+        };
+ 
+    if (!window.cancelAnimationFrame)
+        window.cancelAnimationFrame = function(id) {
+            clearTimeout(id);
+        };
+}());
+
+var wrathSprite;
+
+(function () {
+      
+  // var coin,
+  //   coinImage,
+  //   canvas;
+  var wrathImage,
+    canvas;         
+
+  function gameLoop () {
+  
+    window.requestAnimationFrame(gameLoop);
+
+    // coin.update();
+    // coin.render();
+    wrathSprite.update();
+    wrathSprite.render();
+  }
+  
+  function sprite (options) {
+  
+    var that = {},
+      frameIndex = 0,
+      tickCount = 0,
+      ticksPerFrame = options.ticksPerFrame || 0,
+      numberOfFrames = options.numberOfFrames || 1;
+    
+    that.context = options.context;
+    that.width = options.width;
+    that.height = options.height;
+    that.destinationX = options.destinationX;
+    that.destinationY = options.destinationY;
+    that.sizeWidth = options.sizeWidth;
+    that.sizeHeight = options.sizeHeight;
+    that.image = options.image;
+    
+    that.update = function () {
+
+            tickCount += 1;
+
+            if (tickCount > ticksPerFrame) {
+
+        tickCount = 0;
+        
+                // If the current frame index is in range
+                if (frameIndex < numberOfFrames - 1) {  
+                    // Go to the next frame
+                    frameIndex += 1;
+                } else {
+                    frameIndex = 0;
+                }
+            }
+        };
+    
+    that.render = function () {
+    
+      // Clear the canvas
+      that.context.clearRect(that.destinationX - 100, that.destinationY - 100, that.sizeWidth+200, that.sizeHeight+200);
+      
+      // Draw the animation
+      that.context.drawImage(
+        that.image,
+        frameIndex * that.width / numberOfFrames,
+        0, // potential for stacked spritesheet
+        that.width / numberOfFrames,
+        that.height,
+        that.destinationX, //destination x
+        that.destinationY, //destination y
+        that.sizeWidth,
+        that.sizeHeight,
+        that.width / numberOfFrames,
+        that.height);
+    };
+    
+    return that;
+  }
+  
+  // Get canvas
+  canvas = document.getElementById("spriteCanvas");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  
+  // Create sprite sheet
+
+  //coinImage = new Image(); 
+  wrathImage = new Image(); 
+  
+  // Create sprite
+
+  // coin = sprite({
+  //   context: canvas.getContext("2d"),
+  //   width: 1000,
+  //   height: 100,
+  //   image: coinImage,
+  //   numberOfFrames: 10,
+  //   ticksPerFrame: 2
+  // });
+
+  wrathSprite = sprite({
+    context: canvas.getContext("2d"),
+    width: 3420,
+    height: 158,
+    destinationX: -500,
+    destinationY: -500,
+    sizeWidth: 110,
+    sizeHeight: 90,
+    image: wrathImage,
+    numberOfFrames: 18,
+    ticksPerFrame: 2
+  });
+  
+  // Load sprite sheet
+  // coinImage.addEventListener("load", gameLoop);
+  // coinImage.src = "images/coin-sprite-animation.png";
+  wrathImage.addEventListener("load", gameLoop);
+  wrathImage.src = "images/tryRun2.png";
+} ());
+
 var expanded = false; // Is the bottom bar expanded?
 var numCards = 0; // number of cards
 var bBarWidth = 6;// width of bottom bar for cards
 var healthRatio = 1; // change in health fill on the statbar
 var currentAttack = 0, currentDefense = 0;
-
 
 $("#cards").hide();
 $('#bBar').hide(); // hides the card holder bar
@@ -75,10 +219,8 @@ $("#statBar").hide();
 
 function  expandBBar() {// expand the card shelf a.k.a. bottom bar
 
-    $(".card").remove();
-
     for (var i = 0; i < players[currentPlayer].cards.length; i += 1) {
-        $("#cards").append('<li id="cardy" class="' + players[currentPlayer].cards[i].css + '"><div id="cardLabels"><p id="attackLabel">' + players[currentPlayer].cards[i].attack + '</p> <p id="defendLabel">' + players[currentPlayer].cards[i].defend + '</p></div></li>');
+        $("#cards").append('<div class="cardy" id="' + players[currentPlayer].cards[i].css + '"><div id="cardLabels"><p id="attackLabel">' + players[currentPlayer].cards[i].attack + '</p> <p id="defendLabel">' + players[currentPlayer].cards[i].defend + '</p></div></div>');
     }
 
 
@@ -108,7 +250,7 @@ function hideBBar() { // hide the card cabinet a.k.a. bottom bar
         $("#cards").hide(0);
         $("#bBar").css("overflowX", "hidden");
         for (var i = 0; i < players[currentPlayer].cards.length; i += 1) {
-            $("#cardy").remove();
+            $(".cardy").remove();
         }
         
         $("#cardShowButton").css("margin", "3vw 0vw 9vw 7.5vw")
@@ -148,15 +290,9 @@ $('#cardShowButtonText').click(function () {
     }
 });
 
-// $('#cards').click(function () {
-//     console.log("Here is being card clicked yo");
-//     if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
-//         cardSelected = true;
 
-//     }
-// });
-$('.card1').click(function () {
-    console.log("Here is being card clicked yo");
+$("body").on('click', '#card1', function () {
+    console.log("here is card1 click");
     if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
         cardSelected = true;
         currentAttack = playerTypes[0].cards[0].attack;
@@ -164,8 +300,8 @@ $('.card1').click(function () {
         this.remove();
     }
 });
-$('.card2').click(function () {
-    console.log("Here is being card clicked yo");
+$("body").on('click', '#card2', function () {
+    console.log("here is card2 click");
     if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
         cardSelected = true;
         currentAttack = playerTypes[0].cards[1].attack;
@@ -173,8 +309,8 @@ $('.card2').click(function () {
         this.remove();
     }
 });
-$('.card3').click(function () {
-    console.log("Here is being card clicked yo");
+$("body").on('click', '#card3', function () {
+    console.log("here is card3 click");
     if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
         cardSelected = true;
         currentAttack = playerTypes[0].cards[2].attack;
@@ -182,8 +318,8 @@ $('.card3').click(function () {
         this.remove();
     }
 });
-$('.card4').click(function () {
-    console.log("Here is being card clicked yo");
+$("body").on('click', '#card4', function () {
+    console.log("here is card4 click");
     if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
         cardSelected = true;
         currentAttack = playerTypes[0].cards[3].attack;
@@ -191,8 +327,8 @@ $('.card4').click(function () {
         this.remove();
     }
 });
-$('.card5').click(function () {
-    console.log("Here is being card clicked yo");
+$("body").on('click', '#card5', function () {
+    console.log("here is card5 click");
     if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
         cardSelected = true;
         currentAttack = playerTypes[0].cards[4].attack;
@@ -200,8 +336,8 @@ $('.card5').click(function () {
         this.remove();
     }
 });
-$('.card6').click(function () {
-    console.log("Here is being card clicked yo");
+$("body").on('click', '#card6', function () {
+    console.log("here is card6 click");
     if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
         cardSelected = true;
         currentAttack = playerTypes[0].cards[5].attack;
@@ -209,7 +345,7 @@ $('.card6').click(function () {
         this.remove();
     }
 });
-$('.card7').click(function () {
+$("body").on('click', '#card6', function () {
     console.log("Here is being card clicked yo");
     if (turnCounter === 2 && cardSelected === false && actionCounter !== 0) {
         cardSelected = true;
@@ -219,9 +355,6 @@ $('.card7').click(function () {
     }
 });
 
-$("#cardy").click(function() {
-    Console.log("blick");
-})
 
 //var scrollW = document.getElementsByClassName("");
 function addCard() {
@@ -232,7 +365,7 @@ function addCard() {
         var randomCardIndex = Math.floor((Math.random() * (players[currentPlayer].character.cards.length -1)));
         
         //add a card li to the cards div
-        $("#cards").append('<li id="cardy" class="' + players[currentPlayer].character.cards[randomCardIndex].css + '"><div id="cardLabels"><p id="attackLabel">' + players[currentPlayer].character.cards[randomCardIndex].attack + '</p> <p id="defendLabel">' + players[currentPlayer].character.cards[randomCardIndex].defend + '</p></div></li>');
+        $("#cards").append('<div class="cardy" id="' + players[currentPlayer].character.cards[randomCardIndex].css + '"><div id="cardLabels"><p id="attackLabel">' + players[currentPlayer].character.cards[randomCardIndex].attack + '</p> <p id="defendLabel">' + players[currentPlayer].character.cards[randomCardIndex].defend + '</p></div></div>');
 
         
         //extend bar width
@@ -345,7 +478,7 @@ var size, biome, playerType, numPlayers = 30, gameSetup = 1, players = [], move 
 var playerTypes = [// array of player types: add new player types here
     {
         type: 'Greed',
-        color: '#00BFFF',
+        sprite: wrathSprite,
         dice: 12,
         health: 20,
         numActions: 3,
@@ -361,7 +494,7 @@ var playerTypes = [// array of player types: add new player types here
     },
     {
         type: 'Wrath',
-        color: '#ff0000',
+        sprite: wrathSprite,
         dice: 4,
         health: 16,
         numActions: 2,
@@ -378,7 +511,7 @@ var playerTypes = [// array of player types: add new player types here
     },
     {
         type: 'Pride',
-        color: '#e5e600',
+        sprite: wrathSprite,
         dice: 8,
         health: 22,
         numActions: 2,
@@ -391,8 +524,7 @@ var playerTypes = [// array of player types: add new player types here
             {attack: 0,defend: 0,heal: 8,count: 2, css: "card21"},
             {attack: 0,defend: 0,heal: 2,count: 1, css: "card22"},
             {attack: 4,defend: 4,count: 4}
-        ],
-        aimerLine: new Path()
+        ]
     }
 ];
 
@@ -466,7 +598,7 @@ $("#proceed").click(function() {
                 x: xSpawn,//   x coord of where player spawns
                 y: ySpawn //   y coord of where player spawns
             },
-            path: new Path.RegularPolygon(new Point(0,0),0,0),
+            sprite: wrathSprite,
             cards: [],//    put cards that the player can gets in this array
             health: playerTypes[$("#player option:selected").index()].health,
             // healthFromLastTurn: 1, // ratio of health that the player had at the start of their previous turn
@@ -576,10 +708,11 @@ function setup() {//           setup map here, also draw it
     for (var i = 0; i < players.length; i += 1) {//  setup all of the images for the players including the nametag
         var xP = boardMain[players[i].coord.y][players[i].coord.x].path.position.x;
         var yP = boardMain[players[i].coord.y][players[i].coord.x].path.position.y;
-        players[i].path = new Path.RegularPolygon(new Point(xP, yP), 3, 30);
-        players[i].path.fillColor = players[i].character.color;
+        players[i].sprite = players[i].character.sprite;
+        players[i].sprite.destinationX = xP - players[i].sprite.sizeWidth/2;
+        players[i].sprite.destinationY = yP - players[i].sprite.sizeHeight/2;
         players[i].nameLabel = new PointText({
-            point: players[i].path.position,
+            point: new Point(xP,yP),
             justification: 'center',
             fontSize: 30,
             fillColor: 'white',
@@ -744,13 +877,6 @@ function onMouseMove(event) {
             
     //     }
     // }
-    for (var i = 0; i < players.length; i+=1) { // Checks when the mouse hovers over the player
-        if (players[i].path.contains(event.point)) {
-             statBox(players[i]);
-        } else {
-
-        }
-    }
 }
 
 function onMouseDrag(event) {
@@ -767,8 +893,8 @@ function onMouseDrag(event) {
 
         }
         if (i < players.length) { // just using the board checker to also check the players
-            players[i].path.position.x += event.delta.x/3; // move players when map is being drgged
-            players[i].path.position.y += event.delta.y/3;
+            players[i].sprite.destinationX += event.delta.x/3; // move players when map is being drgged
+            players[i].sprite.destinationY += event.delta.y/3;
             players[i].nameLabel.position.x += event.delta.x/3; // move the name label
             players[i].nameLabel.position.y += event.delta.y/3;
         }
@@ -823,7 +949,8 @@ function onMouseUp(event) {
 
                     if (canPlayerMoveOrNah(ii,i)) {
 
-                        players[currentPlayer].path.position = boardMain[i][ii].path.position;
+                        players[currentPlayer].sprite.destinationX = boardMain[i][ii].path.position.x - players[currentPlayer].sprite.sizeWidth/2;
+                        players[currentPlayer].sprite.destinationY = boardMain[i][ii].path.position.y - players[currentPlayer].sprite.sizeHeight/2;
                         players[currentPlayer].nameLabel.position = boardMain[i][ii].path.position;
                         players[currentPlayer].coord.x = ii;
                         players[currentPlayer].coord.y = i;
@@ -862,9 +989,6 @@ function onMouseUp(event) {
     }
     dragging = false;
 }
-
-
-
 
     </script>
 </body>
