@@ -14,7 +14,7 @@
                 <input id="enterName" type="text" value="" title="Come on, be creative" placeHolder="Nick" maxlength="15" spellcheck="false">
             </li>
             <li>
-                <input id="enterNumPlayers" type="text" value="" placeHolder="Number of players" maxlength="1">
+                <input id="enterNumPlayers" type="text" value="" placeHolder="Number of players 2-3" maxlength="1">
             </li>
             <li>
                 <select id="player" class="noselect"></select>
@@ -600,6 +600,8 @@ $("#proceed").click(function() {// the main setup button function
 
     gameSetup += 1;
 });
+
+
 
 for (var i = 0; i < playerTypes.length; i += 1) {//   add player types to select option in html code
     $("#player").append("<option class='playerTypes'>" + playerTypes[i].type + "</option>");
