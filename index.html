@@ -2,9 +2,6 @@
 <head>
 	<title>SparDrawersEpilepticDrools</title>
 	<link rel="stylesheet" href="css/style.css">
-    <link href='https://fonts.googleapis.com/css?family=Orbitron:400,900' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Trade+Winds' rel='stylesheet' type='text/css'>
 </head>
 <audio id="audio">
@@ -504,6 +501,23 @@ var playerTypes = [// array of player types: add new player types here
             {attack: 6,defend: 0,count: 1, css: "card13"},
             {attack: 3,defend: 0,pierce: true,count: 3, css: "card14"},
             {attack: 3,defend: 3,pierce: true,count: 1, css: "card15"}
+        ]
+    },
+    {
+        type: 'Pride',
+        sprite: prideSprite,// the player sprite
+        dice: 8,//the max a man can move
+        health: 22,// the haelth at the beginning of the game
+        numActions: 2,// the num actions givent o the player
+        cards: [// array of cards: put new cards here
+            {attack: 8,defend: 0,count: 2, css: "card16"},
+            {attack: 0,defend: 7,count: 3, css: "card17"},
+            {attack: 5,defend: 2,count: 5, css: "card18"},
+            {attack: 3,defend: 2,count: 4, css: "card19"},
+            {attack: 2,defend: 3,count: 4, css: "card20"},
+            {attack: 0,defend: 0,heal: 8,count: 2, css: "card21"},
+            {attack: 0,defend: 0,heal: 2,count: 1, css: "card22"},
+            {attack: 4,defend: 4,count: 4, css: "card23"}
         ]
     },
     {
