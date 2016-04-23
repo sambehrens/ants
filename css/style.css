@@ -86,7 +86,7 @@ canvas[resize] {
     padding: 10px;
     border:14px solid #000000;
     border-radius: 15px;
-    background: AntiqueWhite;
+    background: darkred;
     max-width: 500px;
 }
 input {
